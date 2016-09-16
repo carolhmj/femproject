@@ -3,6 +3,7 @@
 //Includes do modelo
 #include "dof.h"
 #include "doftype.h"
+#include "restrictiontypes.h"
 //Includes de biblioteca
 #include <eigen3/Eigen/Core>
 #include <vector>
@@ -13,10 +14,10 @@ using namespace Eigen;
 class VectorDOF : public DOF
 {
 public:
-    VectorDOF(VectorXd values, std::vector<VectorDOFType> types, std::vector<int> restrictions);
+    VectorDOF(VectorXd values, std::vector<VectorDOFType> types, std::vector<RestrictionTypes> restrictions);
     VectorXd getValues() const;
     std::vector<VectorDOFType> getTypes() const;
-    std::vector<int> getRestrictions() const;
+    std::vector<RestrictionTypes> getRestrictions() const;
 
 private:
     //Valores do grau de liberdade
@@ -24,7 +25,7 @@ private:
     //Tipos de cada grau
     std::vector<VectorDOFType> types;
     //Restrições de cada grau
-    std::vector<int> restrictions;
+    std::vector<RestrictionTypes> restrictions;
 };
 
 #endif // VECTORDOF_H

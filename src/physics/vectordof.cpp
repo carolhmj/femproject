@@ -1,7 +1,7 @@
 #include "vectordof.h"
 #include <GL/gl.h>
 
-VectorDOF::VectorDOF(VectorXd values, std::vector<VectorDOFType> types, std::vector<int> restrictions) :
+VectorDOF::VectorDOF(VectorXd values, std::vector<VectorDOFType> types, std::vector<RestrictionTypes> restrictions) :
     values(values), types(types), restrictions(restrictions)
 {
     setType(DOFType::VECTOR);
@@ -14,7 +14,7 @@ std::vector<VectorDOFType> VectorDOF::getTypes() const
 {
     return types;
 }
-std::vector<int> VectorDOF::getRestrictions() const
+std::vector<RestrictionTypes> VectorDOF::getRestrictions() const
 {
     return restrictions;
 }
