@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = femproject
 TEMPLATE = app
 
-DEFINES += DEBUG=1
+DEFINES += DEBUG=1 USE_INTERFACE=0
 
 DEBUG : {
     QMAKE_CXXFLAGS += -std=c++11

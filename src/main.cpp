@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #include "mainwindow.h"
 #include <QApplication>
 
@@ -9,3 +10,23 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+#endif
+
+#if !USE_INTERFACE
+#include "physics/node.h"
+#include "physics/vectordof.h"
+#include <eigen3/Eigen/Core>
+#include <iostream>
+
+int main(int argc, char *argv[])
+{
+    //Cria os valores (2 de posição e um de rotação)
+    std::vector<VectorDOFType> types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FREE, RestrictionTypes::FREE};
+    VectorXd values(3);
+    values << 0.5,1.5,0;
+    VectorDOF *v = new VectorDOF(values, types, restrictions);
+    Node *n = new Node(v);
+    std::cout << n->printInfo();
+}
+#endif

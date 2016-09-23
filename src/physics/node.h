@@ -5,16 +5,17 @@
 //Includes de biblioteca
 #include <eigen3/Eigen/Core>
 #include <vector>
+#include <string>
 
 using namespace Eigen;
 class Node
 {
 public:
-    Node(DOF* &dof);
+    Node(DOF* dof);
     Node(std::vector<DOF*> dofs);
     void addDOF(DOF &dof);
     void draw();
-    void printInfo();
+    std::string printInfo();
     VectorXd getPosition();
 private:
     std::vector<DOF*> dofs;

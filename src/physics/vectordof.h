@@ -18,7 +18,9 @@ public:
     VectorXd getValues() const;
     std::vector<VectorDOFType> getTypes() const;
     std::vector<RestrictionTypes> getRestrictions() const;
-
+    int getEquationNumber(unsigned int number);
+    VectorXd getTranslationDOF();
+    std::string printInfo();
 private:
     //Valores do grau de liberdade
     VectorXd values;

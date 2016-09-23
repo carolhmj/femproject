@@ -1,9 +1,11 @@
 #include "node.h"
 #include "doftype.h"
 #include "vectordof.h"
+#include <sstream>
 
-Node::Node(DOF *&dof)
+Node::Node(DOF *dof)
 {
+    dofs = std::vector<DOF*>();
     dofs.push_back(dof);
 }
 
@@ -12,27 +14,25 @@ Node::Node(std::vector<DOF*> dofs) : dofs(dofs)
 
 }
 
-void Node::printInfo()
+void Node::draw()
 {
 
 }
 
+std::__cxx11::string Node::printInfo()
+{
+    std::stringstream output;
+    output << "====== NODE INFO ======" << std::endl;
+    output << "====== DOF INFO ======" << std::endl;
+    for (DOF*& dof : dofs) {
+        //output << (int)dof->getType();
+        output << dof->printInfo();
+    }
+    return output.str();
+}
+
 VectorXd Node::getPosition()
 {
-    std::vector<double> posv;
-    for (DOF*& dof : dofs) {
-        if (dof->getType() == DOFType::VECTOR) {
 
-            VectorDOF* vdof = static_cast<VectorDOF*>(dof);
-
-            for (unsigned int i = 0; i < vdof->getTypes().size(); i++) {
-                if (vdof->getTypes()[i] == VectorDOFType::TRANSLATION) {
-                    posv.push_back(vdof->getValues()[i]);
-                }
-            }
-        }
-    }
-    Map<VectorXd> pos(posv.data(), posv.size());
-    return pos;
 }
 
