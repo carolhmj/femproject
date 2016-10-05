@@ -3,7 +3,7 @@
 //Includes do modelo
 #include "dof.h"
 //Includes de biblioteca
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 #include <vector>
 #include <string>
 
@@ -16,9 +16,10 @@ public:
     void addDOF(DOF &dof);
     void draw();
     std::string printInfo();
-    VectorXd getPosition();
+    Vector3d getPosition();
 private:
     std::vector<DOF*> dofs;
+    Vector3d position;
 };
 
 #endif // NODE_H

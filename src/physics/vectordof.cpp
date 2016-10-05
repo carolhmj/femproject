@@ -3,7 +3,7 @@
 #include <sstream>
 
 VectorDOF::VectorDOF(VectorXd values, std::vector<VectorDOFType> types, std::vector<RestrictionTypes> restrictions) :
-    values(values), types(types), restrictions(restrictions)
+    values(values), types(types), restrictions(restrictions), equationNumbers(equationNumbers)
 {
     setType(DOFType::VECTOR);
 }
@@ -20,17 +20,21 @@ std::vector<RestrictionTypes> VectorDOF::getRestrictions() const
     return restrictions;
 }
 
-//! Implementar o get equation number
-int VectorDOF::getEquationNumber(unsigned int number)
+std::vector<int> VectorDOF::getEquationNumbers() const
 {
-    return 0;
+    return equationNumbers;
 }
 
-VectorXd VectorDOF::getTranslationDOF()
+int VectorDOF::getEquationNumber(unsigned int number)
+{
+    return equationNumber[number];
+}
+
+VectorXd VectorDOF::getVectorDOFByType(VectorDOFType type)
 {
     std::vector<double> tv;
     for (unsigned int i = 0; i < types.size(); i++) {
-        if (types[i] == VectorDOFType::TRANSLATION) {
+        if (types[i] == type) {
             tv.push_back(values[i]);
         }
     }
@@ -38,7 +42,7 @@ VectorXd VectorDOF::getTranslationDOF()
     return tdof;
 }
 
-std::__cxx11::string VectorDOF::printInfo()
+std::string VectorDOF::printInfo()
 {
     std::stringstream output;
     output << "------- VECTOR DOF -------" << std::endl;
@@ -54,6 +58,8 @@ std::__cxx11::string VectorDOF::printInfo()
         } else if (restrictions[i] == RestrictionTypes::FREE){
             output << " FREE ";
         }
+        output << std::endl;
+        output << "\t Equation number: " << equationNumbers[i];
         output << std::endl;
     }
     return output.str();

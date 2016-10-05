@@ -19,20 +19,20 @@ void Node::draw()
 
 }
 
-std::__cxx11::string Node::printInfo()
+std::string Node::printInfo()
 {
     std::stringstream output;
     output << "====== NODE INFO ======" << std::endl;
+    output << "\t Position: " << position.transpose() << std::endl;
     output << "====== DOF INFO ======" << std::endl;
     for (DOF*& dof : dofs) {
-        //output << (int)dof->getType();
         output << dof->printInfo();
     }
     return output.str();
 }
 
-VectorXd Node::getPosition()
+Vector3d Node::getPosition()
 {
-
+    return position;
 }
 

@@ -20,7 +20,7 @@ DEBUG : {
     QMAKE_CXXFLAGS += -std=c++11 -O3
 }
 
-INCLUDEPATH += -isystem ../inc/Eigen/
+INCLUDEPATH += -isystem ../Eigen/
 
 
 SOURCES += src/main.cpp\
