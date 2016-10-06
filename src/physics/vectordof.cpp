@@ -2,7 +2,7 @@
 #include <GL/gl.h>
 #include <sstream>
 
-VectorDOF::VectorDOF(VectorXd values, std::vector<VectorDOFType> types, std::vector<RestrictionTypes> restrictions) :
+VectorDOF::VectorDOF(VectorXd values, vector<VectorDOFType> types, vector<RestrictionTypes> restrictions, vector<int> equationNumbers) :
     values(values), types(types), restrictions(restrictions), equationNumbers(equationNumbers)
 {
     setType(DOFType::VECTOR);
@@ -11,28 +11,28 @@ VectorXd VectorDOF::getValues() const
 {
     return values;
 }
-std::vector<VectorDOFType> VectorDOF::getTypes() const
+vector<VectorDOFType> VectorDOF::getTypes() const
 {
     return types;
 }
-std::vector<RestrictionTypes> VectorDOF::getRestrictions() const
+vector<RestrictionTypes> VectorDOF::getRestrictions() const
 {
     return restrictions;
 }
 
-std::vector<int> VectorDOF::getEquationNumbers() const
+vector<int> VectorDOF::getEquationNumbers() const
 {
     return equationNumbers;
 }
 
 int VectorDOF::getEquationNumber(unsigned int number)
 {
-    return equationNumber[number];
+    return equationNumbers[number];
 }
 
 VectorXd VectorDOF::getVectorDOFByType(VectorDOFType type)
 {
-    std::vector<double> tv;
+    vector<double> tv;
     for (unsigned int i = 0; i < types.size(); i++) {
         if (types[i] == type) {
             tv.push_back(values[i]);
@@ -42,10 +42,10 @@ VectorXd VectorDOF::getVectorDOFByType(VectorDOFType type)
     return tdof;
 }
 
-std::string VectorDOF::printInfo()
+string VectorDOF::printInfo()
 {
     std::stringstream output;
-    output << "------- VECTOR DOF -------" << std::endl;
+    output << "------- VECTOR DOF -------" << endl;
     for (unsigned int i = 0; i < types.size(); i++) {
         output << "\t Value: " << values[i];
         if (types[i] == VectorDOFType::TRANSLATION) {
@@ -58,9 +58,9 @@ std::string VectorDOF::printInfo()
         } else if (restrictions[i] == RestrictionTypes::FREE){
             output << " FREE ";
         }
-        output << std::endl;
+        output << endl;
         output << "\t Equation number: " << equationNumbers[i];
-        output << std::endl;
+        output << endl;
     }
     return output.str();
 }

@@ -6,6 +6,11 @@
 #include <Eigen/Core>
 #include <vector>
 #include <string>
+#include <iostream>
+
+using std::vector;
+using std::string;
+using std::endl;
 
 using namespace Eigen;
 class Node
@@ -15,10 +20,10 @@ public:
     Node(std::vector<DOF*> dofs);
     void addDOF(DOF &dof);
     void draw();
-    std::string printInfo();
+    string printInfo();
     Vector3d getPosition();
 private:
-    std::vector<DOF*> dofs;
+    vector<DOF*> dofs;
     Vector3d position;
 };
 

@@ -5,7 +5,7 @@
 
 Node::Node(DOF *dof)
 {
-    dofs = std::vector<DOF*>();
+    dofs = vector<DOF*>();
     dofs.push_back(dof);
 }
 
@@ -19,12 +19,12 @@ void Node::draw()
 
 }
 
-std::string Node::printInfo()
+string Node::printInfo()
 {
     std::stringstream output;
-    output << "====== NODE INFO ======" << std::endl;
-    output << "\t Position: " << position.transpose() << std::endl;
-    output << "====== DOF INFO ======" << std::endl;
+    output << "====== NODE INFO ======" << endl;
+    output << "\t Position: " << position.transpose() << endl;
+    output << "====== DOF INFO ======" << endl;
     for (DOF*& dof : dofs) {
         output << dof->printInfo();
     }
