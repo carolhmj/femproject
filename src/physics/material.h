@@ -9,6 +9,7 @@ class Material
 {
 public:
     Material();
+    Material(double _youngModulus, double _poissonCoefficient, double _density);
     string printInfo();
 private:
     double youngModulus;

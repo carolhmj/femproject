@@ -6,6 +6,12 @@ Section::Section()
 
 }
 
+Section::Section(double _inMomY, double _inMomZ) :
+    inertiaMomentY(_inMomY), inertiaMomentZ(_inMomZ)
+{
+
+}
+
 string Section::printInfo()
 {
     std::stringstream ss;

@@ -2,6 +2,7 @@
 #define NODE_H
 //Includes do modelo
 #include "dof.h"
+#include "nodeload.h"
 //Includes de biblioteca
 #include <Eigen/Core>
 #include <vector>
@@ -16,8 +17,8 @@ using namespace Eigen;
 class Node
 {
 public:
-    Node(DOF* dof);
-    Node(std::vector<DOF*> dofs);
+    Node(Vector3d position, DOF* dof);
+    Node(Vector3d position, std::vector<DOF*> dofs);
     void addDOF(DOF &dof);
     void draw();
     string printInfo();

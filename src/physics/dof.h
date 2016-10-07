@@ -15,7 +15,7 @@ public:
     virtual int getEquationNumber(unsigned int number) = 0;
     virtual std::string printInfo() = 0;
 
-private:
+protected:
     DOFType type;
 };
 

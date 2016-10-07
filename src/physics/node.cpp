@@ -3,13 +3,15 @@
 #include "vectordof.h"
 #include <sstream>
 
-Node::Node(DOF *dof)
+Node::Node(Vector3d position, DOF *dof) :
+    position(position)
 {
     dofs = vector<DOF*>();
     dofs.push_back(dof);
 }
 
-Node::Node(std::vector<DOF*> dofs) : dofs(dofs)
+Node::Node(Vector3d position, std::vector<DOF*> dofs) :
+    position(position), dofs(dofs)
 {
 
 }

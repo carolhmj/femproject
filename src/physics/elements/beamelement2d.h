@@ -8,9 +8,11 @@ class BeamElement2D : public Element
 {
 public:
     BeamElement2D();
-    BeamElement2D(Section *section);
+    BeamElement2D(Section *_section, Material *_material);
+    BeamElement2D(Node *_n1, Node *_n2, Section *_section, Material *_material);
     string printInfo();
-private:
+    MatrixXd createLocalStiffnessMatrix() override;
+protected:
     Section *section;
 };
 

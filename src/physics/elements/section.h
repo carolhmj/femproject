@@ -11,6 +11,7 @@ class Section
 {
 public:
     Section();
+    Section(double _inMomY, double _inMomZ);
     string printInfo();
 
     double getInertiaMomentY() const;

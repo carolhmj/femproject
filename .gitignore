@@ -42,3 +42,6 @@ CMakeLists.txt.user*
 #Build directories
 debug/
 release/
+
+#Misc
+oofem-2.4/

@@ -6,6 +6,12 @@ Material::Material()
 
 }
 
+Material::Material(double _youngModulus, double _poissonCoefficient, double _density) :
+    youngModulus(_youngModulus), poissonCoefficient(_poissonCoefficient), density(_density)
+{
+
+}
+
 string Material::printInfo()
 {
     std::stringstream ss;

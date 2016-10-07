@@ -26,7 +26,7 @@ public:
     vector<Node *> getNodes() const;
     void setNodes(const vector<Node *> &value);
 
-private:
+protected:
     vector<Node*> nodes;
     Material *material;
     unsigned int numNodes;
