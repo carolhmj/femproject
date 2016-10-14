@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 #include "node.h"
 #include "vectordof.h"
 #include "beamelement2d.h"
+#include "model.h"
 #include <Eigen/Core>
 #include <iostream>
 
@@ -45,6 +46,11 @@ int main(int argc, char *argv[])
     Material *m = new Material(1E11, 0.25, 7000);
 
     BeamElement2D *el = new BeamElement2D(n, n2, s, m);
-    std::cout << el->printInfo();
+    vector<Node*> nvec = {n, n2};
+    vector<Element*> elvec = {el};
+//    std::cout << el->printInfo();
+
+    Model *md = new Model("modelito", nvec, elvec);
+    std::cout << md->printInfo();
 }
 #endif

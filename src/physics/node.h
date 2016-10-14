@@ -2,7 +2,6 @@
 #define NODE_H
 //Includes do modelo
 #include "dof.h"
-#include "nodeload.h"
 //Includes de biblioteca
 #include <Eigen/Core>
 #include <vector>

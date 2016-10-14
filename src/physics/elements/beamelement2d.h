@@ -12,6 +12,7 @@ public:
     BeamElement2D(Node *_n1, Node *_n2, Section *_section, Material *_material);
     string printInfo();
     MatrixXd createLocalStiffnessMatrix() override;
+    void draw() override;
 protected:
     Section *section;
 };

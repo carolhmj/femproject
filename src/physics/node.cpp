@@ -2,6 +2,7 @@
 #include "doftype.h"
 #include "vectordof.h"
 #include <sstream>
+#include <GL/gl.h>
 
 Node::Node(Vector3d position, DOF *dof) :
     position(position)
@@ -18,7 +19,9 @@ Node::Node(Vector3d position, std::vector<DOF*> dofs) :
 
 void Node::draw()
 {
-
+    glBegin(GL_POINT);
+        glVertex3f(position[0], position[1], position[2]);
+    glEnd();
 }
 
 string Node::printInfo()

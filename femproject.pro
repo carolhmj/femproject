@@ -25,6 +25,7 @@ DEPENDPATH += \
     src/physics \
     src/physics/elements \
     src/physics/loads \
+    src/physics/models \
     src/interface \
     src/defines
 
@@ -34,6 +35,7 @@ INCLUDEPATH += \
     src/interface \
     src/physics \
     src/physics/elements \
+    src/physics/models \
     src/physics/loads
 
 SOURCES += src/interface/main.cpp\
@@ -50,7 +52,10 @@ SOURCES += src/interface/main.cpp\
     src/physics/loads/elementload.cpp \
     src/physics/loads/pontualload2dbeam.cpp \
     src/physics/loads/distributedload2dbeam.cpp \
-    src/physics/loads/distributedhorizontalload2dbeam.cpp
+    src/physics/loads/distributedhorizontalload2dbeam.cpp \
+    src/physics/models/model.cpp \
+    src/physics/loads/dofload.cpp \
+    src/physics/loads/vectordofload.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dof.h \
@@ -64,10 +69,12 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/elements/section.h \
     src/defines/projectdefines.h \
     src/physics/load.h \
-    src/physics/loads/nodeload.h \
     src/physics/loads/elementload.h \
     src/physics/loads/pontualload2dbeam.h \
     src/physics/loads/distributedverticalload2dbeam.h \
-    src/physics/loads/distributedhorizontalload2dbeam.h
+    src/physics/loads/distributedhorizontalload2dbeam.h \
+    src/physics/models/model.h \
+    src/physics/loads/dofload.h \
+    src/physics/loads/vectordofload.h
 
 FORMS    += mainwindow.ui

@@ -18,6 +18,7 @@ class Element
 public:
     Element();
     virtual MatrixXd createLocalStiffnessMatrix() = 0;
+    virtual void draw() = 0;
     string printInfo();
     //Getters e setters
     Material *getMaterial() const;

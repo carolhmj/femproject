@@ -1,5 +1,6 @@
 #include "beamelement2d.h"
 #include <sstream>
+#include <GL/gl.h>
 
 BeamElement2D::BeamElement2D()
 {
@@ -31,4 +32,15 @@ string BeamElement2D::printInfo() {
 MatrixXd BeamElement2D::createLocalStiffnessMatrix()
 {
     return MatrixXd();
+}
+
+void BeamElement2D::draw()
+{
+    Vector3d pos;
+    glBegin(GL_LINES);
+        for (Node*& n : nodes) {
+            pos = n->getPosition();
+            glVertex3f(pos[0], pos[1], pos[2]);
+        }
+    glEnd();
 }
