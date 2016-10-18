@@ -17,9 +17,14 @@ class Element
 {
 public:
     Element();
+    //Funções reimplementadas por cada elemento
     virtual MatrixXd createLocalStiffnessMatrix() = 0;
     virtual void draw() = 0;
+
+    //Funções gerais
     string printInfo();
+    void fillGlobalMatrix(/*CoordinateSystem cs*/);
+
     //Getters e setters
     Material *getMaterial() const;
     void setMaterial(Material *value);
