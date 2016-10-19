@@ -2,6 +2,7 @@
 #define DOF_H
 //Model includes
 #include "doftype.h"
+#include "restrictiontypes.h"
 //Library includes
 #include <string>
 
@@ -14,7 +15,8 @@ public:
     virtual void setType(DOFType value);
     virtual int getEquationNumber(unsigned int number) = 0;
     virtual std::string printInfo() = 0;
-    virtual unsigned int getNumber() = 0;
+    virtual unsigned int getTotalDOFNumber() = 0;
+    virtual unsigned int getTotalDOFNumber(RestrictionTypes restriction) = 0;
 
 protected:
     DOFType type;

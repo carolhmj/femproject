@@ -28,9 +28,6 @@ void Element::setNodes(const vector<Node *> &value)
 string Element::printInfo() {
     std::stringstream ss;
     ss << "==== ELEMENT INFO ===="  << endl;
-    for (Node*& node : nodes) {
-        ss << node->printInfo();
-    }
     ss << material->printInfo();
     return ss.str();
 }

@@ -22,10 +22,12 @@ Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elemen
 
 MatrixXd Model::getGlobalStiffnessMatrix()
 {
+    //unsigned int totalDOFNumber = getTotalFreeDOFNumber();
     unsigned int totalDOFNumber = getTotalDOFNumber();
+    std::cout << "total DOF number: " << totalDOFNumber << endl;
     MatrixXd G = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
 
-   /* Visita cada elemento, pega a matriz de rigidez, e para cada nó pega o número da equação dele
+   /* Manda a matriz de rigidez ser preenchida por cada elemento
     *
     */
     for (Element*& element : elements) {
@@ -84,6 +86,15 @@ unsigned int Model::getTotalDOFNumber()
     unsigned int totDof = 0;
     for (Node*& node : nodes) {
         totDof += node->getDOFNumber();
+    }
+    return totDof;
+}
+
+unsigned int Model::getTotalFreeDOFNumber()
+{
+    unsigned int totDof = 0;
+    for (Node*& node : nodes) {
+        totDof += node->getDOFNumber(RestrictionTypes::FREE);
     }
     return totDof;
 }

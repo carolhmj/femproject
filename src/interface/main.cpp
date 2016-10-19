@@ -23,28 +23,28 @@ int main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
+    //Exemplo 1: http://what-when-how.com/the-finite-element-method/fem-for-beams-finite-element-method-part-2/
+
     //Cria os valores (2 de posição e um de rotação)
     std::vector<VectorDOFType> types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
-    std::vector<RestrictionTypes> restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FREE, RestrictionTypes::FREE};
-    std::vector<int> equations = {-1,0,1};
-    VectorXd values(3);
-    values << 0.5,1.5,0;
-    VectorDOF *v = new VectorDOF(values, types, restrictions, equations);
-    Node *n = new Node(Vector3d(), v);
+    std::vector<RestrictionTypes> restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
+    std::vector<int> equations = {0,1,2};
+    VectorDOF *v = new VectorDOF(types, restrictions, equations);
+    Node *n = new Node(Vector3d(0.0,0.0,0.0), v);
 
 //    std::cout << n->printInfo();
 
     std::vector<VectorDOFType> types2 = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> restrictions2 = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
-    std::vector<int> equations2 = {2,3,4};
-    VectorXd values2(3);
-    values2 << 0,1,0;
-    VectorDOF *v2 = new VectorDOF(values2, types2, restrictions2, equations2);
-    Node *n2 = new Node(Vector3d(1,1,1), v2);
+    std::vector<int> equations2 = {3,4,5};
+    VectorDOF *v2 = new VectorDOF(types2, restrictions2, equations2);
+    Node *n2 = new Node(Vector3d(0.5,0,0), v2);
 
-    Section *s = new Section(0.5, 0.025, 5);
+    //Seção largura 0.1 e altura 0.06
+    Section *s = new Section(0.0, 1.8E-6, 0.006);
 
-    Material *m = new Material(1E11, 0.25, 7000);
+    //Material alumínio
+    Material *m = new Material(69E9, 0.33, 0.0);
 
     BeamElement2D *el = new BeamElement2D(n, n2, s, m);
     vector<Node*> nvec = {n, n2};
@@ -52,11 +52,15 @@ int main(int argc, char *argv[])
 //    std::cout << el->printInfo();
 
     VectorXd valuesLoad(3);
-    valuesLoad << -10, -5, 0;
-    VectorDOFLoad *load = new VectorDOFLoad(v, valuesLoad);
+    valuesLoad << 0, -1000, 0;
+    //Força agindo no segundo nó
+    VectorDOFLoad *load = new VectorDOFLoad(v2, valuesLoad);
     vector<Load*> lvec = {load};
 
-    Model *md = new Model("modelito", nvec, elvec, lvec);
+    Model *md = new Model("Cantilever beam 2D Test 1", nvec, elvec, lvec);
     std::cout << md->printInfo();
+
+    MatrixXd globalMatrix = md->getGlobalStiffnessMatrix();
+    std::cout << "Global stiffness matrix: " << endl << globalMatrix << endl;
 }
 #endif

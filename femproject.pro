@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,10 +14,13 @@ TEMPLATE = app
 DEFINES += DEBUG=1 USE_INTERFACE=0
 
 DEBUG : {
-    QMAKE_CXXFLAGS += -std=c++11 -Wno-deprecated
+    QMAKE_CXXFLAGS += -std=c++11 -Wno-deprecated -O0 -lGL
 }
 !DEBUG : {
-    QMAKE_CXXFLAGS += -std=c++11 -Wno-deprecated -O3
+    QMAKE_CXXFLAGS += -std=c++11 -Wno-deprecated -O3 -lGL
+}
+unix:!macx {
+    LIBS +=  -lGL
 }
 
 DEPENDPATH += \
@@ -52,7 +55,6 @@ SOURCES += src/interface/main.cpp\
     src/physics/material.cpp \
     src/physics/elements/section.cpp \
     src/physics/load.cpp \
-    src/physics/loads/nodeload.cpp \
     src/physics/loads/elementload.cpp \
     src/physics/loads/pontualload2dbeam.cpp \
     src/physics/loads/distributedload2dbeam.cpp \

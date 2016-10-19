@@ -25,6 +25,7 @@ BeamElement2D::BeamElement2D(Node *_n1, Node *_n2, Section *_section, Material *
 string BeamElement2D::printInfo() {
     std::stringstream ss;
     ss << "<<<<<< 2D BEAM ELEMENT >>>>>>" << endl;
+    ss << "\tlength: " << length << endl;
     ss << Element::printInfo();
     ss << section->printInfo();
     return ss.str();
@@ -54,6 +55,8 @@ MatrixXd BeamElement2D::createLocalStiffnessMatrix()
 void BeamElement2D::fillGlobalMatrix(MatrixXd &globalMatrix)
 {
     MatrixXd localMatrix = createLocalStiffnessMatrix();
+    std::cout << "localMatrix: " << endl << localMatrix << endl;
+
     //Tem que transformar a matriz pelo sistema de coordenadas depois
     //Talvez seja bom guardar a localMatrix em uma variável pra não ter que recriar sempre
 
@@ -63,13 +66,14 @@ void BeamElement2D::fillGlobalMatrix(MatrixXd &globalMatrix)
     VectorDOF* n2dof = static_cast<VectorDOF*>(n2->getDOFByType(DOFType::VECTOR));
 
     for (unsigned i = 0; i < n1dof->getRestrictions().size(); i++) {
-        //Se o grau de liberdade é livre, então botamos ele na matriz
+        //Se o grau de liberdade da linha é livre, então botamos ele na matriz
         if (n1dof->getRestrictions()[i] == RestrictionTypes::FREE) {
             unsigned n1dofPosRow = n1dof->getEquationNumber(i);
             for (unsigned j = 0; j < n1dof->getRestrictions().size(); j++) {
                 if (n1dof->getRestrictions()[j] == RestrictionTypes::FREE) {
-                    unsigned n1dofPosCol = n1dof->getEquationNumber(i);
+                    unsigned n1dofPosCol = n1dof->getEquationNumber(j);
                     globalMatrix(n1dofPosRow, n1dofPosCol) += localMatrix(i,j);
+                    std::cout << "global matrix("<< n1dofPosRow << "," << n1dofPosCol << ") = localMatrix(" <<i << "," << j <<") = " << localMatrix(i,j) << endl;
                 }
             }
         }
@@ -82,8 +86,9 @@ void BeamElement2D::fillGlobalMatrix(MatrixXd &globalMatrix)
             unsigned n2dofPosRow = n2dof->getEquationNumber(i);
             for (unsigned j = 0; j < n2dof->getRestrictions().size(); j++) {
                 if (n2dof->getRestrictions()[j] == RestrictionTypes::FREE) {
-                    unsigned n2dofPosCol = n2dof->getEquationNumber(i);
+                    unsigned n2dofPosCol = n2dof->getEquationNumber(j);
                     globalMatrix(n2dofPosRow, n2dofPosCol) += localMatrix(i+3,j+3);
+                    std::cout << "global matrix("<< n2dofPosRow << "," << n2dofPosCol << ") = localMatrix(" << i+3 << "," << j+3 <<") = " << localMatrix(i+3,j+3) << endl;
                 }
             }
         }

@@ -19,6 +19,7 @@ class VectorDOF : public DOF
 {
 public:
     VectorDOF(VectorXd values, vector<VectorDOFType> types, vector<RestrictionTypes> restrictions, vector<int> equationNumbers);
+    VectorDOF(vector<VectorDOFType> types, vector<RestrictionTypes> restrictions, vector<int> equationNumbers);
     VectorXd getValues() const;
     vector<VectorDOFType> getDOFTypes() const;
     vector<RestrictionTypes> getRestrictions() const;
@@ -27,7 +28,8 @@ public:
     //Retorna todos os valores do grau de liberdade que correspondem a um determinado tipo
     VectorXd getVectorDOFByType(VectorDOFType type);
     string printInfo() override;
-    unsigned int getNumber() override;
+    unsigned int getTotalDOFNumber() override;
+    unsigned int getTotalDOFNumber(RestrictionTypes restriction) override;
 
 private:
     //Valores do grau de liberdade

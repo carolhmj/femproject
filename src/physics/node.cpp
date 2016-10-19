@@ -9,7 +9,7 @@ Node::Node(Vector3d position, DOF *dof) :
 {
     dofs = vector<DOF*>();
     dofs.push_back(dof);
-    ndofs = dof->getNumber();
+    ndofs = dof->getTotalDOFNumber();
 }
 
 Node::Node(Vector3d position, std::vector<DOF*> dofs) :
@@ -17,7 +17,7 @@ Node::Node(Vector3d position, std::vector<DOF*> dofs) :
 {
     ndofs = 0;
     for (DOF*& dof : dofs) {
-        ndofs += dof->getNumber();
+        ndofs += dof->getTotalDOFNumber();
     }
 }
 
@@ -47,6 +47,14 @@ Vector3d Node::getPosition()
 unsigned int Node::getDOFNumber() const
 {
     return ndofs;
+}
+
+unsigned int Node::getDOFNumber(RestrictionTypes restriction) const
+{
+    unsigned count = 0;
+    for (DOF* dof : dofs) {
+        count += dof->getTotalDOFNumber(restriction);
+    }
 }
 
 DOF *Node::getDOFByType(DOFType type)

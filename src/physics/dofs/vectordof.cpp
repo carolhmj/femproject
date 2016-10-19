@@ -7,6 +7,15 @@ VectorDOF::VectorDOF(VectorXd values, vector<VectorDOFType> types, vector<Restri
 {
     setType(DOFType::VECTOR);
 }
+
+VectorDOF::VectorDOF(vector<VectorDOFType> types, vector<RestrictionTypes> restrictions, vector<int> equationNumbers) :
+    types(types), restrictions(restrictions), equationNumbers(equationNumbers)
+{
+    assert(types.size() == restrictions.size() && restrictions.size() == equationNumbers.size());
+    setType(DOFType::VECTOR);
+    values = VectorXd::Zero(types.size());
+}
+
 VectorXd VectorDOF::getValues() const
 {
     return values;
@@ -65,9 +74,21 @@ string VectorDOF::printInfo()
     return output.str();
 }
 
-unsigned int VectorDOF::getNumber()
+unsigned int VectorDOF::getTotalDOFNumber()
 {
     return values.rows();
+}
+
+//Conta o  número de DOFs com um determinado tipo de restrição
+unsigned int VectorDOF::getTotalDOFNumber(RestrictionTypes restriction)
+{
+    unsigned int count = 0;
+    for (RestrictionTypes DOFrestriction : restrictions) {
+        if (DOFrestriction == restriction) {
+            count++;
+        }
+    }
+    return count;
 }
 
 

@@ -23,7 +23,7 @@ public:
     virtual void draw() = 0;
 
     //Funções gerais
-    string printInfo();
+    virtual string printInfo();
     virtual void fillGlobalMatrix(MatrixXd &globalMatrix /*CoordinateSystem cs*/) = 0;
 
     //Getters e setters

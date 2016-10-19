@@ -23,6 +23,7 @@ public:
     vector<Node *> getNodes() const;
     vector<Element *> getElements() const;
     unsigned int getTotalDOFNumber();
+    unsigned int getTotalFreeDOFNumber();
 private:
     vector<Node*> nodes;
     vector<Element*> elements;
