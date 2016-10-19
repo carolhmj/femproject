@@ -43,5 +43,5 @@ CMakeLists.txt.user*
 debug/
 release/
 
-##Misc
+#Misc
 oofem-2.4/
