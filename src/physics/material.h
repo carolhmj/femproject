@@ -11,6 +11,12 @@ public:
     Material();
     Material(double _youngModulus, double _poissonCoefficient, double _density);
     string printInfo();
+    double getYoungModulus() const;
+
+    double getPoissonCoefficient() const;
+
+    double getDensity() const;
+
 private:
     double youngModulus;
     double poissonCoefficient;

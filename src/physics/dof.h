@@ -14,6 +14,7 @@ public:
     virtual void setType(DOFType value);
     virtual int getEquationNumber(unsigned int number) = 0;
     virtual std::string printInfo() = 0;
+    virtual unsigned int getNumber() = 0;
 
 protected:
     DOFType type;

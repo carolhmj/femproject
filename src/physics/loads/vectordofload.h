@@ -11,7 +11,7 @@ class VectorDOFLoad : public DOFLoad
 public:
     VectorDOFLoad();
     VectorDOFLoad(VectorDOF *_vectordof, VectorXd _values);
-    string printInfo();
+    string printInfo() override;
 private:
     VectorDOF *vdof;
     VectorXd values;

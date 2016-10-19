@@ -17,6 +17,7 @@ BeamElement2D::BeamElement2D(Node *_n1, Node *_n2, Section *_section, Material *
 {
     nodes.push_back(_n1);
     nodes.push_back(_n2);
+    length = (_n1->getPosition()-_n2->getPosition()).norm();
     numNodes = 2;
     material = _material;
 }
@@ -28,10 +29,25 @@ string BeamElement2D::printInfo() {
     ss << section->printInfo();
     return ss.str();
 }
-
+/* Cria a matriz de rigidez do elemento.
+ *
+ */
 MatrixXd BeamElement2D::createLocalStiffnessMatrix()
 {
-    return MatrixXd();
+    MatrixXd K = MatrixXd::Zero(6,6);
+    double E = material->getYoungModulus(),
+           I = section->getInertiaMomentZ(),
+           L = length,
+           A = section->getArea(),
+           L2 = L*L,
+           L3 = L*L*L;
+    K << E*A/L,       0  ,      0  ,-E*A/L ,       0  ,      0  ,
+            0 , 12*E*I/L3, 6*E*I/L2,    0  ,-12*E*I/L3, 6*E*I/L2,
+            0 ,  6*E*I/L2, 4*E*I/L ,    0  , -6*E*I/L2, 2*E*I/L ,
+        -E*A/L,       0  ,      0  , E*A/L ,       0  ,      0  ,
+            0 ,-12*3*I/L3,-6*E*I/L2,    0  , 12*E*I/L3,-6*E*I/L2,
+            0 ,  6*E*I/L2, 2*E*I/L ,    0  , -6*E*I/L2, 4*E*I/L ;
+    return K;
 }
 
 void BeamElement2D::draw()

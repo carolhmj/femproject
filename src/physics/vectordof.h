@@ -23,10 +23,11 @@ public:
     vector<VectorDOFType> getTypes() const;
     vector<RestrictionTypes> getRestrictions() const;
     vector<int> getEquationNumbers() const;
-    int getEquationNumber(unsigned int number);
+    int getEquationNumber(unsigned int number) override;
     //Retorna todos os valores do grau de liberdade que correspondem a um determinado tipo
     VectorXd getVectorDOFByType(VectorDOFType type);
-    string printInfo();
+    string printInfo() override;
+    unsigned int getNumber() override;
 
 private:
     //Valores do grau de liberdade

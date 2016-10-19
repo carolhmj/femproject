@@ -15,6 +15,7 @@ public:
     void draw() override;
 protected:
     Section *section;
+    double length;
 };
 
 #endif // BEAMELEMENT2D_H

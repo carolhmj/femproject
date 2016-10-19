@@ -65,5 +65,10 @@ string VectorDOF::printInfo()
     return output.str();
 }
 
+unsigned int VectorDOF::getNumber()
+{
+    return values.rows();
+}
+
 
 

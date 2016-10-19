@@ -9,12 +9,16 @@ Node::Node(Vector3d position, DOF *dof) :
 {
     dofs = vector<DOF*>();
     dofs.push_back(dof);
+    ndofs = dof->getNumber();
 }
 
 Node::Node(Vector3d position, std::vector<DOF*> dofs) :
     position(position), dofs(dofs)
 {
-
+    ndofs = 0;
+    for (DOF*& dof : dofs) {
+        ndofs += dof->getNumber();
+    }
 }
 
 void Node::draw()
@@ -40,4 +44,9 @@ Vector3d Node::getPosition()
 {
     return position;
 }
+unsigned int Node::getDOFNumber() const
+{
+    return ndofs;
+}
+
 

@@ -21,4 +21,19 @@ string Material::printInfo()
     ss << "\t density: " << density << std::endl;
     return ss.str();
 }
+double Material::getYoungModulus() const
+{
+    return youngModulus;
+}
+double Material::getPoissonCoefficient() const
+{
+    return poissonCoefficient;
+}
+double Material::getDensity() const
+{
+    return density;
+}
+
+
+
 

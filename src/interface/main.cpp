@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 #include "node.h"
 #include "vectordof.h"
 #include "beamelement2d.h"
+#include "vectordofload.h"
 #include "model.h"
 #include <Eigen/Core>
 #include <iostream>
@@ -50,7 +51,12 @@ int main(int argc, char *argv[])
     vector<Element*> elvec = {el};
 //    std::cout << el->printInfo();
 
-    Model *md = new Model("modelito", nvec, elvec);
+    VectorXd valuesLoad(3);
+    valuesLoad << -10, -5, 0;
+    VectorDOFLoad *load = new VectorDOFLoad(v, valuesLoad);
+    vector<Load*> lvec = {load};
+
+    Model *md = new Model("modelito", nvec, elvec, lvec);
     std::cout << md->printInfo();
 }
 #endif

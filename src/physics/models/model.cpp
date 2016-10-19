@@ -6,23 +6,31 @@ Model::Model()
 
 }
 
-Model::Model(vector<Node *> _nodes, vector<Element *> _elements) :
-    nodes(_nodes), elements(_elements)
+Model::Model(vector<Node *> _nodes, vector<Element *> _elements, vector<Load *> _loads) :
+    nodes(_nodes), elements(_elements), loads(_loads), name("Model")
 {
 
 }
 
-Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements) :
-    name(_name), nodes(_nodes), elements(_elements)
+Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements, vector<Load *> _loads) :
+    name(_name), nodes(_nodes), elements(_elements), loads(_loads)
 {
 
 }
 
 
 
-MatrixXf Model::getGlobalMatrix()
+MatrixXf Model::getGlobalStiffnessMatrix()
 {
+    unsigned int totalDOFNumber = getTotalDOFNumber();
+    MatrixXf G = MatrixXf::Zeros(totalDOFNumber, totalDOFNumber);
 
+   /* Visita cada elemento, pega a matriz de rigidez, e para cada nó pega o número da equação dele
+    *
+    */
+    for (Element*& element : elements) {
+
+    }
 }
 
 void Model::draw()
@@ -45,6 +53,9 @@ std::string Model::printInfo()
     for (Element*& e : elements) {
         ss << e->printInfo();
     }
+    for (Load*& l : loads) {
+        ss << l->printInfo();
+    }
     return ss.str();
 }
 
@@ -64,6 +75,15 @@ vector<Node *> Model::getNodes() const
 vector<Element *> Model::getElements() const
 {
     return elements;
+}
+
+unsigned int Model::getTotalDOFNumber()
+{
+    unsigned int totDof = 0;
+    for (Node*& node : nodes) {
+        totDof += node->getDOFNumber();
+    }
+    return totDof;
 }
 
 

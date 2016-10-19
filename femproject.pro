@@ -27,12 +27,14 @@ DEPENDPATH += \
     src/physics/loads \
     src/physics/models \
     src/interface \
-    src/defines
+    src/defines \
+    src/math
 
 INCLUDEPATH += \
     src/ \
     src/defines \
     src/interface \
+    src/math \
     src/physics \
     src/physics/elements \
     src/physics/models \
@@ -55,7 +57,8 @@ SOURCES += src/interface/main.cpp\
     src/physics/loads/distributedhorizontalload2dbeam.cpp \
     src/physics/models/model.cpp \
     src/physics/loads/dofload.cpp \
-    src/physics/loads/vectordofload.cpp
+    src/physics/loads/vectordofload.cpp \
+    src/math/coordinatesystem.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dof.h \
@@ -75,6 +78,7 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/loads/distributedhorizontalload2dbeam.h \
     src/physics/models/model.h \
     src/physics/loads/dofload.h \
-    src/physics/loads/vectordofload.h
+    src/physics/loads/vectordofload.h \
+    src/math/coordinatesystem.h
 
 FORMS    += mainwindow.ui

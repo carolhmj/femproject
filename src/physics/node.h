@@ -22,9 +22,13 @@ public:
     void draw();
     string printInfo();
     Vector3d getPosition();
+    unsigned int getDOFNumber() const;
+
 private:
     vector<DOF*> dofs;
     Vector3d position;
+    //Número de graus de liberdade que o nó possui no total
+    unsigned int ndofs;
 };
 
 #endif // NODE_H
