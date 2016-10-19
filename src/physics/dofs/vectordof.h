@@ -20,7 +20,7 @@ class VectorDOF : public DOF
 public:
     VectorDOF(VectorXd values, vector<VectorDOFType> types, vector<RestrictionTypes> restrictions, vector<int> equationNumbers);
     VectorXd getValues() const;
-    vector<VectorDOFType> getTypes() const;
+    vector<VectorDOFType> getDOFTypes() const;
     vector<RestrictionTypes> getRestrictions() const;
     vector<int> getEquationNumbers() const;
     int getEquationNumber(unsigned int number) override;

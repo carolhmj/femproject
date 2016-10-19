@@ -11,7 +11,7 @@ VectorXd VectorDOF::getValues() const
 {
     return values;
 }
-vector<VectorDOFType> VectorDOF::getTypes() const
+vector<VectorDOFType> VectorDOF::getDOFTypes() const
 {
     return types;
 }

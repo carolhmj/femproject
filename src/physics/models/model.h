@@ -15,7 +15,7 @@ public:
     Model(vector<Node*> _nodes, vector<Element*> _elements, vector<Load*> _loads);
     Model(string _name, vector<Node*> _nodes, vector<Element*> _elements, vector<Load *> _loads);
     //Calcula a matriz global a partir das matrizes locais de cada elemento
-    MatrixXf getGlobalStiffnessMatrix();
+    MatrixXd getGlobalStiffnessMatrix();
     void draw();
     string printInfo();
     void addNode(Node *_node);

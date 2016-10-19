@@ -23,6 +23,7 @@ public:
     string printInfo();
     Vector3d getPosition();
     unsigned int getDOFNumber() const;
+    DOF* getDOFByType(DOFType type);
 
 private:
     vector<DOF*> dofs;

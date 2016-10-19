@@ -13,7 +13,7 @@ Node::Node(Vector3d position, DOF *dof) :
 }
 
 Node::Node(Vector3d position, std::vector<DOF*> dofs) :
-    position(position), dofs(dofs)
+    dofs(dofs), position(position)
 {
     ndofs = 0;
     for (DOF*& dof : dofs) {
@@ -47,6 +47,16 @@ Vector3d Node::getPosition()
 unsigned int Node::getDOFNumber() const
 {
     return ndofs;
+}
+
+DOF *Node::getDOFByType(DOFType type)
+{
+    for (DOF*& dof : dofs) {
+        if (dof->getType() == type) {
+            return dof;
+        }
+    }
+    return nullptr;
 }
 
 

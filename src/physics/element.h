@@ -3,6 +3,7 @@
 //Model includes
 #include "node.h"
 #include "material.h"
+#include "vectordof.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -23,7 +24,7 @@ public:
 
     //Funções gerais
     string printInfo();
-    void fillGlobalMatrix(/*CoordinateSystem cs*/);
+    virtual void fillGlobalMatrix(MatrixXd &globalMatrix /*CoordinateSystem cs*/) = 0;
 
     //Getters e setters
     Material *getMaterial() const;

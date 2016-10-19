@@ -50,6 +50,46 @@ MatrixXd BeamElement2D::createLocalStiffnessMatrix()
     return K;
 }
 
+//Preenche os elementos da matriz local a partir dos elementos da matriz global
+void BeamElement2D::fillGlobalMatrix(MatrixXd &globalMatrix)
+{
+    MatrixXd localMatrix = createLocalStiffnessMatrix();
+    //Tem que transformar a matriz pelo sistema de coordenadas depois
+    //Talvez seja bom guardar a localMatrix em uma variável pra não ter que recriar sempre
+
+    Node *n1 = nodes[0],
+         *n2 = nodes[1];
+    VectorDOF* n1dof = static_cast<VectorDOF*>(n1->getDOFByType(DOFType::VECTOR));
+    VectorDOF* n2dof = static_cast<VectorDOF*>(n2->getDOFByType(DOFType::VECTOR));
+
+    for (unsigned i = 0; i < n1dof->getRestrictions().size(); i++) {
+        //Se o grau de liberdade é livre, então botamos ele na matriz
+        if (n1dof->getRestrictions()[i] == RestrictionTypes::FREE) {
+            unsigned n1dofPosRow = n1dof->getEquationNumber(i);
+            for (unsigned j = 0; j < n1dof->getRestrictions().size(); j++) {
+                if (n1dof->getRestrictions()[j] == RestrictionTypes::FREE) {
+                    unsigned n1dofPosCol = n1dof->getEquationNumber(i);
+                    globalMatrix(n1dofPosRow, n1dofPosCol) += localMatrix(i,j);
+                }
+            }
+        }
+    }
+
+    //O nó 2 está nas posições 3,4,5..., na matriz local
+    for (unsigned i = 0; i < n2dof->getRestrictions().size(); i++) {
+        //Se o grau de liberdade é livre, então botamos ele na matriz
+        if (n2dof->getRestrictions()[i] == RestrictionTypes::FREE) {
+            unsigned n2dofPosRow = n2dof->getEquationNumber(i);
+            for (unsigned j = 0; j < n2dof->getRestrictions().size(); j++) {
+                if (n2dof->getRestrictions()[j] == RestrictionTypes::FREE) {
+                    unsigned n2dofPosCol = n2dof->getEquationNumber(i);
+                    globalMatrix(n2dofPosRow, n2dofPosCol) += localMatrix(i+3,j+3);
+                }
+            }
+        }
+    }
+}
+
 void BeamElement2D::draw()
 {
     Vector3d pos;

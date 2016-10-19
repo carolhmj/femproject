@@ -26,6 +26,7 @@ DEPENDPATH += \
     src/physics/elements \
     src/physics/loads \
     src/physics/models \
+    src/physics/dofs \
     src/interface \
     src/defines \
     src/math
@@ -38,12 +39,13 @@ INCLUDEPATH += \
     src/physics \
     src/physics/elements \
     src/physics/models \
-    src/physics/loads
+    src/physics/loads \
+    src/physics/dofs
 
 SOURCES += src/interface/main.cpp\
         src/interface/mainwindow.cpp \
-    src/physics/dof.cpp \
-    src/physics/vectordof.cpp \
+    src/physics/dofs/dof.cpp \
+    src/physics/dofs/vectordof.cpp \
     src/physics/node.cpp \
     src/physics/element.cpp \
     src/physics/elements/beamelement2d.cpp \
@@ -61,10 +63,10 @@ SOURCES += src/interface/main.cpp\
     src/math/coordinatesystem.cpp
 
 HEADERS  += src/interface/mainwindow.h \
-    src/physics/dof.h \
-    src/physics/vectordof.h \
-    src/physics/doftype.h \
-    src/physics/restrictiontypes.h \
+    src/physics/dofs/dof.h \
+    src/physics/dofs/vectordof.h \
+    src/physics/dofs/doftype.h \
+    src/physics/dofs/restrictiontypes.h \
     src/physics/node.h \
     src/physics/element.h \
     src/physics/elements/beamelement2d.h \

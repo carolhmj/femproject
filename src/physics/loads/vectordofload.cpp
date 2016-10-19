@@ -19,9 +19,9 @@ std::string VectorDOFLoad::printInfo()
     ss << "==== VectorDOFLoad ====" << endl;
     for (int i = 0; i < values.rows(); i++){
         ss << "\t Value: " << values[i];
-        if (vdof->getTypes()[i] == VectorDOFType::TRANSLATION) {
+        if (vdof->getDOFTypes()[i] == VectorDOFType::TRANSLATION) {
             ss << " TRANSLATION ";
-        } else if (vdof->getTypes()[i] == VectorDOFType::ROTATION) {
+        } else if (vdof->getDOFTypes()[i] == VectorDOFType::ROTATION) {
             ss << " ROTATION ";
         }
         ss << "Equation number: " << vdof->getEquationNumber(i);

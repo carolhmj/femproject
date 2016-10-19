@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     VectorDOF *v2 = new VectorDOF(values2, types2, restrictions2, equations2);
     Node *n2 = new Node(Vector3d(1,1,1), v2);
 
-    Section *s = new Section(0.5, 0.025);
+    Section *s = new Section(0.5, 0.025, 5);
 
     Material *m = new Material(1E11, 0.25, 7000);
 

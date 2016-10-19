@@ -13,24 +13,26 @@ Model::Model(vector<Node *> _nodes, vector<Element *> _elements, vector<Load *> 
 }
 
 Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements, vector<Load *> _loads) :
-    name(_name), nodes(_nodes), elements(_elements), loads(_loads)
+    nodes(_nodes), elements(_elements), loads(_loads), name(_name)
 {
 
 }
 
 
 
-MatrixXf Model::getGlobalStiffnessMatrix()
+MatrixXd Model::getGlobalStiffnessMatrix()
 {
     unsigned int totalDOFNumber = getTotalDOFNumber();
-    MatrixXf G = MatrixXf::Zeros(totalDOFNumber, totalDOFNumber);
+    MatrixXd G = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
 
    /* Visita cada elemento, pega a matriz de rigidez, e para cada nó pega o número da equação dele
     *
     */
     for (Element*& element : elements) {
-
+        element->fillGlobalMatrix(G);
     }
+
+    return G;
 }
 
 void Model::draw()
