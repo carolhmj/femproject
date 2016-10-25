@@ -85,6 +85,7 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/models/model.h \
     src/physics/loads/dofload.h \
     src/physics/loads/vectordofload.h \
-    src/math/coordinatesystem.h
+    src/math/coordinatesystem.h \
+    src/physics/loads/loadtypes.h
 
 FORMS    += mainwindow.ui

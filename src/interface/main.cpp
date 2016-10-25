@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 #include "vectordofload.h"
 #include "model.h"
 #include <Eigen/Core>
+#include <Eigen/QR>
 #include <iostream>
 
 int main(int argc, char *argv[])
@@ -62,5 +63,13 @@ int main(int argc, char *argv[])
 
     MatrixXd globalMatrix = md->getGlobalStiffnessMatrix();
     std::cout << "Global stiffness matrix: " << endl << globalMatrix << endl;
+
+    VectorXd forceVector = md->getGlobalForceVector();
+    std::cout << "Global force  vector: " << endl << forceVector << endl;
+
+    FullPivHouseholderQR<MatrixXd> solver(globalMatrix);
+    VectorXd displacementVector = solver.solve(forceVector);
+    std::cout << "Result: " << endl << displacementVector << endl;
+
 }
 #endif

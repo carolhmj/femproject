@@ -12,6 +12,9 @@ public:
     VectorDOFLoad();
     VectorDOFLoad(VectorDOF *_vectordof, VectorXd _values);
     string printInfo() override;
+    VectorDOF *getVdof() const;
+    double getValue(unsigned i) const;
+
 private:
     VectorDOF *vdof;
     VectorXd values;

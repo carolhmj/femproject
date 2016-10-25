@@ -3,7 +3,7 @@
 
 VectorDOFLoad::VectorDOFLoad()
 {
-
+    setType(LoadTypes::VECTORDOFLOAD);
 }
 
 VectorDOFLoad::VectorDOFLoad(VectorDOF *_vectordof, VectorXd _values)
@@ -11,6 +11,7 @@ VectorDOFLoad::VectorDOFLoad(VectorDOF *_vectordof, VectorXd _values)
     assert(_values.rows() == _vectordof->getValues().rows());
     vdof = _vectordof;
     values = _values;
+    setType(LoadTypes::VECTORDOFLOAD);
 }
 
 std::string VectorDOFLoad::printInfo()
@@ -29,4 +30,14 @@ std::string VectorDOFLoad::printInfo()
     }
     return ss.str();
 }
+VectorDOF *VectorDOFLoad::getVdof() const
+{
+    return vdof;
+}
+
+double VectorDOFLoad::getValue(unsigned i) const
+{
+    return values[i];
+}
+
 

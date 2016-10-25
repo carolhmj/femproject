@@ -1,4 +1,5 @@
 #include "model.h"
+#include "vectordofload.h"
 #include <sstream>
 
 Model::Model()
@@ -65,6 +66,25 @@ MatrixXd Model::getGlobalStiffnessMatrix()
 
 //    std::cout << "G: " << endl << G << endl << "G2: " << endl << G2 << endl;
     return G;
+}
+
+VectorXd Model::getGlobalForceVector()
+{
+    //Itera pelos nós, para cada nó encontra a posição dele no force vector e coloca seus dofs no vetor
+    VectorXd f(getTotalFreeDOFNumber());
+    for (Load*& load : loads) {
+        if (load->getType() == LoadTypes::VECTORDOFLOAD) {
+            VectorDOFLoad *vload = static_cast<VectorDOFLoad*>(load);
+
+            VectorDOF *vdof = vload->getVdof();
+            for (unsigned i = 0; i < vdof->getTotalDOFNumber(); i++) {
+                if (vdof->getRestrictions()[i] == RestrictionTypes::FREE) {
+                    f(vdof->getEquationNumber(i)) = vload->getValue(i);
+                }
+            }
+        }
+    }
+    return f;
 }
 
 void Model::draw()
