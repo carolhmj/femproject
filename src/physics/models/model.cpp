@@ -22,18 +22,48 @@ Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elemen
 
 MatrixXd Model::getGlobalStiffnessMatrix()
 {
-    //unsigned int totalDOFNumber = getTotalFreeDOFNumber();
-    unsigned int totalDOFNumber = getTotalDOFNumber();
+    unsigned int totalDOFNumber = getTotalFreeDOFNumber();
+//    unsigned totalDOFNumber = getTotalDOFNumber();
     std::cout << "total DOF number: " << totalDOFNumber << endl;
     MatrixXd G = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
 
-   /* Manda a matriz de rigidez ser preenchida por cada elemento
-    *
+   /*
+    * Preenche a matriz de rigidez global a partir das matrizes locais
     */
     for (Element*& element : elements) {
-        element->fillGlobalMatrix(G);
+//        element->fillGlobalMatrix(G);
+        MatrixXd K = element->getLocalStiffnessMatrix();
+        for (unsigned i = 0; i < element->getNumNodes(); i++) {
+            Node *node = element->getNode(i);
+            VectorDOF* dofvector = static_cast<VectorDOF*>(node->getDOFByType(DOFType::VECTOR));
+            for (unsigned j = 0; j < dofvector->getTotalDOFNumber(); j++) {
+                //Se o grau de liberdade é livre
+                if (dofvector->getRestrictions()[j] == RestrictionTypes::FREE) {
+                    unsigned localMatrixRowPos = i*dofvector->getTotalDOFNumber() + j;
+                    unsigned dofPosRow = dofvector->getEquationNumber(j);
+                    for (unsigned k = 0; k < element->getNumNodes(); k++) {
+                        Node *node2 = element->getNode(k);
+                        VectorDOF* dofvector2 = static_cast<VectorDOF*>(node2->getDOFByType(DOFType::VECTOR));
+                        for (unsigned l = 0; l < dofvector2->getTotalDOFNumber(); l++) {
+                            if (dofvector2->getRestrictions()[l] == RestrictionTypes::FREE) {
+                                unsigned localMatrixColPos = k*dofvector2->getTotalDOFNumber() + l;
+                                unsigned dofPosCol = dofvector2->getEquationNumber(l);
+                                G(dofPosRow, dofPosCol) += K(localMatrixRowPos,localMatrixColPos);
+                                std::cout << "global matrix("<< dofPosRow << "," << dofPosCol << ") = localMatrix(" << localMatrixRowPos << "," << localMatrixColPos <<") = " << K(localMatrixRowPos, localMatrixColPos) << endl;
+                            }
+                       }
+                    }
+                }
+            }
+        }
     }
 
+//    MatrixXd G2 = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
+//    for (Element*& element : elements) {
+//        element->fillGlobalMatrix(G2);
+//    }
+
+//    std::cout << "G: " << endl << G << endl << "G2: " << endl << G2 << endl;
     return G;
 }
 

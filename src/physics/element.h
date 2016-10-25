@@ -19,7 +19,7 @@ class Element
 public:
     Element();
     //Funções reimplementadas por cada elemento
-    virtual MatrixXd createLocalStiffnessMatrix() = 0;
+    virtual MatrixXd getLocalStiffnessMatrix() = 0;
     virtual void draw() = 0;
 
     //Funções gerais
@@ -33,6 +33,9 @@ public:
     vector<Node *> getNodes() const;
     void setNodes(const vector<Node *> &value);
 
+    unsigned int getNumNodes() const;
+
+    Node *getNode(unsigned numNode);
 protected:
     vector<Node*> nodes;
     Material *material;

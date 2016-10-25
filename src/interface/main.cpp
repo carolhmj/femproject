@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     //Cria os valores (2 de posição e um de rotação)
     std::vector<VectorDOFType> types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
-    std::vector<int> equations = {0,1,2};
+    std::vector<int> equations = {-1,-1,-1};
     VectorDOF *v = new VectorDOF(types, restrictions, equations);
     Node *n = new Node(Vector3d(0.0,0.0,0.0), v);
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
     std::vector<VectorDOFType> types2 = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> restrictions2 = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
-    std::vector<int> equations2 = {3,4,5};
+    std::vector<int> equations2 = {0,1,2};
     VectorDOF *v2 = new VectorDOF(types2, restrictions2, equations2);
     Node *n2 = new Node(Vector3d(0.5,0,0), v2);
 

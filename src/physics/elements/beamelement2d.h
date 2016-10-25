@@ -11,7 +11,7 @@ public:
     BeamElement2D(Section *_section, Material *_material);
     BeamElement2D(Node *_n1, Node *_n2, Section *_section, Material *_material);
     string printInfo();
-    MatrixXd createLocalStiffnessMatrix() override;
+    MatrixXd getLocalStiffnessMatrix() override;
     void fillGlobalMatrix(MatrixXd &globalMatrix /*CoordinateSystem cs*/) override;
     void draw() override;
 protected:

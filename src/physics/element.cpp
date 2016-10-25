@@ -25,6 +25,16 @@ void Element::setNodes(const vector<Node *> &value)
     nodes = value;
 }
 
+unsigned int Element::getNumNodes() const
+{
+    return numNodes;
+}
+
+Node *Element::getNode(unsigned numNode)
+{
+    return nodes[numNode];
+}
+
 string Element::printInfo() {
     std::stringstream ss;
     ss << "==== ELEMENT INFO ===="  << endl;

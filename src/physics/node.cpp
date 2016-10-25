@@ -55,6 +55,7 @@ unsigned int Node::getDOFNumber(RestrictionTypes restriction) const
     for (DOF* dof : dofs) {
         count += dof->getTotalDOFNumber(restriction);
     }
+    return count;
 }
 
 DOF *Node::getDOFByType(DOFType type)

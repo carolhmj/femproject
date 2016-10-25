@@ -13,12 +13,14 @@ TEMPLATE = app
 
 DEFINES += DEBUG=1 USE_INTERFACE=0
 
-DEBUG : {
-    QMAKE_CXXFLAGS += -std=c++11 -Wno-deprecated -O0 -lGL
-}
-!DEBUG : {
-    QMAKE_CXXFLAGS += -std=c++11 -Wno-deprecated -O3 -lGL
-}
+QMAKE_CXXFLAGS_DEBUG -= -01
+QMAKE_CXXFLAGS_DEBUG -= -02
+QMAKE_CXXFLAGS_DEBUG *= -g -O0 -std=c++11 -Wno-deprecated -lGL
+
+QMAKE_CXXFLAGS_RELEASE -= -01
+QMAKE_CXXFLAGS_RELEASE -= -02
+QMAKE_CXXFLAGS_RELEASE *= -g -O3 -std=c++11 -Wno-deprecated -lGL
+
 unix:!macx {
     LIBS +=  -lGL
 }

@@ -33,7 +33,7 @@ string BeamElement2D::printInfo() {
 /* Cria a matriz de rigidez do elemento.
  *
  */
-MatrixXd BeamElement2D::createLocalStiffnessMatrix()
+MatrixXd BeamElement2D::getLocalStiffnessMatrix()
 {
     MatrixXd K = MatrixXd::Zero(6,6);
     double E = material->getYoungModulus(),
@@ -54,7 +54,7 @@ MatrixXd BeamElement2D::createLocalStiffnessMatrix()
 //Preenche os elementos da matriz local a partir dos elementos da matriz global
 void BeamElement2D::fillGlobalMatrix(MatrixXd &globalMatrix)
 {
-    MatrixXd localMatrix = createLocalStiffnessMatrix();
+    MatrixXd localMatrix = getLocalStiffnessMatrix();
     std::cout << "localMatrix: " << endl << localMatrix << endl;
 
     //Tem que transformar a matriz pelo sistema de coordenadas depois
