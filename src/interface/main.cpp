@@ -127,9 +127,46 @@ int main(int argc, char *argv[])
     std::cout << "Global force  vector: " << endl << e2forceVector << endl;
 
     FullPivHouseholderQR<MatrixXd> e2solver(e2globalMatrix);
-    VectorXd e2displacementVector = solver.solve(e2forceVector);
+    VectorXd e2displacementVector = e2solver.solve(e2forceVector);
     std::cout << "Result: " << endl << e2displacementVector << endl;
 
 
+    //Exemplo 3: Cantilever Beam de L=10m e A=0.05m2 e E=10GPa submetido a uma força de 200N na extremidade
+    std::vector<VectorDOFType> e3n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> e3n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
+    std::vector<int> e3n1equations = {-1,-1,-1};
+    VectorDOF *e3n1v = new VectorDOF(e3n1types, e3n1restrictions, e3n1equations);
+    Node *e3n1 = new Node(Vector3d(0.0,0.0,0.0), e3n1v);
+
+    std::vector<VectorDOFType> e3n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> e3n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
+    std::vector<int> e3n2equations = {0,1,2};
+    VectorDOF *e3n2v = new VectorDOF(e3n2types, e3n2restrictions, e3n2equations);
+    Node *e3n2 = new Node(Vector3d(10.0,0.0,0.0), e3n2v);
+    vector<Node*> e3nvec = {e3n1,e3n2};
+
+    Section *e3s = new Section(0.0,0.0,0.05);
+    Material *e3m = new Material(10E9,0.0,0.0);
+
+    BeamElement2D *e3b1 = new BeamElement2D(e3n1,e3n2,e3s,e3m);
+    vector<Element*> e3elvec = {e3b1};
+
+    VectorXd e3l1val(3);
+    e3l1val << 200, 0, 0;
+    VectorDOFLoad *e3n2load = new VectorDOFLoad(e3n2v, e3l1val);
+    vector<Load*> e3lvec = {e3n2load};
+
+    Model *m3 = new Model("Cantilever Beam Test 3", e3nvec, e3elvec, e3lvec);
+    std::cout << m3->printInfo();
+
+    MatrixXd e3globalMatrix = m3->getGlobalStiffnessMatrix();
+    std::cout << "Global stiffness matrix: " << endl << e3globalMatrix << endl;
+
+    VectorXd e3forceVector = m3->getGlobalForceVector();
+    std::cout << "Global force  vector: " << endl << e3forceVector << endl;
+
+    FullPivHouseholderQR<MatrixXd> e3solver(e3globalMatrix);
+    VectorXd e3displacementVector = e3solver.solve(e3forceVector);
+    std::cout << "Result: " << endl << e3displacementVector << endl;
 }
 #endif
