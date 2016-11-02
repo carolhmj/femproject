@@ -33,8 +33,6 @@ int main(int argc, char *argv[])
     VectorDOF *v = new VectorDOF(types, restrictions, equations);
     Node *n = new Node(Vector3d(0.0,0.0,0.0), v);
 
-//    std::cout << n->printInfo();
-
     std::vector<VectorDOFType> types2 = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> restrictions2 = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
     std::vector<int> equations2 = {0,1,2};
@@ -45,12 +43,11 @@ int main(int argc, char *argv[])
     Section *s = new Section(0.0, 1.8E-6, 0.006);
 
     //Material alumínio
-    Material *m = new Material(69E9, 0.33, 0.0);
+    Material *m = new Material(69E9, 0.0, 0.33, 0.0);
 
-    BeamElement2D *el = new BeamElement2D(n, n2, s, m);
+    BeamElement2D *el = new BeamElement2D(n, n2, Vector3d(0,1,0), s, m);
     vector<Node*> nvec = {n, n2};
     vector<Element*> elvec = {el};
-//    std::cout << el->printInfo();
 
     VectorXd valuesLoad(3);
     valuesLoad << 0, -1000, 0;

@@ -64,7 +64,8 @@ SOURCES += src/interface/main.cpp\
     src/physics/models/model.cpp \
     src/physics/loads/dofload.cpp \
     src/physics/loads/vectordofload.cpp \
-    src/math/coordinatesystem.cpp
+    src/math/coordinatesystem.cpp \
+    src/physics/elements/beamelement3d.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -86,6 +87,7 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/loads/dofload.h \
     src/physics/loads/vectordofload.h \
     src/math/coordinatesystem.h \
-    src/physics/loads/loadtypes.h
+    src/physics/loads/loadtypes.h \
+    src/physics/elements/beamelement3d.h
 
 FORMS    += mainwindow.ui

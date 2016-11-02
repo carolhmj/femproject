@@ -7,17 +7,25 @@ BeamElement2D::BeamElement2D()
 
 }
 
-BeamElement2D::BeamElement2D(Section *_section, Material *_material) : section(_section)
+BeamElement2D::BeamElement2D(CoordinateSystem *_coordinate, Section *_section, Material *_material) :
+    section(_section), coordinate(_coordinate)
+
 {
     numNodes = 2;
     material = _material;
 }
 
-BeamElement2D::BeamElement2D(Node *_n1, Node *_n2, Section *_section, Material *_material) : section(_section)
+BeamElement2D::BeamElement2D(Node *_n1, Node *_n2, Vector3d upPoint, Section *_section, Material *_material) : section(_section)
 {
     nodes.push_back(_n1);
     nodes.push_back(_n2);
-    length = (_n1->getPosition()-_n2->getPosition()).norm();
+    Vector3d x, y, z;
+    x = (_n2->getPosition() - _n1->getPosition()).normalized();
+    z = x.cross((upPoint - _n1->getPosition()).normalized());
+    y = z.cross(x);
+    coordinate = new CoordinateSystem(x,y,z);
+    length = x.norm();
+
     numNodes = 2;
     material = _material;
 }
@@ -48,51 +56,17 @@ MatrixXd BeamElement2D::getLocalStiffnessMatrix()
         -E*A/L,       0  ,      0  , E*A/L ,       0  ,      0  ,
             0 ,-12*3*I/L3,-6*E*I/L2,    0  , 12*E*I/L3,-6*E*I/L2,
             0 ,  6*E*I/L2, 2*E*I/L ,    0  , -6*E*I/L2, 4*E*I/L ;
-    return K;
-}
 
-//Preenche os elementos da matriz local a partir dos elementos da matriz global
-void BeamElement2D::fillGlobalMatrix(MatrixXd &globalMatrix)
-{
-    MatrixXd localMatrix = getLocalStiffnessMatrix();
-    std::cout << "localMatrix: " << endl << localMatrix << endl;
+    MatrixXd transformMatrix = coordinate->transformTo();
+    MatrixXd transformTo2dMatrix = MatrixXd::Zero(3,3);
+    transformTo2dMatrix.block<2,2>(0,0) = transformMatrix.block<2,2>(0,0);
+    transformTo2dMatrix(2,2) = transformMatrix(2,2);
 
-    //Tem que transformar a matriz pelo sistema de coordenadas depois
-    //Talvez seja bom guardar a localMatrix em uma variável pra não ter que recriar sempre
-
-    Node *n1 = nodes[0],
-         *n2 = nodes[1];
-    VectorDOF* n1dof = static_cast<VectorDOF*>(n1->getDOFByType(DOFType::VECTOR));
-    VectorDOF* n2dof = static_cast<VectorDOF*>(n2->getDOFByType(DOFType::VECTOR));
-
-    for (unsigned i = 0; i < n1dof->getRestrictions().size(); i++) {
-        //Se o grau de liberdade da linha é livre, então botamos ele na matriz
-        if (n1dof->getRestrictions()[i] == RestrictionTypes::FREE) {
-            unsigned n1dofPosRow = n1dof->getEquationNumber(i);
-            for (unsigned j = 0; j < n1dof->getRestrictions().size(); j++) {
-                if (n1dof->getRestrictions()[j] == RestrictionTypes::FREE) {
-                    unsigned n1dofPosCol = n1dof->getEquationNumber(j);
-                    globalMatrix(n1dofPosRow, n1dofPosCol) += localMatrix(i,j);
-                    std::cout << "global matrix("<< n1dofPosRow << "," << n1dofPosCol << ") = localMatrix(" <<i << "," << j <<") = " << localMatrix(i,j) << endl;
-                }
-            }
-        }
-    }
-
-    //O nó 2 está nas posições 3,4,5..., na matriz local
-    for (unsigned i = 0; i < n2dof->getRestrictions().size(); i++) {
-        //Se o grau de liberdade é livre, então botamos ele na matriz
-        if (n2dof->getRestrictions()[i] == RestrictionTypes::FREE) {
-            unsigned n2dofPosRow = n2dof->getEquationNumber(i);
-            for (unsigned j = 0; j < n2dof->getRestrictions().size(); j++) {
-                if (n2dof->getRestrictions()[j] == RestrictionTypes::FREE) {
-                    unsigned n2dofPosCol = n2dof->getEquationNumber(j);
-                    globalMatrix(n2dofPosRow, n2dofPosCol) += localMatrix(i+3,j+3);
-                    std::cout << "global matrix("<< n2dofPosRow << "," << n2dofPosCol << ") = localMatrix(" << i+3 << "," << j+3 <<") = " << localMatrix(i+3,j+3) << endl;
-                }
-            }
-        }
-    }
+//    std::cout << "transformTo2dMatrix: " << std::endl << transformTo2dMatrix << std::endl;
+    MatrixXd transformToGlobalMatrix = MatrixXd::Zero(6,6);
+    transformToGlobalMatrix.block<3,3>(0,0) = transformTo2dMatrix;
+    transformToGlobalMatrix.block<3,3>(3,3) = transformTo2dMatrix;
+    return transformToGlobalMatrix * K;
 }
 
 void BeamElement2D::draw()

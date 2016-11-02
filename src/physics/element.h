@@ -24,7 +24,6 @@ public:
 
     //Funções gerais
     virtual string printInfo();
-    virtual void fillGlobalMatrix(MatrixXd &globalMatrix /*CoordinateSystem cs*/) = 0;
 
     //Getters e setters
     Material *getMaterial() const;

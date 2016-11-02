@@ -5,16 +5,21 @@
 #include <Eigen/Core>
 
 using namespace Eigen;
-/* Classe que representa um sistema de coordenadas. Usado para converter do sistema local do elemento
- * para o sistema global
+/* Classe que representa um sistema de coordenadas. Os eixos do sistema são dados em termos do sistema de coordenadas
+ * tradicional, com eixos em {1,0,0}, {0,1,0}, {0,0,1}
  */
 class CoordinateSystem
 {
 public:
     CoordinateSystem();
     CoordinateSystem(Vector3d _x, Vector3d _y, Vector3d _z);
-    //Retorna a matriz de transformação para o sistema de coordenadas
+    // Retorna a matriz de transformação para o sistema de coordenadas dado como argumento
     MatrixXd transformTo(CoordinateSystem& to);
+    // Retorna a matriz de transformação para o sistema tradicional
+    MatrixXd transformTo();
+    static CoordinateSystem getSystemFromPoints(Vector3d eye, Vector3d at, Vector3d up);
+    string printInfo();
+
     Vector3d getX() const;
 
     Vector3d getY() const;
