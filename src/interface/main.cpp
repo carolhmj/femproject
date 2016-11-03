@@ -29,49 +29,94 @@ int main(int argc, char *argv[])
     //Exemplo 1: http://what-when-how.com/the-finite-element-method/fem-for-beams-finite-element-method-part-2/
 
     //Cria os valores (2 de posição e um de rotação)
-//    std::vector<VectorDOFType> types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
-//    std::vector<RestrictionTypes> restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
-//    std::vector<int> equations = {-1,-1,-1};
-//    VectorDOF *v = new VectorDOF(types, restrictions, equations);
-//    Node *n = new Node(Vector3d(0.0,0.0,0.0), v);
+    std::vector<VectorDOFType> types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
+    std::vector<int> equations = {-1,-1,-1};
+    VectorDOF *v = new VectorDOF(types, restrictions, equations);
+    Node *n = new Node(Vector3d(0.0,0.0,0.0), v);
 
-//    std::vector<VectorDOFType> types2 = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
-//    std::vector<RestrictionTypes> restrictions2 = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
-//    std::vector<int> equations2 = {0,1,2};
-//    VectorDOF *v2 = new VectorDOF(types2, restrictions2, equations2);
-//    Node *n2 = new Node(Vector3d(0.5,0,0), v2);
+    std::vector<VectorDOFType> types2 = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> restrictions2 = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
+    std::vector<int> equations2 = {0,1,2};
+    VectorDOF *v2 = new VectorDOF(types2, restrictions2, equations2);
+    Node *n2 = new Node(Vector3d(0.5,0,0), v2);
 
-//    //Seção largura 0.1 e altura 0.06
-//    Section *s = new Section(0.0, 1.8E-6, 0.006);
+    //Seção largura 0.1 e altura 0.06
+    Section *s = new Section(0.0, 1.8E-6, 0.0, 0.006);
 
-//    //Material alumínio
-//    Material *m = new Material(69E9, 0.0, 0.33, 0.0);
+    //Material alumínio
+    Material *m = new Material(69E9, 0.0, 0.33, 0.0);
 
-//    BeamElement2D *el = new BeamElement2D(n, n2, Vector3d(0,1,0), s, m);
-//    vector<Node*> nvec = {n, n2};
-//    vector<Element*> elvec = {el};
+    BeamElement2D *el = new BeamElement2D(n, n2, Vector3d(0,1,0), s, m);
+    vector<Node*> nvec = {n, n2};
+    vector<Element*> elvec = {el};
 
-//    VectorXd valuesLoad(3);
-//    valuesLoad << 0, -1000, 0;
-//    //Força agindo no segundo nó
-//    VectorDOFLoad *load = new VectorDOFLoad(v2, valuesLoad);
-//    vector<Load*> lvec = {load};
+    VectorXd valuesLoad(3);
+    valuesLoad << 0, -1000, 0;
+    //Força agindo no segundo nó
+    VectorDOFLoad *load = new VectorDOFLoad(v2, valuesLoad);
+    vector<Load*> lvec = {load};
 
-//    Model *md = new Model("Cantilever beam 2D Test 1", nvec, elvec, lvec);
-//    std::cout << md->printInfo();
+    Model *md = new Model("Cantilever beam 2D Test 1", nvec, elvec, lvec);
+    std::cout << md->printInfo();
 
-//    MatrixXd globalMatrix = md->getGlobalStiffnessMatrix();
-//    std::cout << "Global stiffness matrix: " << endl << globalMatrix << endl;
+    MatrixXd globalMatrix = md->getGlobalStiffnessMatrix();
+    std::cout << "Global stiffness matrix: " << endl << globalMatrix << endl;
 
-//    VectorXd forceVector = md->getGlobalForceVector();
-//    std::cout << "Global force  vector: " << endl << forceVector << endl;
+    VectorXd forceVector = md->getGlobalForceVector();
+    std::cout << "Global force  vector: " << endl << forceVector << endl;
 
-//    FullPivHouseholderQR<MatrixXd> solver(globalMatrix);
-//    VectorXd displacementVector = solver.solve(forceVector);
-//    std::cout << "Result: " << endl << displacementVector << endl;
+    FullPivHouseholderQR<MatrixXd> solver(globalMatrix);
+    VectorXd displacementVector = solver.solve(forceVector);
+    std::cout << "Result: " << endl << displacementVector << endl;
 
-//    //Exemplo 2: http://media.cheggcdn.com/media%2F24b%2F24bda2dd-e3be-4fcd-81ae-668ea7deb4fd%2Fimage
-//    //A resolução será feita com um modelo com 4 nós e 3 elementos
+
+    //Exemplo 1.2: http://what-when-how.com/the-finite-element-method/fem-for-beams-finite-element-method-part-2/
+
+//    Cria os valores (2 de posição e um de rotação)
+    std::vector<VectorDOFType> ttypes = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> trestrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
+    std::vector<int> tequations = {-1,-1,-1, -1, -1, -1};
+    VectorDOF *tv = new VectorDOF(ttypes, trestrictions, tequations);
+    Node *tn = new Node(Vector3d(0.0,0.0,0.0), tv);
+
+    std::vector<VectorDOFType> ttypes2 = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<RestrictionTypes> trestrictions2 = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
+    std::vector<int> tequations2 = {0,1,2,3,4,5};
+    VectorDOF *tv2 = new VectorDOF(ttypes2,trestrictions2, tequations2);
+    Node *tn2 = new Node(Vector3d(0.5,0,0), tv2);
+
+    //Seção largura 0.1 e altura 0.06
+    Section *ts = new Section(0.0, 1.8E-6, 0.0, 0.006);
+
+    //Material alumínio
+    Material *tm = new Material(69E9, 0.0, 0.33, 0.0);
+
+    BeamElement3D *tel = new BeamElement3D(tn, tn2, Vector3d(0,2,0), ts, tm);
+    vector<Node*> tnvec = {tn, tn2};
+    vector<Element*> telvec = {tel};
+
+    VectorXd tvaluesLoad(6);
+    tvaluesLoad << 0, -1000, 0, 0, 0, 0;
+    //Força agindo no segundo nó
+    VectorDOFLoad *tload = new VectorDOFLoad(tv2, tvaluesLoad);
+    vector<Load*> tlvec = {tload};
+
+    Model *tmd = new Model("Cantilever beam 2D Test 1", tnvec, telvec, tlvec);
+    std::cout << tmd->printInfo();
+
+    MatrixXd tglobalMatrix = tmd->getGlobalStiffnessMatrix();
+    std::cout << "Global stiffness matrix: " << endl << tglobalMatrix << endl;
+
+    VectorXd tforceVector = tmd->getGlobalForceVector();
+    std::cout << "Global force  vector: " << endl << tforceVector << endl;
+
+    FullPivHouseholderQR<MatrixXd> tsolver(tglobalMatrix);
+    VectorXd tdisplacementVector = tsolver.solve(tforceVector);
+    std::cout << "Result: " << endl << tdisplacementVector << endl;
+
+    //Exemplo 2: http://media.cheggcdn.com/media%2F24b%2F24bda2dd-e3be-4fcd-81ae-668ea7deb4fd%2Fimage
+    //A resolução será feita com um modelo com 4 nós e 3 elementos
 //    std::vector<VectorDOFType> e2n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION};
 //    std::vector<RestrictionTypes> e2n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
 //    std::vector<int> e2n1equations = {-1,-1,0};
@@ -169,49 +214,49 @@ int main(int argc, char *argv[])
 
     //Exemplo 4: https://www.kth.se/polopoly_fs/1.251918!/Menu/general/column-content/attachment/Examples_HT2011.pdf
     //Questão 1.2
-    std::vector<VectorDOFType> e4n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
-    std::vector<RestrictionTypes> e4n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
-    std::vector<int> e4n1equations = {-1,-1,-1,-1,-1,-1};
-    VectorDOF *e4n1v = new VectorDOF(e4n1types, e4n1restrictions, e4n1equations);
-    Node *e4n1 = new Node(Vector3d(0.0,1.0,0.0), e4n1v);
+//    std::vector<VectorDOFType> e4n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+//    std::vector<RestrictionTypes> e4n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
+//    std::vector<int> e4n1equations = {-1,-1,-1,-1,-1,-1};
+//    VectorDOF *e4n1v = new VectorDOF(e4n1types, e4n1restrictions, e4n1equations);
+//    Node *e4n1 = new Node(Vector3d(0.0,1.0,0.0), e4n1v);
 
-    std::vector<VectorDOFType> e4n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
-    std::vector<RestrictionTypes> e4n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
-    std::vector<int> e4n2equations = {0,1,2,3,4,5};
-    VectorDOF *e4n2v = new VectorDOF(e4n2types, e4n2restrictions, e4n2equations);
-    Node *e4n2 = new Node(Vector3d(1.0,0.0,0.0), e4n2v);
+//    std::vector<VectorDOFType> e4n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+//    std::vector<RestrictionTypes> e4n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
+//    std::vector<int> e4n2equations = {0,1,2,3,4,5};
+//    VectorDOF *e4n2v = new VectorDOF(e4n2types, e4n2restrictions, e4n2equations);
+//    Node *e4n2 = new Node(Vector3d(1.0,0.0,0.0), e4n2v);
 
-    std::vector<VectorDOFType> e4n3types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
-    std::vector<RestrictionTypes> e4n3restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
-    std::vector<int> e4n3equations = {6,7,8,9,10,11};
-    VectorDOF *e4n3v = new VectorDOF(e4n3types, e4n3restrictions, e4n3equations);
-    Node *e4n3 = new Node(Vector3d(2.0,1.0,0.0), e4n3v);
-    vector<Node*> e4nvec = {e4n1, e4n2, e4n3};
+//    std::vector<VectorDOFType> e4n3types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+//    std::vector<RestrictionTypes> e4n3restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FREE};
+//    std::vector<int> e4n3equations = {6,7,8,9,10,11};
+//    VectorDOF *e4n3v = new VectorDOF(e4n3types, e4n3restrictions, e4n3equations);
+//    Node *e4n3 = new Node(Vector3d(2.0,1.0,0.0), e4n3v);
+//    vector<Node*> e4nvec = {e4n1, e4n2, e4n3};
 
-    Section *e4s = new Section(1.0,1.0,0.0,1);
-    Material *e4m = new Material(10,0.0,0.0,0.0);
+//    Section *e4s = new Section(1.0,1.0,0.0,1);
+//    Material *e4m = new Material(10,0.0,0.0,0.0);
 
-    BeamElement3D *e4b1 = new BeamElement3D(e4n1,e4n2, Vector3d(0,10,0), e4s,e4m);
-    BeamElement3D *e4b2 = new BeamElement3D(e4n2,e4n3, Vector3d(0,10,0), e4s, e4m);
-    vector<Element*> e4elvec = {e4b1, e4b2};
+//    BeamElement3D *e4b1 = new BeamElement3D(e4n1,e4n2, Vector3d(0,10,0), e4s,e4m);
+//    BeamElement3D *e4b2 = new BeamElement3D(e4n2,e4n3, Vector3d(0,10,0), e4s, e4m);
+//    vector<Element*> e4elvec = {e4b1, e4b2};
 
-    VectorXd e4l1val(6);
-    e4l1val << 10, 0, 0, 0, 0, 0;
-    VectorDOFLoad *e4n3load = new VectorDOFLoad(e4n3v, e4l1val);
-    vector<Load*> e4lvec = {e4n3load};
+//    VectorXd e4l1val(6);
+//    e4l1val << 10, 0, 0, 0, 0, 0;
+//    VectorDOFLoad *e4n3load = new VectorDOFLoad(e4n3v, e4l1val);
+//    vector<Load*> e4lvec = {e4n3load};
 
-    Model *m4 = new Model("Inclined bar test 4", e4nvec, e4elvec, e4lvec);
-    std::cout << m4->printInfo();
+//    Model *m4 = new Model("Inclined bar test 4", e4nvec, e4elvec, e4lvec);
+//    std::cout << m4->printInfo();
 
-    MatrixXd e4globalMatrix = m4->getGlobalStiffnessMatrix();
-    std::cout << "Global stiffness matrix: " << endl << e4globalMatrix << endl;
+//    MatrixXd e4globalMatrix = m4->getGlobalStiffnessMatrix();
+//    std::cout << "Global stiffness matrix: " << endl << e4globalMatrix << endl;
 
-    VectorXd e4forceVector = m4->getGlobalForceVector();
-    std::cout << "Global force vector: " << endl << e4forceVector << endl;
+//    VectorXd e4forceVector = m4->getGlobalForceVector();
+//    std::cout << "Global force vector: " << endl << e4forceVector << endl;
 
-    FullPivHouseholderQR<MatrixXd> e4solver(e4globalMatrix);
-    VectorXd e4displacementVector = e4solver.solve(e4forceVector);
-    std::cout << "Result: " << endl << e4displacementVector << endl;
+//    FullPivHouseholderQR<MatrixXd> e4solver(e4globalMatrix);
+//    VectorXd e4displacementVector = e4solver.solve(e4forceVector);
+//    std::cout << "Result: " << endl << e4displacementVector << endl;
 
 }
 #endif

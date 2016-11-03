@@ -111,7 +111,9 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     T.block<3,3>(6,6) = transformMatrix;
     T.block<3,3>(9,9) = transformMatrix;
 
-    return T*K*T.transpose();
+//    std::cout << "T*K*T': " << endl << T*K*T.transpose() << endl;
+//    return T*K*T.transpose();
+    return K;
 }
 
 void BeamElement3D::draw()
