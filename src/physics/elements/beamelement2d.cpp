@@ -1,6 +1,7 @@
 #include "beamelement2d.h"
 #include <sstream>
 #include <GL/gl.h>
+#include <Eigen/Geometry>
 
 BeamElement2D::BeamElement2D()
 {
@@ -19,12 +20,12 @@ BeamElement2D::BeamElement2D(Node *_n1, Node *_n2, Vector3d upPoint, Section *_s
 {
     nodes.push_back(_n1);
     nodes.push_back(_n2);
+    length = (_n2->getPosition() - _n1->getPosition()).norm();
     Vector3d x, y, z;
     x = (_n2->getPosition() - _n1->getPosition()).normalized();
-    z = x.cross((upPoint - _n1->getPosition()).normalized());
+    z = x.cross(upPoint - _n1->getPosition()).normalized();
     y = z.cross(x);
     coordinate = new CoordinateSystem(x,y,z);
-    length = x.norm();
 
     numNodes = 2;
     material = _material;
@@ -36,6 +37,7 @@ string BeamElement2D::printInfo() {
     ss << "\tlength: " << length << endl;
     ss << Element::printInfo();
     ss << section->printInfo();
+    ss << coordinate->printInfo();
     return ss.str();
 }
 /* Cria a matriz de rigidez do elemento.
@@ -57,6 +59,8 @@ MatrixXd BeamElement2D::getLocalStiffnessMatrix()
             0 ,-12*3*I/L3,-6*E*I/L2,    0  , 12*E*I/L3,-6*E*I/L2,
             0 ,  6*E*I/L2, 2*E*I/L ,    0  , -6*E*I/L2, 4*E*I/L ;
 
+//    std::cout << "K: " << endl << K << endl;
+
     MatrixXd transformMatrix = coordinate->transformTo();
     MatrixXd transformTo2dMatrix = MatrixXd::Zero(3,3);
     transformTo2dMatrix.block<2,2>(0,0) = transformMatrix.block<2,2>(0,0);
@@ -66,7 +70,7 @@ MatrixXd BeamElement2D::getLocalStiffnessMatrix()
     MatrixXd transformToGlobalMatrix = MatrixXd::Zero(6,6);
     transformToGlobalMatrix.block<3,3>(0,0) = transformTo2dMatrix;
     transformToGlobalMatrix.block<3,3>(3,3) = transformTo2dMatrix;
-    return transformToGlobalMatrix * K;
+    return transformToGlobalMatrix * K  * transformToGlobalMatrix.transpose();
 }
 
 void BeamElement2D::draw()

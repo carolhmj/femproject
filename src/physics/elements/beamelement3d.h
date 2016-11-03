@@ -17,8 +17,8 @@ public:
     MatrixXd getLocalStiffnessMatrix() override;
     void draw() override;
 protected:
-    Section *section;
     CoordinateSystem *coordinate;
+    Section *section;
     double length;
 };
 

@@ -50,7 +50,7 @@ MatrixXd Model::getGlobalStiffnessMatrix()
                                 unsigned localMatrixColPos = k*dofvector2->getTotalDOFNumber() + l;
                                 unsigned dofPosCol = dofvector2->getEquationNumber(l);
                                 G(dofPosRow, dofPosCol) += K(localMatrixRowPos,localMatrixColPos);
-                                std::cout << "global matrix("<< dofPosRow << "," << dofPosCol << ") = localMatrix(" << localMatrixRowPos << "," << localMatrixColPos <<") = " << K(localMatrixRowPos, localMatrixColPos) << endl;
+//                                std::cout << "global matrix("<< dofPosRow << "," << dofPosCol << ") = localMatrix(" << localMatrixRowPos << "," << localMatrixColPos <<") = " << K(localMatrixRowPos, localMatrixColPos) << endl;
                             }
                        }
                     }
@@ -59,12 +59,6 @@ MatrixXd Model::getGlobalStiffnessMatrix()
         }
     }
 
-//    MatrixXd G2 = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
-//    for (Element*& element : elements) {
-//        element->fillGlobalMatrix(G2);
-//    }
-
-//    std::cout << "G: " << endl << G << endl << "G2: " << endl << G2 << endl;
     return G;
 }
 

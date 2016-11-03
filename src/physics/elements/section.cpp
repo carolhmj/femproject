@@ -6,8 +6,8 @@ Section::Section()
 
 }
 
-Section::Section(double _inMomY, double _inMomZ, double _inArea) :
-    inertiaMomentY(_inMomY), inertiaMomentZ(_inMomZ), area(_inArea)
+Section::Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, double _inArea) :
+    inertiaMomentY(_inMomY), inertiaMomentZ(_inMomZ), polarInertiaMoment(_polarInertiaMoment), area(_inArea)
 {
 
 }
@@ -18,6 +18,7 @@ string Section::printInfo()
     ss << "++++++ SECTION INFO ++++++" << endl;
     ss << "\t inertia moment Y: " << inertiaMomentY << endl;
     ss << "\t inertia moment Z: " << inertiaMomentZ << endl;
+    ss << "\t polar inertia moment: " << polarInertiaMoment << endl;
     ss << "\t area: " << area << endl;
     return ss.str();
 }
@@ -48,6 +49,16 @@ void Section::setArea(double value)
 {
     area = value;
 }
+double Section::getPolarInertiaMoment() const
+{
+    return polarInertiaMoment;
+}
+
+void Section::setPolarInertiaMoment(double value)
+{
+    polarInertiaMoment = value;
+}
+
 
 
 

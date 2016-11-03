@@ -9,7 +9,7 @@ class Material
 {
 public:
     Material();
-    Material(double _youngModulus, double _poissonCoefficient, double _density);
+    Material(double _youngModulus, double _shearModulus, double _poissonCoefficient, double _density);
     string printInfo();
     double getYoungModulus() const;
 
@@ -17,8 +17,11 @@ public:
 
     double getDensity() const;
 
+    double getShearModulus() const;
+
 private:
     double youngModulus;
+    double shearModulus;
     double poissonCoefficient;
     double density;
 };

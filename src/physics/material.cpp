@@ -34,6 +34,11 @@ double Material::getDensity() const
 {
     return density;
 }
+double Material::getShearModulus() const
+{
+    return shearModulus;
+}
+
 
 
 

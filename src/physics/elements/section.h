@@ -11,7 +11,7 @@ class Section
 {
 public:
     Section();
-    Section(double _inMomY, double _inMomZ, double _inArea);
+    Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, double _inArea);
     string printInfo();
 
     double getInertiaMomentY() const;
@@ -23,11 +23,16 @@ public:
     double getArea() const;
     void setArea(double value);
 
+    double getPolarInertiaMoment() const;
+    void setPolarInertiaMoment(double value);
+
 private:
     //Momento de inércia em torno do eixo Y
     double inertiaMomentY;
     //Momento de inércia em torno do eixo Z
     double inertiaMomentZ;
+    //Momento polar de inércia
+    double polarInertiaMoment;
     //Área
     double area;
 };
