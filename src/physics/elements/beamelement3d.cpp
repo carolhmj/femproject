@@ -21,11 +21,12 @@ BeamElement3D::BeamElement3D(Node *_n1, Node *_n2, Vector3d upPoint, Section *_s
     length = (_n2->getPosition() - _n1->getPosition()).norm();
     numNodes = 2;
     //Encontra o sistema de coordenadas do elemento
-    Vector3d x, y, z;
-    x = (_n2->getPosition() - _n1->getPosition()).normalized();
-    z = x.cross(upPoint - _n1->getPosition()).normalized();
-    y = z.cross(x);
-    coordinate = new CoordinateSystem(x,y,z);
+//    Vector3d x, y, z;
+//    x = (_n2->getPosition() - _n1->getPosition()).normalized();
+//    z = x.cross(upPoint - _n1->getPosition()).normalized();
+//    y = z.cross(x);
+//    coordinate = new CoordinateSystem(x,y,z);
+    coordinate = CoordinateSystem::getSystemFromPoints(_n1->getPosition(), _n2->getPosition(), upPoint);
     material = _material;
 }
 
@@ -36,6 +37,7 @@ std::string BeamElement3D::printInfo()
     ss << "\tlength: " << length << endl;
     ss << Element::printInfo();
     ss << section->printInfo();
+    ss << coordinate->printInfo();
     return ss.str();
 }
 
