@@ -52,6 +52,10 @@ MatrixXd BeamElement2D::getLocalStiffnessMatrix()
            A = section->getArea(),
            L2 = L*L,
            L3 = L*L*L;
+
+    std::cout << "E: " << E << " IZ " << I << " L3 " << L3 << endl;
+    std::cout << "12EIZ/L3: " << 12*E*I/L3 << endl;
+
     K << E*A/L,       0  ,      0  ,-E*A/L ,       0  ,      0  ,
             0 , 12*E*I/L3, 6*E*I/L2,    0  ,-12*E*I/L3, 6*E*I/L2,
             0 ,  6*E*I/L2, 4*E*I/L ,    0  , -6*E*I/L2, 2*E*I/L ,

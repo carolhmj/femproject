@@ -21,11 +21,12 @@ BeamElement3D::BeamElement3D(Node *_n1, Node *_n2, Vector3d upPoint, Section *_s
     length = (_n2->getPosition() - _n1->getPosition()).norm();
     numNodes = 2;
     //Encontra o sistema de coordenadas do elemento
-    Vector3d x, y, z;
-    x = (_n2->getPosition() - _n1->getPosition()).normalized();
-    z = x.cross(upPoint - _n1->getPosition()).normalized();
-    y = z.cross(x);
-    coordinate = new CoordinateSystem(x,y,z);
+//    Vector3d x, y, z;
+//    x = (_n2->getPosition() - _n1->getPosition()).normalized();
+//    z = x.cross(upPoint - _n1->getPosition()).normalized();
+//    y = z.cross(x);
+//    coordinate = new CoordinateSystem(x,y,z);
+    coordinate = CoordinateSystem::getSystemFromPoints(_n1->getPosition(), _n2->getPosition(), upPoint);
     material = _material;
 }
 
@@ -36,6 +37,7 @@ std::string BeamElement3D::printInfo()
     ss << "\tlength: " << length << endl;
     ss << Element::printInfo();
     ss << section->printInfo();
+    ss << coordinate->printInfo();
     return ss.str();
 }
 
@@ -43,13 +45,13 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
 {
     MatrixXd K = MatrixXd::Zero(12,12);
     float A = section->getArea(), E = material->getYoungModulus(),
-          L = length, L2 = L*L, L3 =L*L, G = material->getShearModulus(),
+          L = length, L2 = L*L, L3 =L*L*L, G = material->getShearModulus(),
           J = section->getPolarInertiaMoment(),
           IZ = section->getInertiaMomentZ(),
           IY = section->getInertiaMomentY(),
           a = E*A/L,
           b = 12*E*IZ/L3,
-          c = 6*E*IZ/L3,
+          c = 6*E*IZ/L2,
           d = 12*E*IY/L3,
           e = 6*E*IY/L2,
           f = G*J/L,
@@ -58,36 +60,62 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
           i = 4*E*IZ/L,
           j = 2*E*IZ/L;
 
+    std::cout << "E: " << E << " IZ " << IZ << " L3 " << L3 << endl;
+    std::cout << "12EIZ/L3: " << b << endl;
+    std::cout << "6EIZ/L2: " << c << endl;
+
     MatrixXd block1 = MatrixXd::Zero(6,6), block2 = MatrixXd::Zero(6,6), block3, block4;
+    //EA/L
     block1(0,0) = a;
+    //12EIZ/L3
     block1(1,1) = b;
+    //12EIY/L3
     block1(2,2) = d;
+    //GJ/L
     block1(3,3) = f;
+    //4EIY/L
     block1(4,4) = g;
+    //4EIZ/L
     block1(5,5) = i;
+    //6EIZ/L2
     block1(1,5) = c;
-    block1(2,4) = -e;
-    block1(4,2) = -e;
-    block2(5,1) = c;
+    //6EIY/L2
+    block1(2,4) = e;
+    //6EIY/L2
+    block1(4,2) = e;
+    //6EIZ/L2
+    block1(5,1) = c;
 
 
+    //-EA/L
     block2(0,0) = -a;
+    //-12EIZ/L3
     block2(1,1) = -b;
+    //-12EIY/L3
     block2(2,2) = -d;
+    //-GJ/L
     block2(3,3) = -f;
+    //2EIY/L
     block2(4,4) = h;
+    //2EIZ/L
     block2(5,5) = j;
-    block2(5,1) = -c;
+    //6EIZ/L2
+    block2(5,1) = c;
+    //6EIY/L2
     block2(4,2) = e;
+    //-6EIY/L2
     block2(2,4) = -e;
-    block2(1,5) = c;
+    //-6EIZ/L2
+    block2(1,5) = -c;
 
+    //Mesmo que o bloco 2, só que a diagonal contrária é invertida
     block3 = block2;
     block3(1,5) = -block3(1,5);
     block3(5,1) = -block3(5,1);
     block3(2,4) = -block3(2,4);
     block3(4,2) = -block3(4,2);
 
+    //Mesmo que o bloco 1, só que a diagonal contrária é invertida
     block4 = block1;
     block4(1,5) = -block4(1,5);
     block4(5,1) = -block4(5,1);
@@ -105,15 +133,18 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     MatrixXd transformMatrix = coordinate->transformTo();
     std::cout << "transformMatrix: " << endl << transformMatrix << endl;
 
-    MatrixXd T(12,12);
+    MatrixXd T = MatrixXd::Zero(12,12);
     T.block<3,3>(0,0) = transformMatrix;
     T.block<3,3>(3,3) = transformMatrix;
     T.block<3,3>(6,6) = transformMatrix;
     T.block<3,3>(9,9) = transformMatrix;
 
-//    std::cout << "T*K*T': " << endl << T*K*T.transpose() << endl;
-//    return T*K*T.transpose();
-    return K;
+    std::cout << "T: " << endl << T << endl;
+    std::cout << "T': " << endl << T.transpose() << endl;
+    std::cout << "T*K*T': " << endl << T*K*T.transpose() << endl;
+
+
+    return T*K*T.transpose();
 }
 
 void BeamElement3D::draw()
