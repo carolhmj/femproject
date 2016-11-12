@@ -100,13 +100,15 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     //2EIZ/L
     block2(5,5) = j;
     //6EIZ/L2
-    block2(5,1) = c;
+    block2(1,5) = c;
     //6EIY/L2
     block2(4,2) = e;
     //-6EIY/L2
     block2(2,4) = -e;
     //-6EIZ/L2
-    block2(1,5) = -c;
+    block2(5,1) = -c;
+
+    std::cout << "block 2 before assign: " <<  endl << block2 << endl;
 
     //Mesmo que o bloco 2, só que a diagonal contrária é invertida
     block3 = block2;
@@ -114,6 +116,8 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     block3(5,1) = -block3(5,1);
     block3(2,4) = -block3(2,4);
     block3(4,2) = -block3(4,2);
+
+    std::cout << "block 2 before assign: " <<  endl << block2 << endl;
 
     //Mesmo que o bloco 1, só que a diagonal contrária é invertida
     block4 = block1;
