@@ -34,7 +34,8 @@ DEPENDPATH += \
     src/physics/dofs \
     src/interface \
     src/defines \
-    src/math
+    src/math \
+    src/io
 
 INCLUDEPATH += \
     src/ \
@@ -45,7 +46,8 @@ INCLUDEPATH += \
     src/physics/elements \
     src/physics/models \
     src/physics/loads \
-    src/physics/dofs
+    src/physics/dofs  \
+    src/io
 
 SOURCES += src/interface/main.cpp\
         src/interface/mainwindow.cpp \
@@ -65,7 +67,8 @@ SOURCES += src/interface/main.cpp\
     src/physics/loads/dofload.cpp \
     src/physics/loads/vectordofload.cpp \
     src/math/coordinatesystem.cpp \
-    src/physics/elements/beamelement3d.cpp
+    src/physics/elements/beamelement3d.cpp \
+    src/io/input.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -88,6 +91,7 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/loads/vectordofload.h \
     src/math/coordinatesystem.h \
     src/physics/loads/loadtypes.h \
-    src/physics/elements/beamelement3d.h
+    src/physics/elements/beamelement3d.h \
+    src/io/input.h
 
 FORMS    += mainwindow.ui
