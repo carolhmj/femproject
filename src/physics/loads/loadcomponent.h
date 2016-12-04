@@ -3,6 +3,7 @@
 
 #include "loadtype.h"
 #include <vector>
+#include "projectdefines.h"
 
 /*
  * Essa classe representa um componente de uma força.
@@ -20,6 +21,7 @@ public:
 
     double getValue(unsigned int i);
 
+    std::string printInfo();
 private:
     std::vector<double> values;
     std::vector<LoadType> types;

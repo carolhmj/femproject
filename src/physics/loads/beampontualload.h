@@ -12,7 +12,7 @@ public:
     BeamPontualLoad(double fx, double fy, double mz, double dist);
     //3D constructor
     BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist);
-    void printInfo() override;
+    string printInfo() override;
 
 private:
     LoadComponent components;
