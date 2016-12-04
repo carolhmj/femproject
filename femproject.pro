@@ -60,15 +60,15 @@ SOURCES += src/interface/main.cpp\
     src/physics/elements/section.cpp \
     src/physics/load.cpp \
     src/physics/loads/elementload.cpp \
-    src/physics/loads/pontualload2dbeam.cpp \
-    src/physics/loads/distributedload2dbeam.cpp \
-    src/physics/loads/distributedhorizontalload2dbeam.cpp \
     src/physics/models/model.cpp \
     src/physics/loads/dofload.cpp \
     src/physics/loads/vectordofload.cpp \
     src/math/coordinatesystem.cpp \
     src/physics/elements/beamelement3d.cpp \
-    src/io/input.cpp
+    src/io/input.cpp \
+    src/physics/loads/loadcomponent.cpp \
+    src/physics/loads/beampontualload.cpp \
+    src/physics/loads/beamdistributedload.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -83,15 +83,15 @@ HEADERS  += src/interface/mainwindow.h \
     src/defines/projectdefines.h \
     src/physics/load.h \
     src/physics/loads/elementload.h \
-    src/physics/loads/pontualload2dbeam.h \
-    src/physics/loads/distributedverticalload2dbeam.h \
-    src/physics/loads/distributedhorizontalload2dbeam.h \
     src/physics/models/model.h \
     src/physics/loads/dofload.h \
     src/physics/loads/vectordofload.h \
     src/math/coordinatesystem.h \
-    src/physics/loads/loadtypes.h \
     src/physics/elements/beamelement3d.h \
-    src/io/input.h
+    src/io/input.h \
+    src/physics/loads/loadcomponent.h \
+    src/physics/loads/loadtype.h \
+    src/physics/loads/beampontualload.h \
+    src/physics/loads/beamdistributedload.h
 
 FORMS    += mainwindow.ui
