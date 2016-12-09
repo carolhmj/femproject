@@ -10,3 +10,8 @@ BeamDistributedLoad::BeamDistributedLoad(VectorXd valuesStart, double distStart,
 
 }
 
+VectorDOFLoad *BeamDistributedLoad::getEquivalentNodal()
+{
+    return nullptr;
+}
+

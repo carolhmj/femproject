@@ -28,3 +28,8 @@ std::string BeamPontualLoad::printInfo()
     return ss.str();
 }
 
+VectorDOFLoad *BeamPontualLoad::getEquivalentNodal()
+{
+    return nullptr;
+}
+

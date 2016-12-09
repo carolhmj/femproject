@@ -13,6 +13,7 @@ class BeamDistributedLoad : public ElementLoad
 public:
     BeamDistributedLoad();
     BeamDistributedLoad(VectorXd valuesStart, double distStart, VectorXd valuesEnd, double distEnd);
+    VectorDOFLoad* getEquivalentNodal() override;
 private:
     double applyStartDistance;
     double applyEndDistance;

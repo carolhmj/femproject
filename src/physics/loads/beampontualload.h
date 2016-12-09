@@ -14,6 +14,7 @@ public:
     //3D constructor
     BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist);
     std::string printInfo() override;
+    VectorDOFLoad* getEquivalentNodal() override;
 
 private:
     LoadComponent components;
