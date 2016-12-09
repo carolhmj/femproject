@@ -2,6 +2,11 @@
 #define BEAMDISTRIBUTEDLOAD_H
 
 #include "loadcomponent.h"
+#include "elementload.h"
+#include "projectdefines.h"
+#include <Eigen/Core>
+
+using namespace Eigen;
 
 class BeamDistributedLoad : public ElementLoad
 {

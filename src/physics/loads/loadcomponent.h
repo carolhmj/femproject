@@ -24,7 +24,7 @@ public:
     std::string printInfo();
 private:
     std::vector<double> values;
-    std::vector<LoadType> types;
+    std::vector<LoadComponentType> types;
 };
 
 #endif // LOADCOMPONENT_H

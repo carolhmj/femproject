@@ -2,6 +2,6 @@
 
 ElementLoad::ElementLoad()
 {
-
+    type = LoadType::ELEMENT_LOAD;
 }
 

@@ -306,6 +306,7 @@ int main(int argc, char *argv[])
     Node *e7n1 = new Node(Vector3d(0.0,1.0,0.0), e7n1v);
 
     //Mudando pra ficar fixo no plano xy
+    std::vector<VectorDOFType> e7n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> e7n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e7n2equations = {0,1,-1,-1,-1,2};
     VectorDOF *e7n2v = new VectorDOF(e7n2types, e7n2restrictions, e7n2equations);

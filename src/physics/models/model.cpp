@@ -1,6 +1,8 @@
 #include "model.h"
 #include "vectordofload.h"
 #include <sstream>
+#include <typeinfo>
+
 
 Model::Model()
 {
@@ -67,7 +69,7 @@ VectorXd Model::getGlobalForceVector()
     //Itera pelos nós, para cada nó encontra a posição dele no force vector e coloca seus dofs no vetor
     VectorXd f = VectorXd::Zero(getTotalFreeDOFNumber());
     for (Load*& load : loads) {
-        if (load->getType() == LoadTypes::VECTORDOFLOAD) {
+        if (load->getType() == LoadType::NODE_LOAD) {
             VectorDOFLoad *vload = static_cast<VectorDOFLoad*>(load);
 
             VectorDOF *vdof = vload->getVdof();
