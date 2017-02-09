@@ -2,6 +2,7 @@
 #define BEAMPONTUALLOAD_H
 
 #include "loadcomponent.h"
+#include "elementload.h"
 
 //Classe que representa uma força pontual em uma viga
 class BeamPontualLoad : public ElementLoad

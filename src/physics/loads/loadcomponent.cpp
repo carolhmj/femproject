@@ -1,6 +1,8 @@
 #include "loadcomponent.h"
 #include "projectdefines.h"
 
+#include <sstream>
+
 LoadComponent::LoadComponent(double fx, double fy, double mz)
 {
     values = std::vector<double>({fx,fy,0,0,0,mz});
@@ -20,9 +22,9 @@ double LoadComponent::getValue(unsigned int i)
 
 string LoadComponent::printInfo()
 {
-    stringstream ss;
+    std::stringstream ss;
     for (int i = 0; i < values.size(); i++) {
-        ss << "value [" << values[i] << "] type [" << types[i] << "]" << endl;
+        ss << "value [" << values[i] << "] type [" << static_cast<int>(types[i]) << "]" << endl;
     }
     return ss.str();
 }

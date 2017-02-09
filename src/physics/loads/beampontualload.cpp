@@ -1,6 +1,8 @@
 #include "beampontualload.h"
 #include "projectdefines.h"
 
+#include <sstream>
+
 BeamPontualLoad::BeamPontualLoad()
 {
 
@@ -8,7 +10,7 @@ BeamPontualLoad::BeamPontualLoad()
 
 BeamPontualLoad::BeamPontualLoad(double fx, double fy, double mz, double dist)
 {
-    components = LoadComponent(fx,fy,fz);
+    components = LoadComponent(fx,fy,mz);
     applyDistance = dist;
 }
 

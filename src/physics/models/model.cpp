@@ -64,21 +64,21 @@ MatrixXd Model::getGlobalStiffnessMatrix()
 
 VectorXd Model::getGlobalForceVector()
 {
-    //Itera pelos nós, para cada nó encontra a posição dele no force vector e coloca seus dofs no vetor
-    VectorXd f = VectorXd::Zero(getTotalFreeDOFNumber());
-    for (Load*& load : loads) {
-        if (load->getType() == LoadTypes::VECTORDOFLOAD) {
-            VectorDOFLoad *vload = static_cast<VectorDOFLoad*>(load);
+//    //Itera pelos nós, para cada nó encontra a posição dele no force vector e coloca seus dofs no vetor
+//    VectorXd f = VectorXd::Zero(getTotalFreeDOFNumber());
+//    for (Load*& load : loads) {
+//        if (load->getType() == LoadTypes::VECTORDOFLOAD) {
+//            VectorDOFLoad *vload = static_cast<VectorDOFLoad*>(load);
 
-            VectorDOF *vdof = vload->getVdof();
-            for (unsigned i = 0; i < vdof->getTotalDOFNumber(); i++) {
-                if (vdof->getRestrictions()[i] == RestrictionTypes::FREE) {
-                    f(vdof->getEquationNumber(i)) = vload->getValue(i);
-                }
-            }
-        }
-    }
-    return f;
+//            VectorDOF *vdof = vload->getVdof();
+//            for (unsigned i = 0; i < vdof->getTotalDOFNumber(); i++) {
+//                if (vdof->getRestrictions()[i] == RestrictionTypes::FREE) {
+//                    f(vdof->getEquationNumber(i)) = vload->getValue(i);
+//                }
+//            }
+//        }
+//    }
+//    return f;
 }
 
 void Model::draw()
