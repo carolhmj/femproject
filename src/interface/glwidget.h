@@ -9,7 +9,8 @@
 
 #include <models/model.h>
 
-class GLWidget : public QOpenGLWidget
+class GLWidget : public QOpenGLWidget,
+                 protected QOpenGLFunctions
 {
 public:
     explicit GLWidget(QWidget *parent = 0);
@@ -22,6 +23,7 @@ private:
 
     // OpenGL State Information
     QOpenGLBuffer m_vertex;
+    QOpenGLBuffer m_color;
     QOpenGLVertexArrayObject m_object;
     QOpenGLShaderProgram *m_program;
 
