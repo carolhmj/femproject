@@ -23,8 +23,11 @@ private:
 
     // OpenGL State Information
     QOpenGLBuffer m_vertex;
+    QOpenGLBuffer m_vertex2;
     QOpenGLBuffer m_color;
+    QOpenGLBuffer m_color2;
     QOpenGLVertexArrayObject m_object;
+    QOpenGLVertexArrayObject m_object2;
     QOpenGLShaderProgram *m_program;
 
     //Information for models
