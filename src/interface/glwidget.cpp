@@ -1,5 +1,7 @@
 #include "glwidget.h"
 #include <QDebug>
+#include <cmath>
+#include <Eigen/Dense>
 
 static const GLfloat vertexes[] = {0.0f,0.0f,0.0f,
                                    0.0f,1.0f,0.0f,
@@ -124,6 +126,15 @@ void GLWidget::paintGL(){
     // Clear
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    //Generate Projection and Camera matrices
+    Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
+    Matrix4f view = lookAt(camera.eye, camera.at, camera.up);
+    Matrix4f model;
+    Matrix4f mvp = projection * view * model;
+
+    GLuint mvpID = m_program->attributeLocation("MVP");
+    glUniformMatrix4fv(mvpID, 1, GL_FALSE, mvp.data());
+
     // Render using our shader
     m_program->bind();
     {
@@ -136,4 +147,37 @@ void GLWidget::paintGL(){
         m_object2.release();
     }
     m_program->release();
+}
+
+Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up)
+{
+  Matrix4f mViewMatrix;
+
+  Matrix3f R;
+  R.col(2) = (position-target).normalized();
+  R.col(0) = up.cross(R.col(2)).normalized();
+  R.col(1) = R.col(2).cross(R.col(0));
+  mViewMatrix.topLeftCorner<3,3>() = R.transpose();
+  mViewMatrix.topRightCorner<3,1>() = -R.transpose() * position;
+  mViewMatrix(3,3) = 1.0f;
+
+  return mViewMatrix;
+}
+
+Matrix4f GLWidget::perspective(float fovY, float aspect, float near, float far)
+{
+  Matrix4f mProjectionMatrix;
+
+  float theta = fovY*0.5;
+  float range = far - near;
+  float invtan = 1./std::tan(theta);
+
+  mProjectionMatrix(0,0) = invtan / aspect;
+  mProjectionMatrix(1,1) = invtan;
+  mProjectionMatrix(2,2) = -(near + far) / range;
+  mProjectionMatrix(3,2) = -1;
+  mProjectionMatrix(2,3) = -2 * near * far / range;
+  mProjectionMatrix(3,3) = 0;
+
+  return mProjectionMatrix;
 }

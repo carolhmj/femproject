@@ -7,7 +7,18 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLFunctions>
 
+#include <Eigen/Core>
+
 #include <models/model.h>
+
+using namespace Eigen;
+
+struct Camera {
+    Vector3f eye = Vector3f(0,0,5);
+    Vector3f at = Vector3f(0,0,0);
+    Vector3f up = Vector3f(0,1,0);
+    float fov = 45.0f;
+};
 
 class GLWidget : public QOpenGLWidget,
                  protected QOpenGLFunctions
@@ -21,7 +32,14 @@ private:
     void resizeGL(int w, int h);
     void paintGL();
 
-    // OpenGL State Information
+    //Matrix creation
+    Matrix4f lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up);
+    Matrix4f perspective(float fovY, float aspect, float near, float far);
+
+    //World camera
+    Camera camera;
+
+    // OpenGL State Information    
     QOpenGLBuffer m_vertex;
     QOpenGLBuffer m_vertex2;
     QOpenGLBuffer m_color;

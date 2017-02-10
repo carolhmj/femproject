@@ -15,7 +15,7 @@ public:
     CoordinateSystem(Vector3d _x, Vector3d _y, Vector3d _z);
     // Retorna a matriz de transformação para o sistema de coordenadas dado como argumento
     MatrixXd transformTo();
-    static CoordinateSystem* getSystemFromPoints(Vector3d eye, Vector3d at, Vector3d up);
+    static CoordinateSystem* getSystemFromPoints(Vector3d p1, Vector3d p2, Vector3d up);
     string printInfo();
 
     Vector3d getX() const;
