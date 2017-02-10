@@ -1,7 +1,10 @@
 #include "glwidget.h"
 #include <QDebug>
 
-static const GLfloat vertexes[] = {0,0,0, 0,1,0, 1,1,0, 1,0,0};
+static const GLfloat vertexes[] = {0.0f,0.0f,0.0f,
+                                   0.0f,1.0f,0.0f,
+                                   1.0f,1.0f,0.0f,
+                                   1.0f,0.0f,0.0f};
 
 GLWidget::GLWidget(QWidget *parent) :
     QOpenGLWidget(parent) {
@@ -35,10 +38,10 @@ void GLWidget::initializeGL(){
 
         m_object.create();
         m_object.bind();
-        m_program->enableAttributeArray(0);
-        m_program->setAttributeArray(0, GL_FLOAT, vertexes, 3, 0);
 
-        m_object.release();
+        m_program->setAttributeBuffer(0, GL_FLOAT, 0, 3);
+        m_program->enableAttributeArray(0);
+
         m_object.release();
         m_program->release();
     }
