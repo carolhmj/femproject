@@ -155,4 +155,9 @@ void BeamElement3D::draw()
 {
 
 }
+double BeamElement3D::getLength() const
+{
+    return length;
+}
+
 

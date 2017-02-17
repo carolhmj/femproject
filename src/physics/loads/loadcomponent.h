@@ -20,6 +20,7 @@ public:
 
     //Getters and setters
     double getValue(unsigned int i);
+    double getValueByType(LoadType type);
 
     //Debug information
     std::string printInfo();

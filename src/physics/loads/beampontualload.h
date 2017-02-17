@@ -11,9 +11,9 @@ class BeamPontualLoad : public ElementLoad
 public:
     BeamPontualLoad();
     //2D constructor
-    BeamPontualLoad(double fx, double fy, double mz, double dist, BeamElement3D applyElement);
+    BeamPontualLoad(double fx, double fy, double mz, double dist, BeamElement3D *applyElement);
     //3D constructor
-    BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist, BeamElement3D applyElement);
+    BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist, BeamElement3D *applyElement);
 
     //Override
     std::vector<DOFLoad*> transformToNodalLoads() override;
@@ -27,7 +27,7 @@ private:
     //Distance to force application point
     double distance;
     //Element in which the force is applied
-    BeamElement3D element;
+    BeamElement3D *element;
 };
 
 #endif // BEAMPONTUALLOAD_H
