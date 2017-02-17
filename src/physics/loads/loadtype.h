@@ -1,10 +1,14 @@
 #ifndef LOADTYPE
 #define LOADTYPE
 
-//Define se o componente é de força ou de momento
+//Define os componentes de força e momento
 enum class LoadType {
-    FORCE,
-    MOMENTUM
+    FX,
+    FY,
+    FZ,
+    MX,
+    MY,
+    MZ
 };
 
 #endif // LOADTYPE

@@ -3,19 +3,29 @@
 
 LoadComponent::LoadComponent(double fx, double fy, double mz)
 {
-    values = std::vector<double>({fx,fy,0,0,0,mz});
-    types = std::vector<LoadType>({LoadType::FORCE,LoadType::FORCE,LoadType::FORCE,LoadType::MOMENTUM,LoadType::MOMENTUM,LoadType::MOMENTUM});
+    values = std::vector<double>({fx,fy,mz});
+    types = std::vector<LoadType>({LoadType::FX,LoadType::FY,LoadType::MZ});
 }
 
 LoadComponent::LoadComponent(double fx, double fy, double fz, double mx, double my, double mz)
 {
     values = std::vector<double>({fx,fy,fz,mx,my,mz});
-    types = std::vector<LoadType>({LoadType::FORCE,LoadType::FORCE,LoadType::FORCE,LoadType::MOMENTUM,LoadType::MOMENTUM,LoadType::MOMENTUM});
+    types = std::vector<LoadType>({LoadType::FX,LoadType::FY,LoadType::FZ,LoadType::MX,LoadType::MY,LoadType::MZ});
 }
 
 double LoadComponent::getValue(unsigned int i)
 {
     return values.at(i);
+}
+
+double LoadComponent::getValueByType(LoadType type)
+{
+    for (uint i = 0; i < values.size(); i++) {
+        if (types[i] == type) {
+            return values[i];
+        }
+    }
+    return 0;
 }
 
 string LoadComponent::printInfo()

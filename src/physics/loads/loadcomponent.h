@@ -6,7 +6,7 @@
 #include "projectdefines.h"
 
 /*
- * Essa classe representa um componente de uma força.
+ * This class represents the components of a force
  */
 
 class LoadComponent
@@ -18,10 +18,12 @@ public:
     //3D constructor
     LoadComponent(double fx, double fy, double fz, double mx, double my, double mz);
 
-
+    //Getters and setters
     double getValue(unsigned int i);
 
+    //Debug information
     std::string printInfo();
+
 private:
     std::vector<double> values;
     std::vector<LoadType> types;

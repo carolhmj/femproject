@@ -2,6 +2,8 @@
 #define BEAMPONTUALLOAD_H
 
 #include "loadcomponent.h"
+#include "beamelement3d.h"
+#include "elementload.h"
 
 //Classe que representa uma força pontual em uma viga
 class BeamPontualLoad : public ElementLoad
@@ -9,15 +11,23 @@ class BeamPontualLoad : public ElementLoad
 public:
     BeamPontualLoad();
     //2D constructor
-    BeamPontualLoad(double fx, double fy, double mz, double dist);
+    BeamPontualLoad(double fx, double fy, double mz, double dist, BeamElement3D applyElement);
     //3D constructor
-    BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist);
+    BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist, BeamElement3D applyElement);
+
+    //Override
+    std::vector<DOFLoad*> transformToNodalLoads() override;
+
+    //Debug infromation
     string printInfo() override;
 
 private:
+    //Force components
     LoadComponent components;
     //Distance to force application point
-    double applyDistance;
+    double distance;
+    //Element in which the force is applied
+    BeamElement3D element;
 };
 
 #endif // BEAMPONTUALLOAD_H
