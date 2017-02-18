@@ -1,5 +1,6 @@
 #include "loadcomponent.h"
 #include "projectdefines.h"
+#include <sstream>
 
 LoadComponent::LoadComponent(double fx, double fy, double mz)
 {
@@ -28,11 +29,20 @@ double LoadComponent::getValueByType(LoadType type)
     return 0;
 }
 
+void LoadComponent::setValueByType(double value, LoadType type)
+{
+    for (uint i = 0; i < values.size(); i++) {
+        if (types[i] == type) {
+            values[i] = value;
+        }
+    }
+}
+
 string LoadComponent::printInfo()
 {
-    stringstream ss;
+    std::stringstream ss;
     for (int i = 0; i < values.size(); i++) {
-        ss << "value [" << values[i] << "] type [" << types[i] << "]" << endl;
+        ss << "value [" << values[i] << "] type [" << (int)types[i] << "]" << endl;
     }
     return ss.str();
 }

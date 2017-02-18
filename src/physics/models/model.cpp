@@ -7,14 +7,14 @@ Model::Model()
 
 }
 
-Model::Model(vector<Node *> _nodes, vector<Element *> _elements, vector<Load *> _loads) :
-    nodes(_nodes), elements(_elements), loads(_loads), name("Model")
+Model::Model(vector<Node *> _nodes, vector<Element *> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad *> _eloads) :
+    nodes(_nodes), elements(_elements), nodeLoads(_nloads), elementLoads(_eloads), name("Model")
 {
 
 }
 
-Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements, vector<Load *> _loads) :
-    nodes(_nodes), elements(_elements), loads(_loads), name(_name)
+Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad *> _eloads) :
+    nodes(_nodes), elements(_elements), nodeLoads(_nloads), elementLoads(_eloads), name(_name)
 {
 
 }
@@ -64,17 +64,15 @@ MatrixXd Model::getGlobalStiffnessMatrix()
 
 VectorXd Model::getGlobalForceVector()
 {
-    //Itera pelos nós, para cada nó encontra a posição dele no force vector e coloca seus dofs no vetor
     VectorXd f = VectorXd::Zero(getTotalFreeDOFNumber());
-    for (Load*& load : loads) {
-        if (load->getType() == LoadTypes::VECTORDOFLOAD) {
-            VectorDOFLoad *vload = static_cast<VectorDOFLoad*>(load);
+    //Itera pelos nós, para cada nó encontra a posição dele no force vector e coloca seus dofs no vetor
+    for (NodeLoad*& nload : nodeLoads) {
+        Node *node = nload->getNode();
+        VectorDOF *vdof = static_cast<VectorDOF*>(node->getDOFByType(DOFType::VECTOR));
 
-            VectorDOF *vdof = vload->getVdof();
-            for (unsigned i = 0; i < vdof->getTotalDOFNumber(); i++) {
-                if (vdof->getRestrictions()[i] == RestrictionTypes::FREE) {
-                    f(vdof->getEquationNumber(i)) = vload->getValue(i);
-                }
+        for (unsigned i = 0; i < vdof->getTotalDOFNumber(); i++) {
+            if (vdof->getRestrictions()[i] == RestrictionTypes::FREE) {
+                f(vdof->getEquationNumber(i)) = nload->getComponents().getValue(i);
             }
         }
     }
@@ -101,8 +99,11 @@ std::string Model::printInfo()
     for (Element*& e : elements) {
         ss << e->printInfo();
     }
-    for (Load*& l : loads) {
-        ss << l->printInfo();
+    for (NodeLoad*& nl : nodeLoads) {
+        ss << nl->printInfo();
+    }
+    for (ElementLoad*& el : elementLoads) {
+        ss << el->printInfo();
     }
     return ss.str();
 }

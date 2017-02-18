@@ -5,6 +5,8 @@
 #include "node.h"
 #include "element.h"
 #include "load.h"
+#include "nodeload.h"
+#include "elementload.h"
 //Library includes
 
 //Classe que representa um modelo. Possui os elementos e os nós do modelo
@@ -12,8 +14,8 @@ class Model
 {
 public:
     Model();
-    Model(vector<Node*> _nodes, vector<Element*> _elements, vector<Load*> _loads);
-    Model(string _name, vector<Node*> _nodes, vector<Element*> _elements, vector<Load *> _loads);
+    Model(vector<Node*> _nodes, vector<Element*> _elements, vector<NodeLoad*> _nloads, vector<ElementLoad*> _eloads);
+    Model(string _name, vector<Node*> _nodes, vector<Element*> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad*> _eloads);
     //Calcula a matriz global a partir das matrizes locais de cada elemento
     MatrixXd getGlobalStiffnessMatrix();
     VectorXd getGlobalForceVector();
@@ -28,7 +30,8 @@ public:
 private:
     vector<Node*> nodes;
     vector<Element*> elements;
-    vector<Load*> loads;
+    vector<NodeLoad*> nodeLoads;
+    vector<ElementLoad*> elementLoads;
     string name;
 };
 

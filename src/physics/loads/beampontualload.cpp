@@ -8,7 +8,7 @@ BeamPontualLoad::BeamPontualLoad()
 
 BeamPontualLoad::BeamPontualLoad(double fx, double fy, double mz, double dist, BeamElement3D *applyElement)
 {
-    components = LoadComponent(fx,fy,fz);
+    components = LoadComponent(fx,fy,mz);
     distance = dist;
     element = applyElement;
 }
@@ -20,7 +20,7 @@ BeamPontualLoad::BeamPontualLoad(double fx, double fy, double fz, double mx, dou
     element = applyElement;
 }
 
-std::vector<DOFLoad *> BeamPontualLoad::transformToNodalLoads()
+std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair> > BeamPontualLoad::transformToNodalLoads()
 {
 
 }

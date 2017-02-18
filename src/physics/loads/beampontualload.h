@@ -4,6 +4,7 @@
 #include "loadcomponent.h"
 #include "beamelement3d.h"
 #include "elementload.h"
+#include "nodeload.h"
 
 //Classe que representa uma força pontual em uma viga
 class BeamPontualLoad : public ElementLoad
@@ -16,7 +17,7 @@ public:
     BeamPontualLoad(double fx, double fy, double fz, double mx, double my, double mz, double dist, BeamElement3D *applyElement);
 
     //Override
-    std::vector<DOFLoad*> transformToNodalLoads() override;
+    std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair>> transformToNodalLoads() override;
 
     //Debug infromation
     string printInfo() override;
