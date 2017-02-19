@@ -1,5 +1,6 @@
 #include "beampontualload.h"
 #include "projectdefines.h"
+#include <sstream>
 
 BeamPontualLoad::BeamPontualLoad()
 {
@@ -27,7 +28,7 @@ std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair> > BeamPon
 
 std::string BeamPontualLoad::printInfo()
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << "§§§§§§§§§ BEAM PONTUAL LOAD §§§§§§§§§" << endl;
     ss << "application distance: " << distance << endl;
     ss << components.printInfo();

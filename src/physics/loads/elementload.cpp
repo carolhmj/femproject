@@ -2,5 +2,4 @@
 
 ElementLoad::ElementLoad()
 {
-
 }

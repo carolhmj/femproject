@@ -6,6 +6,9 @@
 #include "beamelement3d.h"
 #include "nodeload.h"
 #include <utility>
+#include "projectdefines.h"
+
+using namespace Eigen;
 
 class BeamDistributedLoad : public ElementLoad
 {

@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
 #include "vectordof.h"
 #include "beamelement2d.h"
 #include "beamelement3d.h"
-#include "vectordofload.h"
 #include "model.h"
 #include "projectdefines.h"
 #include <Eigen/Core>
@@ -298,16 +297,16 @@ int main(int argc, char *argv[])
 //    VectorXd e6displacementVector = e6solver.solve(e6forceVector);
 //    std::cout << "Result: " << endl << e6displacementVector << endl;
 
-////    Exemplo 7: https://www.clear.rice.edu/mech400/Castigliano_examples.pdf
-////    Questão 12-13
+//    //Exemplo 7: https://www.clear.rice.edu/mech400/Castigliano_examples.pdf
+//    //Questão 12-13
 //    std::vector<VectorDOFType> e7n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
 //    std::vector<RestrictionTypes> e7n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED};
 //    std::vector<int> e7n1equations = {-1,-1,-1,-1,-1,-1};
 //    VectorDOF *e7n1v = new VectorDOF(e7n1types, e7n1restrictions, e7n1equations);
 //    Node *e7n1 = new Node(Vector3d(0.0,1.0,0.0), e7n1v);
 
-//    std::vector<VectorDOFType> e7n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
 //    //Mudando pra ficar fixo no plano xy
+//    std::vector<VectorDOFType> e7n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
 //    std::vector<RestrictionTypes> e7n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
 //    std::vector<int> e7n2equations = {0,1,-1,-1,-1,2};
 //    VectorDOF *e7n2v = new VectorDOF(e7n2types, e7n2restrictions, e7n2equations);
@@ -319,6 +318,7 @@ int main(int argc, char *argv[])
 //    std::vector<int> e7n3equations = {3,4,-1,-1,-1,5};
 //    VectorDOF *e7n3v = new VectorDOF(e7n3types, e7n3restrictions, e7n3equations);
 //    Node *e7n3 = new Node(Vector3d(4.0,0.0,0.0), e7n3v);
+
 //    vector<Node*> e7nvec = {e7n1, e7n2, e7n3};
 
 //    Section *e7s = new Section(1E-6,1E-6,1E-6,1E-5);

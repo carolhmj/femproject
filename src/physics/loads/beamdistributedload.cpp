@@ -67,4 +67,3 @@ Element *BeamDistributedLoad::getElement()
 {
     return element;
 }
-

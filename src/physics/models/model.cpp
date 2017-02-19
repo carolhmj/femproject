@@ -1,6 +1,7 @@
 #include "model.h"
-#include "vectordofload.h"
 #include <sstream>
+#include <typeinfo>
+
 
 Model::Model()
 {
