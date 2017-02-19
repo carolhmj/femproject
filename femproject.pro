@@ -35,7 +35,8 @@ DEPENDPATH += \
     src/interface \
     src/defines \
     src/math \
-    src/io
+    src/io \
+    src/interface/shaders
 
 INCLUDEPATH += \
     src/ \
@@ -67,7 +68,8 @@ SOURCES += src/interface/main.cpp\
     src/physics/loads/loadcomponent.cpp \
     src/physics/loads/beampontualload.cpp \
     src/physics/loads/beamdistributedload.cpp \
-    src/physics/loads/nodeload.cpp
+    src/physics/loads/nodeload.cpp \
+    src/interface/glwidget.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -90,6 +92,14 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/loads/loadtype.h \
     src/physics/loads/beampontualload.h \
     src/physics/loads/beamdistributedload.h \
-    src/physics/loads/nodeload.h
+    src/physics/loads/nodeload.h \
+    src/interface/glwidget.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES += \
+    src/interface/shaders/vertexshader.vert \
+    src/interface/shaders/fragmentshader.frag
+
+RESOURCES += \
+    src/resources.qrc

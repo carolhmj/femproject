@@ -2,6 +2,8 @@
 #include "projectdefines.h"
 #include <sstream>
 
+#include <sstream>
+
 LoadComponent::LoadComponent(double fx, double fy, double mz)
 {
     values = std::vector<double>({fx,fy,mz});
@@ -42,7 +44,7 @@ string LoadComponent::printInfo()
 {
     std::stringstream ss;
     for (int i = 0; i < values.size(); i++) {
-        ss << "value [" << values[i] << "] type [" << (int)types[i] << "]" << endl;
+        ss << "value [" << values[i] << "] type [" << static_cast<int>(types[i]) << "]" << endl;
     }
     return ss.str();
 }

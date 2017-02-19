@@ -2,6 +2,8 @@
 #include "projectdefines.h"
 #include <sstream>
 
+#include <sstream>
+
 BeamPontualLoad::BeamPontualLoad()
 {
 
