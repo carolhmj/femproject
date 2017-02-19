@@ -34,15 +34,5 @@ LoadComponent NodeLoad::getComponents() const
     return components;
 }
 
-LoadComponent NodeLoad::getComponents() const
-{
-    return components;
-}
-
-void NodeLoad::setComponents(const LoadComponent &value)
-{
-    components = value;
-}
-
 
 

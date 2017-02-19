@@ -4,4 +4,3 @@ ElementLoad::ElementLoad()
 {
 
 }
-

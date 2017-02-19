@@ -18,10 +18,13 @@ public:
     string printInfo() override;
 
 private:
-    double startDistance;
-    double endDistance;
+
     LoadComponent startComponents;
+    double startDistance;
+
     LoadComponent endComponents;
+    double endDistance;
+
     BeamElement3D *element;
 };
 

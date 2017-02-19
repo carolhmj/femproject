@@ -11,7 +11,8 @@ class ElementLoad : public Load
 public:
     ElementLoad();
     //Transform the load in equivalent nodal loads
-    virtual std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair>> transformToNodalLoads();
+    virtual std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair>> transformToNodalLoads() = 0;
+    virtual string printInfo() = 0;
 };
 
 #endif // ELEMENTLOAD_H

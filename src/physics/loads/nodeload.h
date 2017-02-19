@@ -8,7 +8,14 @@
 #include <vector>
 #include <utility>
 
-typedef std::pair<double, LoadType> ComponentAddPair;
+struct ComponentAddPair {
+    double value;
+    LoadType type;
+    ComponentAddPair(double value, LoadType type) {
+        this->value = value;
+        this->type = type;
+    }
+};
 
 //Class represents a nodal load. Has the associated node and the load components
 class NodeLoad : public Load

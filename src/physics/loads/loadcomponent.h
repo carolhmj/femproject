@@ -12,7 +12,7 @@
 class LoadComponent
 {
 public:
-    LoadComponent();
+    LoadComponent() = default;
     //2D constructor
     LoadComponent(double fx, double fy, double mz);
     //3D constructor
