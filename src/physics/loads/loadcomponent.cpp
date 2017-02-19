@@ -4,6 +4,8 @@
 
 #include <sstream>
 
+#include <sstream>
+
 LoadComponent::LoadComponent(double fx, double fy, double mz)
 {
     values = std::vector<double>({fx,fy,mz});

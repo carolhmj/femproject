@@ -11,11 +11,11 @@ CoordinateSystem::CoordinateSystem(Vector3d _x, Vector3d _y, Vector3d _z) :
 
 }
 
-CoordinateSystem* CoordinateSystem::getSystemFromPoints(Vector3d eye, Vector3d at, Vector3d up)
+CoordinateSystem* CoordinateSystem::getSystemFromPoints(Vector3d p1, Vector3d p2, Vector3d up)
 {
     Vector3d x, y, z;
-    x = (at - eye).normalized();
-    z = x.cross(up - eye).normalized();
+    x = (p2 - p1).normalized();
+    z = x.cross(up - p1).normalized();
     y = z.cross(x);
     return new CoordinateSystem(x,y,z);
 }

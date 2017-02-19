@@ -3,10 +3,13 @@
 
 VectorDOFLoad::VectorDOFLoad()
 {
+<<<<<<< HEAD
 <<<<<<< e6991e04dda80ae3cc347b2ec0729652f02330b6
     type = LoadType::NODE_LOAD;
 =======
 >>>>>>> Parte gráfica com modern OpenGL
+=======
+>>>>>>> f7489d678f097a56ccb135574329280a408d85aa
 }
 
 VectorDOFLoad::VectorDOFLoad(VectorDOF *_vectordof, VectorXd _values)
@@ -14,10 +17,13 @@ VectorDOFLoad::VectorDOFLoad(VectorDOF *_vectordof, VectorXd _values)
     assert(_values.rows() == _vectordof->getValues().rows());
     vdof = _vectordof;
     values = _values;
+<<<<<<< HEAD
 <<<<<<< e6991e04dda80ae3cc347b2ec0729652f02330b6
     type = LoadType::NODE_LOAD;
 =======
 >>>>>>> Parte gráfica com modern OpenGL
+=======
+>>>>>>> f7489d678f097a56ccb135574329280a408d85aa
 }
 
 std::string VectorDOFLoad::printInfo()
