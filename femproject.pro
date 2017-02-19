@@ -61,8 +61,6 @@ SOURCES += src/interface/main.cpp\
     src/physics/load.cpp \
     src/physics/loads/elementload.cpp \
     src/physics/models/model.cpp \
-    src/physics/loads/dofload.cpp \
-    src/physics/loads/vectordofload.cpp \
     src/math/coordinatesystem.cpp \
     src/physics/elements/beamelement3d.cpp \
     src/io/input.cpp \
@@ -85,8 +83,6 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/load.h \
     src/physics/loads/elementload.h \
     src/physics/models/model.h \
-    src/physics/loads/dofload.h \
-    src/physics/loads/vectordofload.h \
     src/math/coordinatesystem.h \
     src/physics/elements/beamelement3d.h \
     src/io/input.h \
