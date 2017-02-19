@@ -63,3 +63,8 @@ std::string BeamDistributedLoad::printInfo()
     return ss.str();
 }
 
+Element *BeamDistributedLoad::getElement()
+{
+    return element;
+}
+

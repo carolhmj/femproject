@@ -21,6 +21,7 @@ public:
 
     //Debug infromation
     string printInfo() override;
+    Element* getElement() override;
 
 private:
     //Force components

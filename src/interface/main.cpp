@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
     vector<NodeLoad*> e8lvector = {e8n2load, e8n4load};
     vector<ElementLoad*> e8levector;
 
-    Model *m8 = new Model("Simple Beam 3D Test 2", e8nvector, e8bvector, e8lvector, e8levectorai);
+    Model *m8 = new Model("Simple Beam 3D Test 2", e8nvector, e8bvector, e8lvector, e8levector);
     std::cout << m8->printInfo();
 
     MatrixXd e8globalMatrix = m8->getGlobalStiffnessMatrix();

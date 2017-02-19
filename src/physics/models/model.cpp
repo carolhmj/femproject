@@ -126,6 +126,22 @@ vector<Element *> Model::getElements() const
     return elements;
 }
 
+void Model::transformElementLoadsToNodeLoads()
+{
+    for (ElementLoad*& load : elementLoads) {
+        //Get left and right addition components
+        auto addCompVector = load->transformToNodalLoads();
+        //Search for the nodal load that corresponds to the left and right nodes of the element
+        for (NodeLoad*& nload : nodeLoads) {
+            if (nload->getNode() == load->getElement()->getNode(0)) {
+                nload->addToComponents(addCompVector.first);
+            } else if (nload->getNode() == load->getElement()->getNode(1)) {
+                nload->addToComponents(addCompVector.second);
+            }
+        }
+    }
+}
+
 unsigned int Model::getTotalDOFNumber()
 {
     unsigned int totDof = 0;

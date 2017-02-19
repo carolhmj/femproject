@@ -17,6 +17,8 @@ public:
 
     string printInfo() override;
 
+    Element* getElement() override;
+
 private:
 
     LoadComponent startComponents;

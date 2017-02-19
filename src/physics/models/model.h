@@ -25,6 +25,7 @@ public:
     void addElement(Element *_element);
     vector<Node *> getNodes() const;
     vector<Element *> getElements() const;
+    void transformElementLoadsToNodeLoads();
     unsigned int getTotalDOFNumber();
     unsigned int getTotalFreeDOFNumber();
 private:

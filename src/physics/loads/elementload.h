@@ -3,6 +3,7 @@
 #include "load.h"
 #include "nodeload.h"
 #include "loadcomponent.h"
+#include "element.h"
 #include <vector>
 
 //Classe que representa uma força aplicada em um elemento
@@ -12,6 +13,7 @@ public:
     ElementLoad();
     //Transform the load in equivalent nodal loads
     virtual std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair>> transformToNodalLoads() = 0;
+    virtual Element* getElement() = 0;
     virtual string printInfo() = 0;
 };
 

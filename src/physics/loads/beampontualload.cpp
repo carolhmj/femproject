@@ -34,3 +34,8 @@ std::string BeamPontualLoad::printInfo()
     return ss.str();
 }
 
+Element *BeamPontualLoad::getElement()
+{
+    return element;
+}
+
