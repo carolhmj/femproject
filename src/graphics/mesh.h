@@ -36,6 +36,7 @@ private:
     vector<GLuint> indices;
     //OpenGL array objects
     QOpenGLBuffer vertexBuffer;
+    QOpenGLBuffer elementBuffer;
     QOpenGLVertexArrayObject vao;
 };
 
