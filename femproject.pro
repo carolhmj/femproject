@@ -69,7 +69,8 @@ SOURCES += src/interface/main.cpp\
     src/physics/loads/beampontualload.cpp \
     src/physics/loads/beamdistributedload.cpp \
     src/physics/loads/nodeload.cpp \
-    src/interface/glwidget.cpp
+    src/interface/glwidget.cpp \
+    src/graphics/mesh.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -93,7 +94,8 @@ HEADERS  += src/interface/mainwindow.h \
     src/physics/loads/beampontualload.h \
     src/physics/loads/beamdistributedload.h \
     src/physics/loads/nodeload.h \
-    src/interface/glwidget.h
+    src/interface/glwidget.h \
+    src/graphics/mesh.h
 
 FORMS    += mainwindow.ui
 
