@@ -30,16 +30,16 @@ class Mesh
 {
 public:
     Mesh();
-    Mesh(vector<Vertex> vertices, vector<GLuint> indices);
-    void initializeMesh(QOpenGLShaderProgram program);
-    void drawMesh();
+    Mesh(vector<Vertex> _vertices, vector<GLuint> _indices);
+    void initializeMesh();
+    void drawMesh(QOpenGLShaderProgram *program);
 private:
     //Mesh objects
     vector<Vertex> vertices;
     vector<GLuint> indices;
     //OpenGL array objects
-    QOpenGLBuffer vertexBuffer;
-    QOpenGLBuffer elementBuffer;
+    QOpenGLBuffer vertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    QOpenGLBuffer elementBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     QOpenGLVertexArrayObject vao;
     QOpenGLShaderProgram program;
 };

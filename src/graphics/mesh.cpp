@@ -1,47 +1,61 @@
 #include "mesh.h"
 #include <stddef.h>
+#include <QOpenGLFunctions>
+#include <QDebug>
 
 Mesh::Mesh()
 {
 
 }
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices)
+Mesh::Mesh(vector<Vertex> _vertices, vector<GLuint> _indices) :
+    vertices(_vertices),
+    indices(_indices)
 {
-    this->vertices = vertices;
-    this->indices = indices;
 }
 
-void Mesh::initializeMesh(QOpenGLShaderProgram program)
+void Mesh::initializeMesh()
 {
-    this->program = program;
+    QOpenGLFunctions glFuncs(QOpenGLContext::currentContext());
 
     vao.create();
     vao.bind();
 
     vertexBuffer.create();
     if (!vertexBuffer.bind()) {
+        qDebug() << "Could not bind vertex buffer to context\n";
         return;
     }
-    vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    vertexBuffer.allocate(vertices.data(), sizeof(vertices.data()));
 
-    program.enableAttributeArray(0);
-    program.setAttributeBuffer(0, GL_DOUBLE, offsetof(Vertex, position), 3, sizeof(Vertex));
-    program.enableAttributeArray(1);
-    program.setAttributeBuffer(0, GL_FLOAT, offsetof(Vertex, color), 3, sizeof(Vertex));
+    elementBuffer.create();
+    if (!elementBuffer.bind()) {
+        qDebug() << "Could not bind element buffer to context\n";
+        return;
+    }
+
+    vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    vertexBuffer.allocate(vertices.data(), sizeof(Vertex) * vertices.size());
+
+    elementBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    elementBuffer.allocate(indices.data(), sizeof(GLuint) * indices.size());
+
+    glFuncs.glEnableVertexAttribArray(0);
+    glFuncs.glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(Vertex),
+                                (GLvoid*)0);
+    glFuncs.glEnableVertexAttribArray(1);
+    glFuncs.glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                                (GLvoid*)offsetof(Vertex, color));
 
     vao.release();
 }
 
-void Mesh::drawMesh()
+void Mesh::drawMesh(QOpenGLShaderProgram *program)
 {
-    program.bind();
+    program->bind();
     {
         vao.bind();
-        glDrawElements(GL_TRIANGLES, vertices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
         vao.release();
     }
-    program.release();
+    program->release();
 }
-
