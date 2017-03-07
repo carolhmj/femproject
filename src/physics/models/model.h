@@ -8,6 +8,7 @@
 #include "nodeload.h"
 #include "elementload.h"
 //Library includes
+#include <QOpenGLShaderProgram>
 
 //Classe que representa um modelo. Possui os elementos e os nós do modelo
 class Model
@@ -19,7 +20,7 @@ public:
     //Calcula a matriz global a partir das matrizes locais de cada elemento
     MatrixXd getGlobalStiffnessMatrix();
     VectorXd getGlobalForceVector();
-    void draw();
+    void draw(QOpenGLShaderProgram *program);
     string printInfo();
     void addNode(Node *_node);
     void addElement(Element *_element);

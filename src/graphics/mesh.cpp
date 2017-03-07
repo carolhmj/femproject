@@ -5,7 +5,6 @@
 
 Mesh::Mesh()
 {
-
 }
 
 Mesh::Mesh(vector<Vertex> _vertices, vector<GLuint> _indices) :
@@ -16,7 +15,7 @@ Mesh::Mesh(vector<Vertex> _vertices, vector<GLuint> _indices) :
 
 void Mesh::initializeMesh()
 {
-    QOpenGLFunctions glFuncs(QOpenGLContext::currentContext());
+    initializeOpenGLFunctions();
 
     vao.create();
     vao.bind();
@@ -39,19 +38,20 @@ void Mesh::initializeMesh()
     elementBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
     elementBuffer.allocate(indices.data(), sizeof(GLuint) * indices.size());
 
-    glFuncs.glEnableVertexAttribArray(0);
-    glFuncs.glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(Vertex),
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(Vertex),
                                 (GLvoid*)0);
-    glFuncs.glEnableVertexAttribArray(1);
-    glFuncs.glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
                                 (GLvoid*)offsetof(Vertex, color));
 
     vao.release();
 }
 
-void Mesh::drawMesh(QOpenGLShaderProgram *program)
+void Mesh::drawMesh(QOpenGLShaderProgram *program, Matrix4f modelMatrix)
 {
     program->bind();
+    glUniform4fv(program->uniformLocation("model"), 1, modelMatrix.data());
     {
         vao.bind();
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

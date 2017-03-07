@@ -77,7 +77,7 @@ MatrixXd BeamElement2D::getLocalStiffnessMatrix()
     return transformToGlobalMatrix * K  * transformToGlobalMatrix.transpose();
 }
 
-void BeamElement2D::draw()
+void BeamElement2D::draw(QOpenGLShaderProgram *program)
 {
     Vector3d pos;
     glBegin(GL_LINES);

@@ -12,6 +12,17 @@ Section::Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, dou
 
 }
 
+Section::Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, double _inArea, Mesh *mesh) :
+    inertiaMomentY(_inMomY), inertiaMomentZ(_inMomZ), polarInertiaMoment(_polarInertiaMoment), area(_inArea)
+{
+    this->mesh = mesh;
+}
+
+void Section::draw(QOpenGLShaderProgram *program, Matrix4f modelMatrix)
+{
+    mesh->drawMesh(program, modelMatrix);
+}
+
 string Section::printInfo()
 {
     std::stringstream ss;

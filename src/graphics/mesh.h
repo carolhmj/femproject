@@ -8,6 +8,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLFunctions>
 
 using namespace Eigen;
 using std::vector;
@@ -26,13 +27,13 @@ struct Vertex {
 /* A class representing a triangle mesh. Has an
  * array of vertices and of triangle indices
  */
-class Mesh
+class Mesh : protected QOpenGLFunctions
 {
 public:
     Mesh();
     Mesh(vector<Vertex> _vertices, vector<GLuint> _indices);
     void initializeMesh();
-    void drawMesh(QOpenGLShaderProgram *program);
+    void drawMesh(QOpenGLShaderProgram *program, Eigen::Matrix4f modelMatrix = Eigen::Matrix4f::Identity());
 private:
     //Mesh objects
     vector<Vertex> vertices;

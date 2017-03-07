@@ -15,7 +15,7 @@ public:
     BeamElement3D(Node *_n1, Node *_n2,Vector3d upPoint, Section *_section, Material *_material);
     string printInfo();
     MatrixXd getLocalStiffnessMatrix() override;
-    void draw() override;
+    void draw(QOpenGLShaderProgram *program) override;
     double getLength() const;
 
 protected:

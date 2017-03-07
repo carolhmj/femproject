@@ -38,17 +38,6 @@ private:
     Camera camera;
 
     // OpenGL State Information    
-    QOpenGLBuffer m_vertex;
-    QOpenGLBuffer m_vertex2;
-    QOpenGLBuffer m_color;
-    QOpenGLBuffer m_color2;
-    QOpenGLBuffer m_vertex3;
-    QOpenGLBuffer m_color3;
-    QOpenGLBuffer m_index3;
-
-    QOpenGLVertexArrayObject m_object;
-    QOpenGLVertexArrayObject m_object2;
-    QOpenGLVertexArrayObject m_object3;
     QOpenGLShaderProgram *m_program;
 
     //Information for models

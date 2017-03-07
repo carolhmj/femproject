@@ -151,8 +151,31 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     return T*K*T.transpose();
 }
 
-void BeamElement3D::draw()
+void BeamElement3D::draw(QOpenGLShaderProgram *program)
 {
+    /* Pra desenhar o elemento, primeiro vamos desenhar as seções
+     * transversais. Para isso, temos que colocá-las nas posições
+     * corretas em relação ao sistema de coordenadas do elemento.
+     * Então, vamos criar uma matriz que muda do sistema local da
+     * seção, para o sistema do elemento
+     */
+
+    //Essa matrix rotaciona para o sistema correto de coordenadas.
+    Eigen::Matrix3f rotationPartial = coordinate->transformTo().cast<float>();
+
+    Eigen::Matrix4f rotationFull = Matrix4f::Identity();
+    rotationFull.block<3,3>(0,0) = rotationPartial;
+
+    //Essa matrix translada para a origem - ou seja, o nó direito
+    Node *leftNode = nodes[0];
+    Vector3d origin = leftNode->getPosition();
+    Eigen::Affine3f translationAffine(Eigen::Translation3f(origin[0], origin[1], origin[2]));
+    Matrix4f translation = translationAffine.matrix();
+
+    Matrix4f transformation = translation * rotationFull;
+
+    //Desenha primeira seção
+    section->draw(program, transformation);
 
 }
 double BeamElement3D::getLength() const

@@ -80,13 +80,13 @@ VectorXd Model::getGlobalForceVector()
     return f;
 }
 
-void Model::draw()
+void Model::draw(QOpenGLShaderProgram *program)
 {
     for (Node*& n : nodes){
         n->draw();
     }
     for (Element*& e : elements) {
-        e->draw();
+        e->draw(program);
     }
 }
 

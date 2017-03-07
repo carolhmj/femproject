@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <Eigen/Core>
+#include <QOpenGLShaderProgram>
 
 using std::vector;
 using std::string;
@@ -20,7 +21,7 @@ public:
     Element();
     //Funções reimplementadas por cada elemento
     virtual MatrixXd getLocalStiffnessMatrix() = 0;
-    virtual void draw() = 0;
+    virtual void draw(QOpenGLShaderProgram *program) = 0;
 
     //Funções gerais
     virtual string printInfo();
