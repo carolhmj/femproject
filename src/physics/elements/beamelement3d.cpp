@@ -7,25 +7,20 @@ BeamElement3D::BeamElement3D()
 }
 
 BeamElement3D::BeamElement3D(CoordinateSystem *_coordinate, Section *_section, Material *_material) :
-    coordinate(_coordinate), section(_section)
+    coordinate(_coordinate)
 {
+    section = _section;
     numNodes = 2;
     material = _material;
 }
 
-BeamElement3D::BeamElement3D(Node *_n1, Node *_n2, Vector3d upPoint, Section *_section, Material *_material) :
-    section(_section)
+BeamElement3D::BeamElement3D(Node *_n1, Node *_n2, Vector3d upPoint, Section *_section, Material *_material)
 {
+    section = _section;
     nodes.push_back(_n1);
     nodes.push_back(_n2);
     length = (_n2->getPosition() - _n1->getPosition()).norm();
     numNodes = 2;
-    //Encontra o sistema de coordenadas do elemento
-//    Vector3d x, y, z;
-//    x = (_n2->getPosition() - _n1->getPosition()).normalized();
-//    z = x.cross(upPoint - _n1->getPosition()).normalized();
-//    y = z.cross(x);
-//    coordinate = new CoordinateSystem(x,y,z);
     coordinate = CoordinateSystem::getSystemFromPoints(_n1->getPosition(), _n2->getPosition(), upPoint);
     material = _material;
 }
@@ -160,23 +155,51 @@ void BeamElement3D::draw(QOpenGLShaderProgram *program)
      * seção, para o sistema do elemento
      */
 
+    /* Criamos um sistema de coordenadas para a seção, no qual o eixo x do
+     * elemento é o eixo z da seção, e o eixo z do elemento é o eixo x da
+     * seção
+     */
+
+    CoordinateSystem newCoords(coordinate->getZ(), coordinate->getY(), coordinate->getX());
+
     //Essa matrix rotaciona para o sistema correto de coordenadas.
-    Eigen::Matrix3f rotationPartial = coordinate->transformTo().cast<float>();
+//    Eigen::Matrix3f rotationPartial = coordinate->transformTo().cast<float>();
+    Eigen::Matrix3f rotationPartial = newCoords.transformTo().cast<float>();
 
     Eigen::Matrix4f rotationFull = Matrix4f::Identity();
     rotationFull.block<3,3>(0,0) = rotationPartial;
 
-    //Essa matrix translada para a origem - ou seja, o nó direito
+    std::cout << "Rotation matrix:\n" << rotationFull << "\n";
+
+    //Essa matrix translada para a origem - ou seja, o nó esquerdo
     Node *leftNode = nodes[0];
     Vector3d origin = leftNode->getPosition();
     Eigen::Affine3f translationAffine(Eigen::Translation3f(origin[0], origin[1], origin[2]));
     Matrix4f translation = translationAffine.matrix();
 
+    std::cout << "Translation matrix left node:\n" << translation << "\n";
+
     Matrix4f transformation = translation * rotationFull;
+
+    std::cout << "Transformation matrix:\n" << transformation << "\n";
 
     //Desenha primeira seção
     section->draw(program, transformation);
 
+    //Essa matrix translada para o fim do eixo do nó - ou seja, o nó direito
+    Node *rightNode = nodes[1];
+    origin = rightNode->getPosition();
+    translationAffine = Eigen::Affine3f(Eigen::Translation3f(origin[0], origin[1], origin[2]));
+    translation = translationAffine.matrix();
+
+    std::cout << "Translation matrix right node:\n" << translation << "\n";
+
+    transformation = translation * rotationFull;
+
+    std::cout << "Transformation matrix:\n" << transformation << "\n";
+
+    //Desenha segunda seção
+    section->draw(program, transformation);
 }
 double BeamElement3D::getLength() const
 {

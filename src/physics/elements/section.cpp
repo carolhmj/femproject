@@ -16,6 +16,7 @@ Section::Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, dou
     inertiaMomentY(_inMomY), inertiaMomentZ(_inMomZ), polarInertiaMoment(_polarInertiaMoment), area(_inArea)
 {
     this->mesh = mesh;
+    this->mesh->initializeMesh();
 }
 
 void Section::draw(QOpenGLShaderProgram *program, Matrix4f modelMatrix)
