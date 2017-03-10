@@ -12,7 +12,7 @@
 using namespace Eigen;
 
 struct Camera {
-    Vector3f eye = Vector3f(0,0,5);
+    Vector3f eye = Vector3f(0,0,10);
     Vector3f at = Vector3f(0,0,0);
     Vector3f up = Vector3f(0,1,0);
     float fov = 45.0f;
