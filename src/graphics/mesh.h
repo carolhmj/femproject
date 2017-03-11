@@ -18,7 +18,7 @@ using std::vector;
 struct Vertex {
     Vector3d position;
     Vector3f color;
-    Vertex(Vector3d position, Vector3f color) {
+    Vertex(Vector3d position, Vector3f color = Vector3f(1.0,1.0,1.0)) {
         this->position = position;
         this->color = color;
     }
@@ -34,6 +34,10 @@ public:
     Mesh(vector<Vertex> _vertices, vector<GLuint> _indices);
     void initializeMesh(/*QOpenGLFunctions *_glFuncs*/);
     void drawMesh(QOpenGLShaderProgram *program, Matrix4f modelMatrix = Matrix4f::Identity());
+    vector<Vertex> getVertices() const;
+
+    vector<GLuint> getIndices() const;
+
 private:
     //Mesh objects
     vector<Vertex> vertices;

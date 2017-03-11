@@ -200,6 +200,60 @@ void BeamElement3D::draw(QOpenGLShaderProgram *program)
 
     //Desenha segunda seção
     section->draw(program, transformation);
+
+    /* Agora, temos que desenhar as seções conectadas umas nas outras.
+     * Uma possibilidade é criar uma nova seção com os vértices da primeira seção e os da segunda
+     * rotacionados
+     */
+
+    std::vector<Vertex> beamVertices;
+    std::vector<GLuint> beamIndices;
+
+    std::vector<GLuint> sectionIndices = section->getMesh()->getIndices();
+
+    for (auto& vertex : section->getMesh()->getVertices()) {
+        beamVertices.push_back(vertex);
+    }
+
+    int biSize = beamIndices.size();
+    for (int i = 0; i <= biSize; i = i+3) {
+        beamIndices.push_back(sectionIndices[i]);
+        beamIndices.push_back(sectionIndices[i]+biSize);
+        beamIndices.push_back(sectionIndices[i+1]+biSize);
+        beamIndices.push_back(sectionIndices[i+1]);
+
+        beamIndices.push_back(sectionIndices[i]);
+        beamIndices.push_back(sectionIndices[i]+biSize);
+        beamIndices.push_back(sectionIndices[i+2]+biSize);
+        beamIndices.push_back(sectionIndices[i+2]);
+
+        beamIndices.push_back(sectionIndices[i+1]);
+        beamIndices.push_back(sectionIndices[i+1]+biSize);
+        beamIndices.push_back(sectionIndices[i+2]+biSize);
+        beamIndices.push_back(sectionIndices[i+2]);
+    }
+
+    Vector3d posDiff = rightNode->getPosition() - leftNode->getPosition();
+    Affine3f difference (Translation3f(posDiff(0),posDiff(1), posDiff(2)));
+    Matrix4f translationMDiff = difference.matrix();
+    Matrix4f transformDiff = translationMDiff;
+
+    for (auto& vertex : section->getMesh()->getVertices()) {
+        Vector4d vPos4 = Vector4d(vertex.position(0), vertex.position(1), vertex.position(2), 1.0);
+        Vector4d vPosTrans = transformDiff.cast<double>() * vPos4;
+        Vector3d transformed(vPosTrans(0), vPosTrans(1), vPosTrans(2));
+        beamVertices.push_back(Vertex(transformed, vertex.color));
+    }
+
+    origin = leftNode->getPosition();
+    translationAffine = Eigen::Affine3f(Eigen::Translation3f(origin[0], origin[1], origin[2]));
+    translation = translationAffine.matrix();
+
+    transformation = translation * rotationFull;
+
+    Mesh *meshBeam = new Mesh(beamVertices, beamIndices);
+    meshBeam->initializeMesh();
+    meshBeam->drawMesh(program, transformation);
 }
 double BeamElement3D::getLength() const
 {

@@ -32,6 +32,17 @@ std::vector<Vertex> meshVertices3 = {
     Vertex(Vector3d(0.25,0.25,0),Vector3f(0.0f,0.f,1.0f))
 };
 
+std::vector<Vertex> meshVertices4 = {
+    Vertex(Vector3d(-1.0,-1.0,1.0), Vector3f(1.f,0.f,0.f)),
+    Vertex(Vector3d(1.0,-1.0,1.0), Vector3f(0.f,1.f,0.f)),
+    Vertex(Vector3d(1.0,1.0,1.0), Vector3f(0.f,0.f,1.f)),
+    Vertex(Vector3d(-1.0,1.0,1.0), Vector3f(1.f,1.f,1.f)),
+    Vertex(Vector3d(-1.0,-1.0,-1.0), Vector3f(1.f,0.f,0.f)),
+    Vertex(Vector3d(1.0,-1.0,-1.0), Vector3f(0.f,1.f,0.f)),
+    Vertex(Vector3d(1.0,1.0,-1.0), Vector3f(0.f,0.f,1.f)),
+    Vertex(Vector3d(-1.0,1.0,-1.0), Vector3f(1.f,1.f,1.f))
+};
+
 std::vector<GLuint> meshIndices = {
     0,1,5,
     0,2,1,
@@ -40,10 +51,31 @@ std::vector<GLuint> meshIndices = {
     0,5,4,
 };
 
+std::vector<GLuint> meshIndices2 = {
+    // front
+    0, 1, 2,
+    2, 3, 0,
+    // top
+    3, 2, 6,
+    6, 7, 3,
+    // back
+    7, 6, 5,
+    5, 4, 7,
+    // bottom
+    4, 5, 1,
+    1, 0, 4,
+    // left
+    4, 0, 3,
+    3, 7, 4,
+    // right
+    1, 5, 6,
+    6, 2, 1
+};
+
 Mesh *meshTest = new Mesh(meshVertices, meshIndices);
 Mesh *meshTest2 = new Mesh(meshVertices2, meshIndices);
 Mesh *meshTest3 = new Mesh(meshVertices3, meshIndices);
-
+Mesh *meshTest4 = new Mesh(meshVertices4, meshIndices2);
 
 BeamElement3D *e8b1, *e8b2, *e8b3;
 
@@ -111,9 +143,9 @@ void GLWidget::initializeGL(){
 
     //I = 0.036m^-4, A = 0.12m^2
     //Material: Concreto http://www.concrete.org.uk/fingertips-nuggets.asp?cmd=display&id=525
-    Section *e8s1 = new Section(0, 0.0036, 0, 0.12, meshTest);
-    Section *e8s2 = new Section(0, 0.0036, 0, 0.12, meshTest2);
-    Section *e8s3 = new Section(0, 0.0036, 0, 0.12, meshTest3);
+    Section *e8s1 = new Section(0, 0.0036, 0, 0.12, meshTest4);
+    Section *e8s2 = new Section(0, 0.0036, 0, 0.12, meshTest4);
+    Section *e8s3 = new Section(0, 0.0036, 0, 0.12, meshTest4);
     Material *e8m = new Material(10E9, 0, 0, 0);
 
     e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(0,1,0),  e8s1, e8m);

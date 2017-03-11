@@ -70,6 +70,11 @@ void Section::setPolarInertiaMoment(double value)
 {
     polarInertiaMoment = value;
 }
+Mesh *Section::getMesh() const
+{
+    return mesh;
+}
+
 
 
 

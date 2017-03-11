@@ -70,3 +70,13 @@ void Mesh::drawMesh(QOpenGLShaderProgram *program, Matrix4f modelMatrix)
     }
     program->release();
 }
+vector<Vertex> Mesh::getVertices() const
+{
+    return vertices;
+}
+vector<GLuint> Mesh::getIndices() const
+{
+    return indices;
+}
+
+

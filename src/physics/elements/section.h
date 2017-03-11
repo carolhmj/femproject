@@ -32,6 +32,8 @@ public:
     double getPolarInertiaMoment() const;
     void setPolarInertiaMoment(double value);
 
+    Mesh *getMesh() const;
+
 private:
     //Momento de inércia em torno do eixo Y
     double inertiaMomentY;
