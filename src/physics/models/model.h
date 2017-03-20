@@ -21,6 +21,7 @@ public:
     MatrixXd getGlobalStiffnessMatrix();
     VectorXd getGlobalForceVector();
     void draw(QOpenGLShaderProgram *program);
+    void drawLines(QOpenGLShaderProgram *program);
     string printInfo();
     void addNode(Node *_node);
     void addElement(Element *_element);

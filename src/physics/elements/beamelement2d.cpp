@@ -85,5 +85,10 @@ void BeamElement2D::draw(QOpenGLShaderProgram *program)
             pos = n->getPosition();
             glVertex3f(pos[0], pos[1], pos[2]);
         }
-    glEnd();
+        glEnd();
+}
+
+void BeamElement2D::drawLines(QOpenGLShaderProgram *program)
+{
+
 }

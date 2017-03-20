@@ -255,6 +255,47 @@ void BeamElement3D::draw(QOpenGLShaderProgram *program)
     meshBeam->initializeMesh();
     meshBeam->drawMesh(program, transformation);
 }
+
+//O drawLines não se importa com a seção transversal do elemento, apenas desenha como se fosse uma linha
+void BeamElement3D::drawLines(QOpenGLShaderProgram *program)
+{
+    Node *leftNode = nodes[0], *rightNode = nodes[1];
+    float t = length / 20.0;
+
+    Vector3d posLeft = leftNode->getPosition(), posRight = rightNode->getPosition();
+    Vector3d x = coordinate->getX(), y = coordinate->getY(), z = coordinate->getZ();
+
+    //Criar os pontos do paralelepípedo
+    std::vector<Vertex> vertices;
+
+    vertices.push_back(Vertex(posLeft + t*y + t*z));
+    vertices.push_back(Vertex(posLeft + t*y - t*z));
+    vertices.push_back(Vertex(posLeft - t*y - t*z));
+    vertices.push_back(Vertex(posLeft - t*y + t*z));
+
+    vertices.push_back(Vertex(posRight + t*y + t*z));
+    vertices.push_back(Vertex(posRight + t*y - t*z));
+    vertices.push_back(Vertex(posRight - t*y - t*z));
+    vertices.push_back(Vertex(posRight - t*y + t*z));
+
+    //Criar as faces do paralelepípedo
+    std::vector<GLuint> indices = {1,2,4,
+                                   2,3,4, //Esquerda
+                                   2,1,5,
+                                   2,5,6, //Topo
+                                   2,3,6,
+                                   6,3,7, //Trás
+                                   3,4,8,
+                                   3,8,7, //Baixo
+                                   1,4,5,
+                                   5,4,8, //Frente
+                                   6,5,8,
+                                   6,8,7  //Direita
+                                  };
+    Mesh *elementMesh = new Mesh(vertices, indices);
+    elementMesh->initializeMesh();
+    elementMesh->drawMesh(program);
+}
 double BeamElement3D::getLength() const
 {
     return length;

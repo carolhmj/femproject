@@ -16,6 +16,7 @@ public:
     string printInfo();
     MatrixXd getLocalStiffnessMatrix() override;
     void draw(QOpenGLShaderProgram *program) override;
+    void drawLines(QOpenGLShaderProgram *program) override;
     double getLength() const;
 
 protected:

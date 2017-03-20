@@ -22,6 +22,7 @@ public:
     //Funções reimplementadas por cada elemento
     virtual MatrixXd getLocalStiffnessMatrix() = 0;
     virtual void draw(QOpenGLShaderProgram *program) = 0;
+    virtual void drawLines(QOpenGLShaderProgram *program) = 0;
 
     //Funções gerais
     virtual string printInfo();

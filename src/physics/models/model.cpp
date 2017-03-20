@@ -90,6 +90,13 @@ void Model::draw(QOpenGLShaderProgram *program)
     }
 }
 
+void Model::drawLines(QOpenGLShaderProgram *program)
+{
+    for (Element*& e : elements) {
+        e->drawLines(program);
+    }
+}
+
 std::string Model::printInfo()
 {
     std::stringstream ss;

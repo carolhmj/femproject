@@ -188,11 +188,14 @@ void GLWidget::paintGL(){
     m_program->release();
 
     // Render using our shader
-    e8b1->draw(m_program);
-    e8b2->draw(m_program);
-    e8b3->draw(m_program);
+//    e8b1->draw(m_program);
+//    e8b2->draw(m_program);
+//    e8b3->draw(m_program);
 //    meshTest->drawMesh(m_program, test);
 //    meshTest2->drawMesh(m_program);
+    e8b1->drawLines(m_program);
+    e8b2->drawLines(m_program);
+    e8b3->drawLines(m_program);
 }
 
 Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up)
