@@ -19,6 +19,10 @@ public:
     void drawLines(QOpenGLShaderProgram *program) override;
     double getLength() const;
 
+    Section *getSection() const;
+
+    CoordinateSystem *getCoordinate() const;
+
 protected:
     CoordinateSystem *coordinate;
     Section *section;

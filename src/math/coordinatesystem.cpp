@@ -6,7 +6,7 @@ CoordinateSystem::CoordinateSystem()
 }
 
 CoordinateSystem::CoordinateSystem(Vector3d _x, Vector3d _y, Vector3d _z) :
-    x(_x), y(_y), z(_z)
+    x(_x.normalized()), y(_y.normalized()), z(_z.normalized())
 {
 
 }
@@ -16,7 +16,7 @@ CoordinateSystem* CoordinateSystem::getSystemFromPoints(Vector3d p1, Vector3d p2
     Vector3d x, y, z;
     x = (p2 - p1).normalized();
     z = x.cross(up - p1).normalized();
-    y = z.cross(x);
+    y = z.cross(x).normalized();
     return new CoordinateSystem(x,y,z);
 }
 

@@ -152,6 +152,13 @@ void GLWidget::initializeGL(){
     e8b2 = new BeamElement3D(e8n2, e8n3, Vector3d(0,1,0),  e8s2, e8m);
     e8b3 = new BeamElement3D(e8n3, e8n4, Vector3d(0,1,0),  e8s3, e8m);
 
+    std::cout << "COORDENADAS DO ELEMENTO 1\n";
+    std::cout << e8b1->getCoordinate()->printInfo();
+    std::cout << "COORDENADAS DO ELEMENTO 2\n";
+    std::cout << e8b2->getCoordinate()->printInfo();
+    std::cout << "COORDENADAS DO ELEMENTO 3\n";
+    std::cout << e8b3->getCoordinate()->printInfo();
+
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -229,4 +236,53 @@ Matrix4f GLWidget::perspective(float fovY, float aspect, float near, float far)
   mProjectionMatrix(3,3) = 0;
 
   return mProjectionMatrix;
+}
+
+void GLWidget::keyPressEvent(QKeyEvent *event)
+{
+    float moveCameraFactor = 0.5;
+    Vector3f moveVector;
+
+    switch (event->key()) {
+    case Qt::Key_Up:
+        moveVector = Vector3f(0,1,0);
+        break;
+    case Qt::Key_Down:
+        moveVector = Vector3f(0,-1,0);
+        break;
+    case Qt::Key_Left:
+        moveVector = Vector3f(-1,0,0);
+        break;
+    case Qt::Key_Right:
+        moveVector = Vector3f(1,0,0);
+        break;
+    }
+
+    camera.at += moveCameraFactor * moveVector;
+    event->accept();
+}
+
+void GLWidget::mousePressEvent(QMouseEvent *event)
+{
+
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+
+}
+
+void GLWidget::wheelEvent(QWheelEvent *event)
+{
+    //Get scroll steps
+    int numDegrees = event->delta() / 8;
+    int numSteps = numDegrees / 15;
+
+    //Move the camera's z-position according to number of steps
+    float moveCameraFactor = 0.5;
+    Vector3f z(0,0,1);
+
+    camera.at += moveCameraFactor * numSteps * z;
+
+    event->accept();
 }

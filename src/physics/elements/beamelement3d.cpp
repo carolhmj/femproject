@@ -263,35 +263,36 @@ void BeamElement3D::drawLines(QOpenGLShaderProgram *program)
     float t = length / 20.0;
 
     Vector3d posLeft = leftNode->getPosition(), posRight = rightNode->getPosition();
-    Vector3d x = coordinate->getX(), y = coordinate->getY(), z = coordinate->getZ();
+    Vector3d y = coordinate->getY(), z = coordinate->getZ();
 
     //Criar os pontos do paralelepípedo
     std::vector<Vertex> vertices;
 
-    vertices.push_back(Vertex(posLeft + t*y + t*z));
-    vertices.push_back(Vertex(posLeft + t*y - t*z));
-    vertices.push_back(Vertex(posLeft - t*y - t*z));
-    vertices.push_back(Vertex(posLeft - t*y + t*z));
+    vertices.push_back(Vertex(posLeft + t*y + t*z, Vector3f(1,0,0)));
+    vertices.push_back(Vertex(posLeft + t*y - t*z, Vector3f(0,1,0)));
+    vertices.push_back(Vertex(posLeft - t*y - t*z, Vector3f(0,0,1)));
+    vertices.push_back(Vertex(posLeft - t*y + t*z, Vector3f(1,1,0)));
 
-    vertices.push_back(Vertex(posRight + t*y + t*z));
-    vertices.push_back(Vertex(posRight + t*y - t*z));
-    vertices.push_back(Vertex(posRight - t*y - t*z));
+    vertices.push_back(Vertex(posRight + t*y + t*z, Vector3f(0,1,1)));
+    vertices.push_back(Vertex(posRight + t*y - t*z, Vector3f(1,0,1)));
+    vertices.push_back(Vertex(posRight - t*y - t*z, Vector3f(0.5,0.5,0.5)));
     vertices.push_back(Vertex(posRight - t*y + t*z));
 
     //Criar as faces do paralelepípedo
-    std::vector<GLuint> indices = {1,2,4,
-                                   2,3,4, //Esquerda
-                                   2,1,5,
-                                   2,5,6, //Topo
-                                   2,3,6,
-                                   6,3,7, //Trás
-                                   3,4,8,
-                                   3,8,7, //Baixo
-                                   1,4,5,
-                                   5,4,8, //Frente
-                                   6,5,8,
-                                   6,8,7  //Direita
+    std::vector<GLuint> indices = {0,1,3,
+                                   1,2,3, //Esquerda
+                                   1,0,4,
+                                   1,4,5, //Topo
+                                   1,2,5,
+                                   5,2,6, //Trás
+                                   2,3,7,
+                                   2,7,6, //Baixo
+                                   0,3,4,
+                                   4,3,7, //Frente
+                                   5,4,7,
+                                   5,7,6  //Direita
                                   };
+
     Mesh *elementMesh = new Mesh(vertices, indices);
     elementMesh->initializeMesh();
     elementMesh->drawMesh(program);
@@ -300,5 +301,15 @@ double BeamElement3D::getLength() const
 {
     return length;
 }
+Section *BeamElement3D::getSection() const
+{
+    return section;
+}
+CoordinateSystem *BeamElement3D::getCoordinate() const
+{
+    return coordinate;
+}
+
+
 
 
