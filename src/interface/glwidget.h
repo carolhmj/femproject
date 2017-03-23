@@ -11,14 +11,20 @@
 #include <QWheelEvent>
 #include <models/model.h>
 #include <Eigen/Core>
+#include <sstream>
 
 using namespace Eigen;
 
 struct Camera {
     Vector3f eye = Vector3f(0,0,3);
-    Vector3f at = Vector3f(0,0,0);
+    Vector3f front = Vector3f(0,0,-1);
     Vector3f up = Vector3f(0,1,0);
     float fov = 45.0f;
+    std::string printInfo() {
+        std::stringstream info;
+        info << "fov: " << fov << "\neye: " << eye.transpose() << "\nfront: " << front.transpose() << "up: " << up.transpose() << "\n";
+        return info.str();
+    }
 };
 
 class GLWidget : public QOpenGLWidget,

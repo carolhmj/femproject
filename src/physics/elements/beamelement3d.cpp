@@ -260,7 +260,10 @@ void BeamElement3D::draw(QOpenGLShaderProgram *program)
 void BeamElement3D::drawLines(QOpenGLShaderProgram *program)
 {
     Node *leftNode = nodes[0], *rightNode = nodes[1];
-    float t = length / 20.0;
+//    float t = length / 20.0;
+    //Preciso encontrar um valor bom pra isso!
+    //(Talvez o maior comprimento dividido por algum valor)
+    float t = 0.02f;
 
     Vector3d posLeft = leftNode->getPosition(), posRight = rightNode->getPosition();
     Vector3d y = coordinate->getY(), z = coordinate->getZ();

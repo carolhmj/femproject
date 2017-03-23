@@ -171,7 +171,7 @@ void GLWidget::paintGL(){
 
     //Generate Model, View and Projection matrices and send them to our shader
     Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
-    Matrix4f view = lookAt(camera.eye, camera.at, camera.up);
+    Matrix4f view = lookAt(camera.eye, camera.eye + camera.front, camera.up);
 //    Matrix4f projection = Matrix4f::Identity();
 //    Matrix4f view = Matrix4f::Identity();
     Matrix4f model = Matrix4f::Identity();
@@ -240,26 +240,31 @@ Matrix4f GLWidget::perspective(float fovY, float aspect, float near, float far)
 
 void GLWidget::keyPressEvent(QKeyEvent *event)
 {
+    std::cout << "\nRegistered key press\n";
     float moveCameraFactor = 0.5;
     Vector3f moveVector;
 
     switch (event->key()) {
     case Qt::Key_Up:
-        moveVector = Vector3f(0,1,0);
+        moveVector = camera.up;
         break;
     case Qt::Key_Down:
-        moveVector = Vector3f(0,-1,0);
+        moveVector = -camera.up;
         break;
     case Qt::Key_Left:
-        moveVector = Vector3f(-1,0,0);
+        moveVector = -camera.front.cross(camera.up).normalized();
         break;
     case Qt::Key_Right:
-        moveVector = Vector3f(1,0,0);
+        moveVector = camera.front.cross(camera.up).normalized();
         break;
     }
 
-    camera.at += moveCameraFactor * moveVector;
+    camera.eye += moveCameraFactor * moveVector;
+    std::cout << camera.printInfo();
+    std::flush(std::cout);
+
     event->accept();
+    this->repaint();
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -274,15 +279,32 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
+    std::cout << "\nRegistered wheel eventio\n";
     //Get scroll steps
     int numDegrees = event->delta() / 8;
     int numSteps = numDegrees / 15;
+    std::cout << "numDegrees: " << numDegrees << " numSteps: " << numSteps << "\n";
 
-    //Move the camera's z-position according to number of steps
-    float moveCameraFactor = 0.5;
-    Vector3f z(0,0,1);
+//    //Move the camera's z-position according to number of steps
+    float zoomFactor = 1.0f;
+//    Vector3f z(0,0,1);
 
-    camera.at += moveCameraFactor * numSteps * z;
+//    camera.eye += moveCameraFactor * numSteps * z;
+
+    //Move the camera field of view according to number of steps
+    if (camera.fov >= 1.0f && camera.fov <= 45.0f) {
+        camera.fov -= zoomFactor * numSteps;
+    }
+    if (camera.fov < 1.0f) {
+        camera.fov = 1.0f;
+    }
+    if (camera.fov > 45.0f) {
+        camera.fov = 45.0f;
+    }
+
+    std::cout << camera.printInfo();
+    std::flush(std::cout);
 
     event->accept();
+    this->repaint();
 }
