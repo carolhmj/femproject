@@ -166,8 +166,6 @@ void GLWidget::initializeGL(){
     vector<ElementLoad*> e8levector;
 
     m8 = new Model("Simple Beam 3D Test 2", e8nvector, e8bvector, e8lvector, e8levector);
-//    std::cout << m8->printInfo();
-
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -180,10 +178,7 @@ void GLWidget::paintGL(){
 
     //Generate Model, View and Projection matrices and send them to our shader
     Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
-//    Matrix4f view = lookAt(camera.eye, camera.eye + camera.front, camera.up);
     Matrix4f view = lookAt(camera.eye, camera.at, camera.up);
-//    Matrix4f projection = Matrix4f::Identity();
-//    Matrix4f view = Matrix4f::Identity();
     Matrix4f model = Matrix4f::Identity();
 
     m_program->bind();
@@ -205,25 +200,22 @@ void GLWidget::paintGL(){
     m_program->release();
 
     // Render using our shader
-//    e8b1->drawLines(m_program);
-//    e8b2->drawLines(m_program);
-//    e8b3->drawLines(m_program);
     m8->drawLines(m_program);
 }
 
 Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up)
 {
-  Matrix4f mViewMatrix = Matrix4f::Zero();
+    Matrix4f mViewMatrix = Matrix4f::Zero();
 
-  Matrix3f R;
-  R.col(2) = (position-target).normalized();
-  R.col(0) = up.cross(R.col(2)).normalized();
-  R.col(1) = R.col(2).cross(R.col(0));
-  mViewMatrix.topLeftCorner<3,3>() = R.transpose();
-  mViewMatrix.topRightCorner<3,1>() = -R.transpose() * position;
-  mViewMatrix(3,3) = 1.0f;
+    Matrix3f R;
+    R.col(2) = (position-target).normalized();
+    R.col(0) = up.cross(R.col(2)).normalized();
+    R.col(1) = R.col(2).cross(R.col(0));
+    mViewMatrix.topLeftCorner<3,3>() = R.transpose();
+    mViewMatrix.topRightCorner<3,1>() = -R.transpose() * position;
+    mViewMatrix(3,3) = 1.0f;
 
-  return mViewMatrix;
+    return mViewMatrix;
 }
 
 Matrix4f GLWidget::perspective(float fovY, float aspect, float near, float far)
@@ -252,21 +244,32 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
     switch (event->key()) {
     case Qt::Key_Up:
-        moveVector = camera.up;
+        moveVector = -camera.up;
+        camera.eye += moveCameraFactor * moveVector;
+        camera.at += moveCameraFactor * moveVector;
         break;
     case Qt::Key_Down:
-        moveVector = -camera.up;
+        moveVector = camera.up;
+        camera.eye += moveCameraFactor * moveVector;
+        camera.at += moveCameraFactor * moveVector;
         break;
     case Qt::Key_Left:
-        moveVector = -camera.getDirection().cross(camera.up).normalized();
+        moveVector = camera.getDirection().cross(camera.up).normalized();
+        camera.eye += moveCameraFactor * moveVector;
+        camera.at += moveCameraFactor * moveVector;
         break;
     case Qt::Key_Right:
-        moveVector = camera.getDirection().cross(camera.up).normalized();
+        moveVector = -camera.getDirection().cross(camera.up).normalized();
+        camera.eye += moveCameraFactor * moveVector;
+        camera.at += moveCameraFactor * moveVector;
+        break;
+    case Qt::Key_0:
+        camera.rotateYPos(90);
+        break;
+    case Qt::Key_9:
+        camera.rotateYPos(-90);
         break;
     }
-
-    camera.eye += moveCameraFactor * moveVector;
-    camera.at += moveCameraFactor * moveVector;
 
     std::cout << camera.printInfo();
     std::flush(std::cout);
@@ -278,6 +281,9 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
     mouse.pressed = true;
+
+    mouse.lastX = event->x();
+    mouse.lastY = event->y();
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
@@ -287,12 +293,18 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         float deltaX = event->x() - mouse.lastX,
               deltaY = event->y() - mouse.lastY;
 
+        mouse.lastX = event->x();
+        mouse.lastY = event->y();
+
+
+
         this->repaint();
+
+    } else {
+
+        mouse.lastX = event->x();
+        mouse.lastY = event->y();
     }
-
-    mouse.lastX = event->x();
-    mouse.lastY = event->y();
-
 }
 void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 {

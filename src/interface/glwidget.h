@@ -12,6 +12,7 @@
 #include <models/model.h>
 #include <Eigen/Core>
 #include <sstream>
+#include <Eigen/Geometry>
 
 using namespace Eigen;
 
@@ -34,6 +35,17 @@ struct Camera {
 
     Vector3f getDirection() {
         return (at - eye).normalized();
+    }
+
+    void rotateYPos(float angle) {
+        Transform<float, 3, Affine> rotationY;
+        rotationY = AngleAxisf(angle * M_PI/180.0f, up);
+
+        Vector4f eye4 = rotationY.matrix() * Vector4f(eye(0), eye(1), eye(2), 1.0f);
+        Vector4f at4 = rotationY.matrix() * Vector4f(at(0), at(1), at(2), 1.0f);
+
+        eye = eye4.head<3>();
+        at = at4.head<3>();
     }
 };
 
