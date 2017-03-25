@@ -129,19 +129,19 @@ void GLWidget::initializeGL(){
     std::vector<RestrictionTypes> e8n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n2equations = {1,2,-1,-1,-1,3};
     VectorDOF *e8n2v = new VectorDOF(e8n2types, e8n2restrictions, e8n2equations);
-    Node *e8n2 = new Node(Vector3d(2.0,1.0,0.0), e8n2v);
+    Node *e8n2 = new Node(Vector3d(0.0,2.0,0.0), e8n2v);
 
     std::vector<VectorDOFType> e8n3types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> e8n3restrictions = {RestrictionTypes::FREE, RestrictionTypes::FIXED,  RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n3equations = {4,-1,-1,-1,-1,5};
     VectorDOF *e8n3v = new VectorDOF(e8n3types, e8n3restrictions, e8n3equations);
-    Node *e8n3 = new Node(Vector3d(4.0,2.0,0.0), e8n3v);
+    Node *e8n3 = new Node(Vector3d(2.0,2.0,0.0), e8n3v);
 
     std::vector<VectorDOFType> e8n4types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> e8n4restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n4equations = {6,7,-1,-1,-1,8};
     VectorDOF *e8n4v = new VectorDOF(e8n4types, e8n4restrictions, e8n4equations);
-    Node *e8n4 = new Node(Vector3d(8.0,4.0,0.0), e8n4v);
+    Node *e8n4 = new Node(Vector3d(2.0,0.0,0.0), e8n4v);
     vector<Node*> e8nvector = {e8n1, e8n2, e8n3, e8n4};
 
     //I = 0.036m^-4, A = 0.12m^2
@@ -151,9 +151,9 @@ void GLWidget::initializeGL(){
     Section *e8s3 = new Section(0, 0.0036, 0, 0.12, meshTest4);
     Material *e8m = new Material(10E9, 0, 0, 0);
 
-    e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(0,1,0),  e8s1, e8m);
+    e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(-1,0,0),  e8s1, e8m);
     e8b2 = new BeamElement3D(e8n2, e8n3, Vector3d(0,1,0),  e8s2, e8m);
-    e8b3 = new BeamElement3D(e8n3, e8n4, Vector3d(0,1,0),  e8s3, e8m);
+    e8b3 = new BeamElement3D(e8n3, e8n4, Vector3d(1,0,0),  e8s3, e8m);
     vector<Element*> e8bvector = {e8b1, e8b2, e8b3};
 
     //Loads
@@ -267,6 +267,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
     camera.eye += moveCameraFactor * moveVector;
     camera.at += moveCameraFactor * moveVector;
+
     std::cout << camera.printInfo();
     std::flush(std::cout);
 
