@@ -47,6 +47,17 @@ struct Camera {
         eye = eye4.head<3>();
         at = at4.head<3>();
     }
+
+    void rotateXPos(float angle) {
+        Transform<float, 3, Affine> rotationX;
+        rotationX = AngleAxisf(angle * M_PI/180.0f, up.cross(getDirection()).normalized());
+
+        Vector4f eye4 = rotationX.matrix() * Vector4f(eye(0), eye(1), eye(2), 1.0f);
+        Vector4f at4 = rotationX.matrix() * Vector4f(at(0), at(1), at(2), 1.0f);
+
+        eye = eye4.head<3>();
+        at = at4.head<3>();
+    }
 };
 
 struct Mouse {
@@ -79,7 +90,7 @@ private:
     void keyPressEvent(QKeyEvent *event); //Translation control
     void mousePressEvent(QMouseEvent *event); //Rotation control
     void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event); //Rotation control
+    void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event); //Zoom control
 
     //World camera

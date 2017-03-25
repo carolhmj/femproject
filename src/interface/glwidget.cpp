@@ -7,33 +7,6 @@
 #include "beamelement3d.h"
 
 std::vector<Vertex> meshVertices = {
-    Vertex(Vector3d(0,0,0),Vector3f(1.f,0.f,0.f)),
-    Vertex(Vector3d(0,0.5,0),Vector3f(1.f,0.f,0.f)),
-    Vertex(Vector3d(-0.25,0.25,0),Vector3f(1.f,0.f,0.f)),
-    Vertex(Vector3d(-0.25,-0.25,0),Vector3f(1.f,0.f,0.f)),
-    Vertex(Vector3d(0.25,-0.25,0),Vector3f(1.f, 0.f,0.f)),
-    Vertex(Vector3d(0.25,0.25,0),Vector3f(1.0f,0.f,0.0f))
-};
-
-std::vector<Vertex> meshVertices2 = {
-    Vertex(Vector3d(0,0,0),Vector3f(0.f,1.f,0.f)),
-    Vertex(Vector3d(0,0.5,0),Vector3f(0.f,1.f,0.f)),
-    Vertex(Vector3d(-0.25,0.25,0),Vector3f(0.f,1.f,0.f)),
-    Vertex(Vector3d(-0.25,-0.25,0),Vector3f(0.f,1.f,0.f)),
-    Vertex(Vector3d(0.25,-0.25,0),Vector3f(0.f,1.f,0.f)),
-    Vertex(Vector3d(0.25,0.25,0),Vector3f(0.0f,1.f,0.0f))
-};
-
-std::vector<Vertex> meshVertices3 = {
-    Vertex(Vector3d(0,0,0),Vector3f(0.f,0.f,1.f)),
-    Vertex(Vector3d(0,0.5,0),Vector3f(0.f,0.f,1.f)),
-    Vertex(Vector3d(-0.25,0.25,0),Vector3f(0.f,0.f,1.f)),
-    Vertex(Vector3d(-0.25,-0.25,0),Vector3f(0.f,0.f,1.f)),
-    Vertex(Vector3d(0.25,-0.25,0),Vector3f(0.f,0.f,1.f)),
-    Vertex(Vector3d(0.25,0.25,0),Vector3f(0.0f,0.f,1.0f))
-};
-
-std::vector<Vertex> meshVertices4 = {
     Vertex(Vector3d(-1.0,-1.0,1.0), Vector3f(1.f,0.f,0.f)),
     Vertex(Vector3d(1.0,-1.0,1.0), Vector3f(0.f,1.f,0.f)),
     Vertex(Vector3d(1.0,1.0,1.0), Vector3f(0.f,0.f,1.f)),
@@ -45,14 +18,6 @@ std::vector<Vertex> meshVertices4 = {
 };
 
 std::vector<GLuint> meshIndices = {
-    0,1,5,
-    0,2,1,
-    0,3,2,
-    0,4,3,
-    0,5,4,
-};
-
-std::vector<GLuint> meshIndices2 = {
     // front
     0, 1, 2,
     2, 3, 0,
@@ -74,16 +39,12 @@ std::vector<GLuint> meshIndices2 = {
 };
 
 Mesh *meshTest = new Mesh(meshVertices, meshIndices);
-Mesh *meshTest2 = new Mesh(meshVertices2, meshIndices);
-Mesh *meshTest3 = new Mesh(meshVertices3, meshIndices);
-Mesh *meshTest4 = new Mesh(meshVertices4, meshIndices2);
 
 BeamElement3D *e8b1, *e8b2, *e8b3;
 Model *m8;
 
 GLWidget::GLWidget(QWidget *parent) :
     QOpenGLWidget(parent), mouse(this->width()/2, this->height()/2) {
-//    mouse = Mouse();
 }
 
 GLWidget::~GLWidget() {
@@ -113,12 +74,8 @@ void GLWidget::initializeGL(){
 
     }
 
-//    QOpenGLFunctions *glFuncs = QOpenGLContext::currentContext()->functions();
-
-//    meshTest->initializeMesh(glFuncs);
-
     meshTest->initializeMesh();
-    meshTest2->initializeMesh();
+
     std::vector<VectorDOFType> e8n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
     std::vector<RestrictionTypes> e8n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n1equations = {-1,-1,-1,-1,-1,0};
@@ -146,9 +103,9 @@ void GLWidget::initializeGL(){
 
     //I = 0.036m^-4, A = 0.12m^2
     //Material: Concreto http://www.concrete.org.uk/fingertips-nuggets.asp?cmd=display&id=525
-    Section *e8s1 = new Section(0, 0.0036, 0, 0.12, meshTest4);
-    Section *e8s2 = new Section(0, 0.0036, 0, 0.12, meshTest4);
-    Section *e8s3 = new Section(0, 0.0036, 0, 0.12, meshTest4);
+    Section *e8s1 = new Section(0, 0.0036, 0, 0.12, meshTest);
+    Section *e8s2 = new Section(0, 0.0036, 0, 0.12, meshTest);
+    Section *e8s3 = new Section(0, 0.0036, 0, 0.12, meshTest);
     Material *e8m = new Material(10E9, 0, 0, 0);
 
     e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(-1,0,0),  e8s1, e8m);
@@ -220,20 +177,20 @@ Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, cons
 
 Matrix4f GLWidget::perspective(float fovY, float aspect, float near, float far)
 {
-  Matrix4f mProjectionMatrix = Matrix4f::Zero();
+    Matrix4f mProjectionMatrix = Matrix4f::Zero();
 
-  float theta = fovY*0.5;
-  float range = far - near;
-  float invtan = 1./std::tan(theta);
+    float theta = fovY*0.5;
+    float range = far - near;
+    float invtan = 1./std::tan(theta);
 
-  mProjectionMatrix(0,0) = invtan / aspect;
-  mProjectionMatrix(1,1) = invtan;
-  mProjectionMatrix(2,2) = -(near + far) / range;
-  mProjectionMatrix(3,2) = -1;
-  mProjectionMatrix(2,3) = -2 * near * far / range;
-  mProjectionMatrix(3,3) = 0;
+    mProjectionMatrix(0,0) = invtan / aspect;
+    mProjectionMatrix(1,1) = invtan;
+    mProjectionMatrix(2,2) = -(near + far) / range;
+    mProjectionMatrix(3,2) = -1;
+    mProjectionMatrix(2,3) = -2 * near * far / range;
+    mProjectionMatrix(3,3) = 0;
 
-  return mProjectionMatrix;
+    return mProjectionMatrix;
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *event)
@@ -263,10 +220,16 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         camera.eye += moveCameraFactor * moveVector;
         camera.at += moveCameraFactor * moveVector;
         break;
-    case Qt::Key_0:
+    case Qt::Key_W:
+        camera.rotateXPos(90);
+        break;
+    case Qt::Key_S:
+        camera.rotateXPos(-90);
+        break;
+    case Qt::Key_D:
         camera.rotateYPos(90);
         break;
-    case Qt::Key_9:
+    case Qt::Key_A:
         camera.rotateYPos(-90);
         break;
     }
@@ -281,9 +244,6 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
     mouse.pressed = true;
-
-    mouse.lastX = event->x();
-    mouse.lastY = event->y();
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
@@ -313,7 +273,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
-    std::cout << "\nRegistered wheel eventio\n";
+    std::cout << "\nRegistered wheel event\n";
     //Get scroll steps
     int numDegrees = event->delta() / 8;
     int numSteps = numDegrees / 15;
@@ -328,8 +288,8 @@ void GLWidget::wheelEvent(QWheelEvent *event)
     if (camera.fov < 1.0f) {
         camera.fov = 1.0f;
     }
-    if (camera.fov > 45.0f) {
-        camera.fov = 45.0f;
+    if (camera.fov > 90.0f) {
+        camera.fov = 90.0f;
     }
 
     std::cout << camera.printInfo();

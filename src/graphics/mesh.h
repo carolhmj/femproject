@@ -9,20 +9,10 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions>
+#include "vertex.h"
 
 using namespace Eigen;
 using std::vector;
-
-//Simple class representing a vertice
-//Has position and color information, for now
-struct Vertex {
-    Vector3d position;
-    Vector3f color;
-    Vertex(Vector3d position, Vector3f color = Vector3f(1.0,1.0,1.0)) {
-        this->position = position;
-        this->color = color;
-    }
-};
 
 /* A class representing a triangle mesh. Has an
  * array of vertices and of triangle indices
@@ -47,7 +37,6 @@ private:
     QOpenGLBuffer elementBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     QOpenGLVertexArrayObject vao;
     QOpenGLShaderProgram program;
-//    QOpenGLFunctions *glFuncs;
     QOpenGLFunctions glFuncs;
 };
 

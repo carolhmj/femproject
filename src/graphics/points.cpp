@@ -1,20 +1,23 @@
-#include "mesh.h"
-#include <stddef.h>
-#include <QOpenGLFunctions>
-#include <QDebug>
+#include "points.h"
 #include <iostream>
 
-Mesh::Mesh()
+Points::Points()
 {
+
 }
 
-Mesh::Mesh(vector<Vertex> _vertices, vector<GLuint> _indices) :
-    vertices(_vertices),
-    indices(_indices)
+Points::Points(std::vector<Vertex> vertices) :
+    vertices(vertices)
 {
+
 }
 
-void Mesh::initializeMesh()
+void Points::addPoint(Vertex vertex)
+{
+    vertices.push_back(vertex);
+}
+
+void Points::initializePoints()
 {
     if (!QOpenGLContext::currentContext()) {
         std::cout << "No current OpenGL context" << std::endl;
@@ -31,17 +34,8 @@ void Mesh::initializeMesh()
         return;
     }
 
-    elementBuffer.create();
-    if (!elementBuffer.bind()) {
-        qDebug() << "Could not bind element buffer to context\n";
-        return;
-    }
-
     vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
     vertexBuffer.allocate(vertices.data(), sizeof(Vertex) * vertices.size());
-
-    elementBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    elementBuffer.allocate(indices.data(), sizeof(GLuint) * indices.size());
 
     glFuncs.glEnableVertexAttribArray(0);
     glFuncs.glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, sizeof(Vertex),
@@ -53,24 +47,14 @@ void Mesh::initializeMesh()
     vao.release();
 }
 
-void Mesh::drawMesh(QOpenGLShaderProgram *program, Matrix4f modelMatrix)
+void Points::drawPoints(QOpenGLShaderProgram *program)
 {
     program->bind();
-    glFuncs.glUniformMatrix4fv(program->uniformLocation("model"), 1, GL_FALSE, modelMatrix.data());
     {
         vao.bind();
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_POINTS, 0, vertices.size());
         vao.release();
     }
     program->release();
 }
-vector<Vertex> Mesh::getVertices() const
-{
-    return vertices;
-}
-vector<GLuint> Mesh::getIndices() const
-{
-    return indices;
-}
-
 
