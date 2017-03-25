@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <cmath>
 #include <Eigen/Dense>
+#include <Eigen/Geometry>
 #include "graphics/mesh.h"
 #include "beamelement3d.h"
 
@@ -78,9 +79,11 @@ Mesh *meshTest3 = new Mesh(meshVertices3, meshIndices);
 Mesh *meshTest4 = new Mesh(meshVertices4, meshIndices2);
 
 BeamElement3D *e8b1, *e8b2, *e8b3;
+Model *m8;
 
 GLWidget::GLWidget(QWidget *parent) :
-    QOpenGLWidget(parent) {
+    QOpenGLWidget(parent), mouse(this->width()/2, this->height()/2) {
+//    mouse = Mouse();
 }
 
 GLWidget::~GLWidget() {
@@ -151,13 +154,19 @@ void GLWidget::initializeGL(){
     e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(0,1,0),  e8s1, e8m);
     e8b2 = new BeamElement3D(e8n2, e8n3, Vector3d(0,1,0),  e8s2, e8m);
     e8b3 = new BeamElement3D(e8n3, e8n4, Vector3d(0,1,0),  e8s3, e8m);
+    vector<Element*> e8bvector = {e8b1, e8b2, e8b3};
 
-    std::cout << "COORDENADAS DO ELEMENTO 1\n";
-    std::cout << e8b1->getCoordinate()->printInfo();
-    std::cout << "COORDENADAS DO ELEMENTO 2\n";
-    std::cout << e8b2->getCoordinate()->printInfo();
-    std::cout << "COORDENADAS DO ELEMENTO 3\n";
-    std::cout << e8b3->getCoordinate()->printInfo();
+    //Loads
+    //Força no nó 2 é de 5000N
+    NodeLoad *e8n2load = new NodeLoad(0.0,-5000.0,0.0,0.0,0.0,0.0, e8n2);
+    //Força no nó 4 é de 3000N
+    NodeLoad* e8n4load = new NodeLoad(0.0,-3000.0,0.0,0.0,0.0,0.0, e8n4);
+
+    vector<NodeLoad*> e8lvector = {e8n2load, e8n4load};
+    vector<ElementLoad*> e8levector;
+
+    m8 = new Model("Simple Beam 3D Test 2", e8nvector, e8bvector, e8lvector, e8levector);
+//    std::cout << m8->printInfo();
 
 }
 
@@ -171,7 +180,8 @@ void GLWidget::paintGL(){
 
     //Generate Model, View and Projection matrices and send them to our shader
     Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
-    Matrix4f view = lookAt(camera.eye, camera.eye + camera.front, camera.up);
+//    Matrix4f view = lookAt(camera.eye, camera.eye + camera.front, camera.up);
+    Matrix4f view = lookAt(camera.eye, camera.at, camera.up);
 //    Matrix4f projection = Matrix4f::Identity();
 //    Matrix4f view = Matrix4f::Identity();
     Matrix4f model = Matrix4f::Identity();
@@ -195,14 +205,10 @@ void GLWidget::paintGL(){
     m_program->release();
 
     // Render using our shader
-//    e8b1->draw(m_program);
-//    e8b2->draw(m_program);
-//    e8b3->draw(m_program);
-//    meshTest->drawMesh(m_program, test);
-//    meshTest2->drawMesh(m_program);
-    e8b1->drawLines(m_program);
-    e8b2->drawLines(m_program);
-    e8b3->drawLines(m_program);
+//    e8b1->drawLines(m_program);
+//    e8b2->drawLines(m_program);
+//    e8b3->drawLines(m_program);
+    m8->drawLines(m_program);
 }
 
 Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up)
@@ -252,14 +258,15 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         moveVector = -camera.up;
         break;
     case Qt::Key_Left:
-        moveVector = -camera.front.cross(camera.up).normalized();
+        moveVector = -camera.getDirection().cross(camera.up).normalized();
         break;
     case Qt::Key_Right:
-        moveVector = camera.front.cross(camera.up).normalized();
+        moveVector = camera.getDirection().cross(camera.up).normalized();
         break;
     }
 
     camera.eye += moveCameraFactor * moveVector;
+    camera.at += moveCameraFactor * moveVector;
     std::cout << camera.printInfo();
     std::flush(std::cout);
 
@@ -269,12 +276,26 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-
+    mouse.pressed = true;
 }
 
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (mouse.pressed) {
+        //Get mouse position difference
+        float deltaX = event->x() - mouse.lastX,
+              deltaY = event->y() - mouse.lastY;
+
+        this->repaint();
+    }
+
+    mouse.lastX = event->x();
+    mouse.lastY = event->y();
+
+}
 void GLWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-
+    mouse.pressed = false;
 }
 
 void GLWidget::wheelEvent(QWheelEvent *event)
@@ -285,11 +306,7 @@ void GLWidget::wheelEvent(QWheelEvent *event)
     int numSteps = numDegrees / 15;
     std::cout << "numDegrees: " << numDegrees << " numSteps: " << numSteps << "\n";
 
-//    //Move the camera's z-position according to number of steps
     float zoomFactor = 1.0f;
-//    Vector3f z(0,0,1);
-
-//    camera.eye += moveCameraFactor * numSteps * z;
 
     //Move the camera field of view according to number of steps
     if (camera.fov >= 1.0f && camera.fov <= 45.0f) {

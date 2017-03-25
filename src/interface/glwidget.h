@@ -17,13 +17,33 @@ using namespace Eigen;
 
 struct Camera {
     Vector3f eye = Vector3f(0,0,3);
-    Vector3f front = Vector3f(0,0,-1);
+    Vector3f at = Vector3f(0,0,0);
     Vector3f up = Vector3f(0,1,0);
     float fov = 45.0f;
+
     std::string printInfo() {
         std::stringstream info;
-        info << "fov: " << fov << "\neye: " << eye.transpose() << "\nfront: " << front.transpose() << "up: " << up.transpose() << "\n";
+        info << "---------- CAMERA ---------------------------------------\n";
+        info << "| fov: " << fov << "|\n";
+        info << "| eye: " << eye.transpose() << "|\n";
+        info << "| at: " << at.transpose() << "|\n";
+        info << "| up: " << up.transpose() << "|\n";
+        info << "----------------------------------------------------------\n";
         return info.str();
+    }
+
+    Vector3f getDirection() {
+        return (at - eye).normalized();
+    }
+};
+
+struct Mouse {
+    bool pressed = false;
+    int lastX;
+    int lastY;
+    Mouse(int lastX, int lastY) {
+        this->lastX = lastX;
+        this->lastY = lastY;
     }
 };
 
@@ -46,11 +66,15 @@ private:
     //Camera control
     void keyPressEvent(QKeyEvent *event); //Translation control
     void mousePressEvent(QMouseEvent *event); //Rotation control
+    void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event); //Rotation control
     void wheelEvent(QWheelEvent *event); //Zoom control
 
     //World camera
     Camera camera;
+
+    //Mouse registering
+    Mouse mouse;
 
     // OpenGL State Information    
     QOpenGLShaderProgram *m_program;
