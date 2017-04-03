@@ -7,6 +7,8 @@
 #include "load.h"
 #include "nodeload.h"
 #include "elementload.h"
+#include "graphics/mesh.h"
+#include "graphics/meshfunctions.h"
 //Library includes
 #include <QOpenGLShaderProgram>
 
@@ -36,6 +38,9 @@ private:
     vector<NodeLoad*> nodeLoads;
     vector<ElementLoad*> elementLoads;
     string name;
+
+    //Drawing element
+    Mesh *nodeMesh = MeshFunctions::Sphere();
 };
 
 #endif // MODEL_H

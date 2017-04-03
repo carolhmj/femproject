@@ -85,6 +85,7 @@ private:
     //Matrix creation
     Matrix4f lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up);
     Matrix4f perspective(float fovY, float aspect, float near, float far);
+    Matrix4f ortho(float left, float right, float bottom, float top, float near, float far);
 
     //Camera control
     void keyPressEvent(QKeyEvent *event); //Translation control

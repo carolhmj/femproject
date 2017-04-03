@@ -71,7 +71,8 @@ SOURCES += src/interface/main.cpp\
     src/physics/loads/nodeload.cpp \
     src/interface/glwidget.cpp \
     src/graphics/mesh.cpp \
-    src/graphics/points.cpp
+    src/graphics/points.cpp \
+    src/graphics/meshfunctions.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -98,7 +99,9 @@ HEADERS  += src/interface/mainwindow.h \
     src/interface/glwidget.h \
     src/graphics/mesh.h \
     src/graphics/points.h \
-    src/graphics/vertex.h
+    src/graphics/vertex.h \
+    src/graphics/meshfunctions.h \
+    src/math/auxfunctions.h
 
 FORMS    += mainwindow.ui
 

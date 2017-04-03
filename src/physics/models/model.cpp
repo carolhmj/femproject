@@ -1,23 +1,23 @@
 #include "model.h"
 #include <sstream>
 #include <typeinfo>
-
+#include <Eigen/Geometry>
 
 Model::Model()
 {
-
+    nodeMesh->initializeMesh();
 }
 
 Model::Model(vector<Node *> _nodes, vector<Element *> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad *> _eloads) :
     nodes(_nodes), elements(_elements), nodeLoads(_nloads), elementLoads(_eloads), name("Model")
 {
-
+    nodeMesh->initializeMesh();
 }
 
 Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad *> _eloads) :
     nodes(_nodes), elements(_elements), nodeLoads(_nloads), elementLoads(_eloads), name(_name)
 {
-
+    nodeMesh->initializeMesh();
 }
 
 
@@ -92,6 +92,14 @@ void Model::draw(QOpenGLShaderProgram *program)
 
 void Model::drawLines(QOpenGLShaderProgram *program)
 {
+    double sizeFactor = 0.05;
+    for (Node*& n : nodes) {
+        Vector3d position = n->getPosition();
+        Affine3f translation = Affine3f(Translation3f(position(0), position(1), position(2)));
+        Affine3f scale = Affine3f(UniformScaling<float>(sizeFactor));
+
+        nodeMesh->drawMesh(program, translation.matrix() * scale.matrix());
+    }
     for (Element*& e : elements) {
         e->drawLines(program);
     }

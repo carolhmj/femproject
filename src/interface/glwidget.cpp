@@ -5,6 +5,7 @@
 #include <Eigen/Geometry>
 #include "graphics/mesh.h"
 #include "beamelement3d.h"
+#include "graphics/meshfunctions.h"
 
 std::vector<Vertex> meshVertices = {
     Vertex(Vector3d(-1.0,-1.0,1.0), Vector3f(1.f,0.f,0.f)),
@@ -38,7 +39,7 @@ std::vector<GLuint> meshIndices = {
     6, 2, 1
 };
 
-Mesh *meshTest = new Mesh(meshVertices, meshIndices);
+Mesh *meshTest = MeshFunctions::Sphere();
 
 BeamElement3D *e8b1, *e8b2, *e8b3;
 Model *m8;
@@ -123,6 +124,7 @@ void GLWidget::initializeGL(){
     vector<ElementLoad*> e8levector;
 
     m8 = new Model("Simple Beam 3D Test 2", e8nvector, e8bvector, e8lvector, e8levector);
+    meshTest->initializeMesh();
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -134,7 +136,9 @@ void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Generate Model, View and Projection matrices and send them to our shader
-    Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
+//    Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
+    Matrix4f projection = ortho(-this->width()/50, this->width()/50, -this->height()/50, this->height()/50, 0.1f, 100.0f);
+//    Matrix4f projection = Matrix4f::Identity();
     Matrix4f view = lookAt(camera.eye, camera.at, camera.up);
     Matrix4f model = Matrix4f::Identity();
 
@@ -158,6 +162,7 @@ void GLWidget::paintGL(){
 
     // Render using our shader
     m8->drawLines(m_program);
+//    meshTest->drawMesh(m_program);
 }
 
 Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up)
@@ -193,11 +198,25 @@ Matrix4f GLWidget::perspective(float fovY, float aspect, float near, float far)
     return mProjectionMatrix;
 }
 
+Matrix4f GLWidget::ortho(float left, float right, float bottom, float top, float near, float far) {
+    Matrix4f mProjectionMatrix = Matrix4f::Identity();
+
+    mProjectionMatrix(0,0) = 2 / (right-left);
+    mProjectionMatrix(1,1) = 2 / (top-bottom);
+    mProjectionMatrix(2,2) = -2 / (far-near);
+    mProjectionMatrix(0,3) = -(right+left) / (right-left);
+    mProjectionMatrix(1,3) = -(top+bottom) / (top-bottom);
+    mProjectionMatrix(2,3) = -(far+near)/ (far-near);
+
+    return mProjectionMatrix;
+}
+
 void GLWidget::keyPressEvent(QKeyEvent *event)
 {
     std::cout << "\nRegistered key press\n";
     float moveCameraFactor = 0.5;
     Vector3f moveVector;
+    float rotAngle = 45;
 
     switch (event->key()) {
     case Qt::Key_Up:
@@ -221,16 +240,16 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         camera.at += moveCameraFactor * moveVector;
         break;
     case Qt::Key_W:
-        camera.rotateXPos(90);
+        camera.rotateXPos(rotAngle);
         break;
     case Qt::Key_S:
-        camera.rotateXPos(-90);
+        camera.rotateXPos(-rotAngle);
         break;
     case Qt::Key_D:
-        camera.rotateYPos(90);
+        camera.rotateYPos(rotAngle);
         break;
     case Qt::Key_A:
-        camera.rotateYPos(-90);
+        camera.rotateYPos(-rotAngle);
         break;
     }
 
