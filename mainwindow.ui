@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>568</width>
-    <height>491</height>
+    <width>696</width>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FEM Program</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="GLWidget" name="canvas" native="true">
       <property name="sizePolicy">
@@ -43,7 +43,27 @@
        <attribute name="title">
         <string>Structure</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout"/>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTreeWidget" name="treeWidget">
+          <property name="headerHidden">
+           <bool>true</bool>
+          </property>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="selectedItemInfo">
+          <property name="title">
+           <string>Selected Item</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="analysisWidget">
        <attribute name="title">
@@ -59,7 +79,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>568</width>
+     <width>696</width>
      <height>23</height>
     </rect>
    </property>
@@ -79,7 +99,7 @@
   <customwidget>
    <class>GLWidget</class>
    <extends>QWidget</extends>
-   <header>glwidget.h</header>
+   <header>glWidget.h</header>
    <container>1</container>
    <slots>
     <slot>doStaticLinearAnalysis()</slot>
