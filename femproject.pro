@@ -72,7 +72,11 @@ SOURCES += src/interface/main.cpp\
     src/interface/glwidget.cpp \
     src/graphics/mesh.cpp \
     src/graphics/points.cpp \
-    src/graphics/meshfunctions.cpp
+    src/graphics/meshfunctions.cpp \
+    src/interface/treewidget.cpp \
+    src/interface/treewidgetroot.cpp \
+    src/interface/treewidgetitem.cpp \
+    src/interface/elementtreewidgetitem.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -101,7 +105,11 @@ HEADERS  += src/interface/mainwindow.h \
     src/graphics/points.h \
     src/graphics/vertex.h \
     src/graphics/meshfunctions.h \
-    src/math/auxfunctions.h
+    src/math/auxfunctions.h \
+    src/interface/treewidget.h \
+    src/interface/treewidgetroot.h \
+    src/interface/treewidgetitem.h \
+    src/interface/elementtreewidgetitem.h
 
 FORMS    += mainwindow.ui
 
