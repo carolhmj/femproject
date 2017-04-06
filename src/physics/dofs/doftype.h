@@ -7,13 +7,18 @@ enum class DOFType {
 };
 
 //Tipos possíveis de graus de liberdade vetoriais
+//enum class VectorDOFType {
+//    FX,
+//    FY,
+//    FZ,
+//    MX,
+//    MY,
+//    MZ
+//};
+
 enum class VectorDOFType {
-    FX,
-    FY,
-    FZ,
-    MX,
-    MY,
-    MZ
+    TRANSLATION,
+    ROTATION
 };
 
 #endif // DOFTYPE
