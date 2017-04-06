@@ -3,6 +3,7 @@
 
 #include <QTreeWidgetItem>
 
+//Represents a root node in a
 class TreeWidgetRoot : public QTreeWidgetItem
 {
 public:
