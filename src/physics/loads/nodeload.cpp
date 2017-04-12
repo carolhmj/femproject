@@ -25,6 +25,12 @@ std::string NodeLoad::printInfo()
     ss << components.printInfo();
     return ss.str();
 }
+
+void NodeLoad::draw(QOpenGLShaderProgram *program)
+{
+    //Aqui vai ficar a função que desenha de acordo com as setas
+}
+
 Node *NodeLoad::getNode() const
 {
     return node;

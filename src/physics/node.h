@@ -8,10 +8,13 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "include/json.hpp"
 
 using std::vector;
 using std::string;
 using std::endl;
+
+using json = nlohmann::json;
 
 using namespace Eigen;
 class Node
@@ -33,5 +36,9 @@ private:
     //Número de graus de liberdade que o nó possui no total
     unsigned int ndofs;
 };
+
+//Funções de conversão pra JSON
+void to_json(json& j, const Node& p);
+void from_json(const json& j, Node& p);
 
 #endif // NODE_H

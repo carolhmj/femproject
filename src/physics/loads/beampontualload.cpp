@@ -30,6 +30,11 @@ std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair> > BeamPon
 
 }
 
+void BeamPontualLoad::draw(QOpenGLShaderProgram *program)
+{
+    //Desenha com uma seta única
+}
+
 std::string BeamPontualLoad::printInfo()
 {
     std::stringstream ss;

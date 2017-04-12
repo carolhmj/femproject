@@ -18,8 +18,9 @@ public:
 
     std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair>> transformToNodalLoads() override;
 
-    string printInfo() override;
+    void draw(QOpenGLShaderProgram *program) override;
 
+    string printInfo() override;
     Element* getElement() override;
 
 private:

@@ -52,6 +52,11 @@ std::pair<std::vector<ComponentAddPair>, std::vector<ComponentAddPair> > BeamDis
     return p;
 }
 
+void BeamDistributedLoad::draw(QOpenGLShaderProgram *program)
+{
+
+}
+
 std::string BeamDistributedLoad::printInfo()
 {
     stringstream ss;

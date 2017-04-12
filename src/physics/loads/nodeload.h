@@ -1,12 +1,15 @@
 #ifndef NODELOAD_H
 #define NODELOAD_H
 
+//Model includes
 #include "load.h"
 #include "node.h"
 #include "loadcomponent.h"
 #include "loadtype.h"
+//Library includes
 #include <vector>
 #include <utility>
+#include <QOpenGLShaderProgram>
 
 struct ComponentAddPair {
     double value;
@@ -26,9 +29,11 @@ public:
     void addToComponents(std::vector<ComponentAddPair> addComponents);
     string printInfo() override;
 
-    //Getter
-    Node *getNode() const;
+    //Drawing
+    void draw(QOpenGLShaderProgram *program);
 
+    //Getters
+    Node *getNode() const;
     LoadComponent getComponents() const;
 
 private:

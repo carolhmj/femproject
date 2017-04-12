@@ -22,8 +22,7 @@ public:
     //Calcula a matriz global a partir das matrizes locais de cada elemento
     MatrixXd getGlobalStiffnessMatrix();
     VectorXd getGlobalForceVector();
-    void draw(QOpenGLShaderProgram *program);
-    void drawLines(QOpenGLShaderProgram *program);
+
     string printInfo();
     void addNode(Node *_node);
     void addElement(Element *_element);
@@ -32,6 +31,10 @@ public:
     void transformElementLoadsToNodeLoads();
     unsigned int getTotalDOFNumber();
     unsigned int getTotalFreeDOFNumber();
+
+    //Drawing functions
+    void draw(QOpenGLShaderProgram *program);
+    void drawLines(QOpenGLShaderProgram *program);
 private:
     vector<Node*> nodes;
     vector<Element*> elements;

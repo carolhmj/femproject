@@ -36,7 +36,7 @@ private:
     QOpenGLBuffer vertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     QOpenGLBuffer elementBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     QOpenGLVertexArrayObject vao;
-    QOpenGLShaderProgram program;
+    //QOpenGLShaderProgram program;
     QOpenGLFunctions glFuncs;
 };
 
