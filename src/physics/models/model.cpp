@@ -5,19 +5,25 @@
 
 Model::Model()
 {
+    #if USE_INTERFACE
     nodeMesh->initializeMesh();
+    #endif
 }
 
 Model::Model(vector<Node *> _nodes, vector<Element *> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad *> _eloads) :
     nodes(_nodes), elements(_elements), nodeLoads(_nloads), elementLoads(_eloads), name("Model")
 {
+    #if USE_INTERFACE
     nodeMesh->initializeMesh();
+    #endif
 }
 
 Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad *> _eloads) :
     nodes(_nodes), elements(_elements), nodeLoads(_nloads), elementLoads(_eloads), name(_name)
 {
+    #if USE_INTERFACE
     nodeMesh->initializeMesh();
+    #endif
 }
 
 
@@ -25,8 +31,7 @@ Model::Model(std::string _name, vector<Node *> _nodes, vector<Element *> _elemen
 MatrixXd Model::getGlobalStiffnessMatrix()
 {
     unsigned int totalDOFNumber = getTotalFreeDOFNumber();
-//    unsigned totalDOFNumber = getTotalDOFNumber();
-    std::cout << "total DOF number: " << totalDOFNumber << endl;
+    std::cout << "[Model::getGlobalStiffnessMatrix()] total DOF number: " << totalDOFNumber << endl;
     MatrixXd G = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
 
    /*
@@ -63,6 +68,42 @@ MatrixXd Model::getGlobalStiffnessMatrix()
     return G;
 }
 
+MatrixXd Model::getGlobalMassMatrix()
+{
+    unsigned int totalDOFNumber = getTotalFreeDOFNumber();
+    std::cout << "[Model::getGlobalMassMatrix()] total DOF number: " << totalDOFNumber << endl;
+    MatrixXd G = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
+
+    //Percorre os elementos
+    for (Element*& element : elements) {
+        MatrixXd M = element->getLocalMassMatrix();
+        for (unsigned i = 0; i < element->getNumNodes(); i++) {
+            Node *node = element->getNode(i);
+            VectorDOF* dofvector = static_cast<VectorDOF*>(node->getDOFByType(DOFType::VECTOR));
+            for (unsigned j = 0; j < dofvector->getTotalDOFNumber(); j++) {
+                //Se o grau de liberdade é livre
+                if (dofvector->getRestrictions()[j] == RestrictionTypes::FREE) {
+                    unsigned localMatrixRowPos = i*dofvector->getTotalDOFNumber() + j;
+                    unsigned dofPosRow = dofvector->getEquationNumber(j);
+                    for (unsigned k = 0; k < element->getNumNodes(); k++) {
+                        Node *node2 = element->getNode(k);
+                        VectorDOF* dofvector2 = static_cast<VectorDOF*>(node2->getDOFByType(DOFType::VECTOR));
+                        for (unsigned l = 0; l < dofvector2->getTotalDOFNumber(); l++) {
+                            if (dofvector2->getRestrictions()[l] == RestrictionTypes::FREE) {
+                                unsigned localMatrixColPos = k*dofvector2->getTotalDOFNumber() + l;
+                                unsigned dofPosCol = dofvector2->getEquationNumber(l);
+                                G(dofPosRow, dofPosCol) += M(localMatrixRowPos,localMatrixColPos);
+                                std::cout << "global matrix("<< dofPosRow << "," << dofPosCol << ") = localMatrix(" << localMatrixRowPos << "," << localMatrixColPos <<") = " << M(localMatrixRowPos, localMatrixColPos) << endl;
+                            }
+                       }
+                    }
+                }
+            }
+        }
+    }
+    return G;
+}
+
 VectorXd Model::getGlobalForceVector()
 {
     VectorXd f = VectorXd::Zero(getTotalFreeDOFNumber());
@@ -80,6 +121,7 @@ VectorXd Model::getGlobalForceVector()
     return f;
 }
 
+#if USE_INTERFACE
 void Model::draw(QOpenGLShaderProgram *program)
 {
     for (Node*& n : nodes){
@@ -104,7 +146,7 @@ void Model::drawLines(QOpenGLShaderProgram *program)
         e->drawLines(program);
     }
 }
-
+#endif
 std::string Model::printInfo()
 {
     std::stringstream ss;

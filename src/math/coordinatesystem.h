@@ -2,7 +2,7 @@
 #define COORDINATESYSTEM_H
 
 #include "projectdefines.h"
-#include <Eigen/Core>
+#include <Eigen/Dense>
 
 using namespace Eigen;
 /* Classe que representa um sistema de coordenadas. Os eixos do sistema são dados em termos do sistema de coordenadas

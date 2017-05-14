@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #include "meshfunctions.h"
 #include <iostream>
 #include "math/auxfunctions.h"
@@ -78,3 +79,4 @@ Mesh *MeshFunctions::Sphere()
     return new Mesh(vertices, indices);
 
 }
+#endif //USE_INTERFACE

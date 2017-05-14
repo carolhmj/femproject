@@ -11,19 +11,18 @@ Section::Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, dou
 {
 
 }
-
+#if USE_INTERFACE
 Section::Section(double _inMomY, double _inMomZ, double _polarInertiaMoment, double _inArea, Mesh *mesh) :
     inertiaMomentY(_inMomY), inertiaMomentZ(_inMomZ), polarInertiaMoment(_polarInertiaMoment), area(_inArea)
 {
     this->mesh = mesh;
     this->mesh->initializeMesh();
 }
-
 void Section::draw(QOpenGLShaderProgram *program, Matrix4f modelMatrix)
 {
     mesh->drawMesh(program, modelMatrix);
 }
-
+#endif
 string Section::printInfo()
 {
     std::stringstream ss;
@@ -70,10 +69,12 @@ void Section::setPolarInertiaMoment(double value)
 {
     polarInertiaMoment = value;
 }
+#if USE_INTERFACE
 Mesh *Section::getMesh() const
 {
     return mesh;
 }
+#endif
 
 
 

@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #include "mesh.h"
 #include <stddef.h>
 #include <QOpenGLFunctions>
@@ -72,5 +73,4 @@ vector<GLuint> Mesh::getIndices() const
 {
     return indices;
 }
-
-
+#endif //USE_INTERFACE

@@ -7,8 +7,10 @@
 #include "load.h"
 #include "nodeload.h"
 #include "elementload.h"
+#if USE_INTERFACE
 #include "graphics/mesh.h"
 #include "graphics/meshfunctions.h"
+#endif //USE_INTERFACE
 //Library includes
 #include <QOpenGLShaderProgram>
 
@@ -19,11 +21,16 @@ public:
     Model();
     Model(vector<Node*> _nodes, vector<Element*> _elements, vector<NodeLoad*> _nloads, vector<ElementLoad*> _eloads);
     Model(string _name, vector<Node*> _nodes, vector<Element*> _elements, vector<NodeLoad *> _nloads, vector<ElementLoad*> _eloads);
-    //Calcula a matriz global a partir das matrizes locais de cada elemento
+    //Calcula a matriz de rigidez global a partir das matrizes locais de cada elemento
     MatrixXd getGlobalStiffnessMatrix();
+    //Calcula a matriz de massa global
+    MatrixXd getGlobalMassMatrix();
+    //Calcula o vetor de forças
     VectorXd getGlobalForceVector();
+#if USE_INTERFACE
     void draw(QOpenGLShaderProgram *program);
     void drawLines(QOpenGLShaderProgram *program);
+#endif
     string printInfo();
     void addNode(Node *_node);
     void addElement(Element *_element);
@@ -38,9 +45,10 @@ private:
     vector<NodeLoad*> nodeLoads;
     vector<ElementLoad*> elementLoads;
     string name;
-
+#if USE_INTERFACE
     //Drawing element
     Mesh *nodeMesh = MeshFunctions::Sphere();
+#endif
 };
 
 #endif // MODEL_H

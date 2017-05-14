@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #ifndef MESHFUNCTIONS
 #define MESHFUNCTIONS
 #include "mesh.h"
@@ -7,4 +8,4 @@ namespace MeshFunctions {
 }
 
 #endif // MESHFUNCTIONS
-
+#endif //USE_INTERFACE
