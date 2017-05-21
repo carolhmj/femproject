@@ -22,6 +22,9 @@ public:
     #endif
     double getLength() const;
 
+    double getMass() const override;
+    double getVolume() const override;
+
     Section *getSection() const;
 
     CoordinateSystem *getCoordinate() const;

@@ -25,6 +25,8 @@ public:
     MatrixXd getGlobalStiffnessMatrix();
     //Calcula a matriz de massa global
     MatrixXd getGlobalMassMatrix();
+    //Calcula a matriz de massa global usando a lumped mass com aproximação da esfera
+    MatrixXd getLumpedMassMatrix();
     //Calcula o vetor de forças
     VectorXd getGlobalForceVector();
 #if USE_INTERFACE

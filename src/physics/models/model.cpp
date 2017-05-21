@@ -92,7 +92,9 @@ MatrixXd Model::getGlobalMassMatrix()
                             if (dofvector2->getRestrictions()[l] == RestrictionTypes::FREE) {
                                 unsigned localMatrixColPos = k*dofvector2->getTotalDOFNumber() + l;
                                 unsigned dofPosCol = dofvector2->getEquationNumber(l);
+                                //Preenchendo a matriz de massa
                                 G(dofPosRow, dofPosCol) += M(localMatrixRowPos,localMatrixColPos);
+                                //Caso o grau de liberdade seja de rotação
                                 std::cout << "global matrix("<< dofPosRow << "," << dofPosCol << ") = localMatrix(" << localMatrixRowPos << "," << localMatrixColPos <<") = " << M(localMatrixRowPos, localMatrixColPos) << endl;
                             }
                        }
@@ -101,6 +103,85 @@ MatrixXd Model::getGlobalMassMatrix()
             }
         }
     }
+    return G;
+}
+
+MatrixXd Model::getLumpedMassMatrix()
+{
+    unsigned int totalDOFNumber = getTotalFreeDOFNumber();
+    std::cout << "[Model::getLumpedMassMatrix()] total DOF number: " << totalDOFNumber << endl;
+    MatrixXd G = MatrixXd::Zero(totalDOFNumber, totalDOFNumber);
+    MatrixXd V = MatrixXd::Zero(totalDOFNumber, 2);
+
+    for (Element*& element : elements) {
+        double elementMass = element->getMass();
+        double elementVolume = element->getVolume();
+
+        for (unsigned i = 0; i < element->getNumNodes(); i++) {
+            Node* node = element->getNode(i);
+            VectorDOF* dofvector = static_cast<VectorDOF*>(node->getDOFByType(DOFType::VECTOR));
+            for (unsigned j = 0; j < dofvector->getTotalDOFNumber(); j++) {
+                if (dofvector->getRestrictions()[j] == RestrictionTypes::FREE) {
+                    unsigned pos = dofvector->getEquationNumber(j);
+                    G(pos, pos) += elementMass / 2.0;
+                    //Pra preencher o rotational DOF, vamos salvar a soma dos volumes num vetor separado
+                    //E também salvar quantos elementos somamos pra encontrar esse volume
+                    if (dofvector->isRotationalDOF(j)) {
+                        V(pos, 0) += elementVolume;
+                        V(pos, 1) += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    //Agora que G tem a soma de massas e V tem a soma dos volumes dos elementos que dão num certo nó, vamos descobrir a esfera equivalente
+//    for (Element*& element : elements) {
+//        for (unsigned i = 0; i < element->getNumNodes(); i++) {
+//            Node* node = element->getNode(i);
+//            VectorDOF* dofvector = static_cast<VectorDOF*>(node->getDOFByType(DOFType::VECTOR));
+//            for (unsigned j = 0; j < dofvector->getTotalDOFNumber(); j++) {
+//                if (dofvector->getRestrictions()[j] == RestrictionTypes::FREE) {
+//                    if (dofvector->isRotationalDOF(j)) {
+//                        unsigned pos = dofvector->getEquationNumber(j);
+//                        std::cout << "pos: " << pos << "\n";
+//                        double sphereVolume = V(pos, 0) / V(pos, 1);
+//                        std::cout << "sphere volume: " << sphereVolume << "\n";
+//                        //Esse volume tem que ser igual ao volume da esfera de raio r
+//                        double sphereRadius = std::pow((4*M_PI)/(3*sphereVolume), 1.0/3.0);
+//                        std::cout << "sphere radius: " << sphereRadius << "\n";
+//                        std::cout << "mass: " << G(pos, pos) << "\n";
+//                        //Depois de encontrar o raio, calculamos o momento de inércia da esfera:
+//                        //https://en.wikipedia.org/wiki/List_of_moments_of_inertia
+//                        double sphereInertia = 2*G(pos, pos)*sphereRadius*sphereRadius / 5.0;
+//                        std::cout << "sphere inertia: " << sphereInertia << "\n";
+//                        //A inércia da esfera que é a massa
+//                        G(pos, pos) = sphereInertia;
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    for (int j = 0; j < V.rows(); j++) {
+        unsigned pos = j;
+        if (V(pos, 1) > 0) {
+            std::cout << "pos: " << pos << "\n";
+            double sphereVolume = V(pos, 0) / V(pos, 1);
+            std::cout << "sphere volume: " << sphereVolume << "\n";
+            //Esse volume tem que ser igual ao volume da esfera de raio r
+            double sphereRadius = std::pow((4*M_PI)/(3*sphereVolume), 1.0/3.0);
+            std::cout << "sphere radius: " << sphereRadius << "\n";
+            std::cout << "mass: " << G(pos, pos) << "\n";
+            //Depois de encontrar o raio, calculamos o momento de inércia da esfera:
+            //https://en.wikipedia.org/wiki/List_of_moments_of_inertia
+            double sphereInertia = 2*G(pos, pos)*sphereRadius*sphereRadius / 5.0;
+            std::cout << "sphere inertia: " << sphereInertia << "\n";
+            //A inércia da esfera que é a massa
+            G(pos, pos) = sphereInertia;
+        }
+    }
+
     return G;
 }
 

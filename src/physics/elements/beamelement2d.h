@@ -18,6 +18,10 @@ public:
     void draw(QOpenGLShaderProgram *program) override;
     void drawLines(QOpenGLShaderProgram *program) override;
     #endif
+
+    double getMass() const override;
+    double getVolume() const override;
+
 protected:
     Section *section;
     double length;

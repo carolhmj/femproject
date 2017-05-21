@@ -146,6 +146,7 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     return T*K*T.transpose();
 }
 
+//Fonte da massa rotacional: http://kis.tu.kielce.pl/mo/COLORADO_FEM/colorado/IFEM.Ch31.pdf
 MatrixXd BeamElement3D::getLocalMassMatrix()
 {
     /* Constrói a matriz de massa através do método de lumped mass
@@ -160,7 +161,12 @@ MatrixXd BeamElement3D::getLocalMassMatrix()
 
     MatrixXd M = MatrixXd::Zero(12,12);
     for (int i = 0; i < 12; i++) {
-        M(i,i) = halfMass;
+        //Massa translacional
+        if (i < 3 || (i >=6 && i <= 8) ) {
+            M(i,i) = halfMass;
+        } else {
+            M(i,i) = totalMass * length * length * 2/50;
+        }
     }
 
     //Não precisa de transformação pro sistema de coordenadas global, então retorna como está
@@ -327,6 +333,17 @@ double BeamElement3D::getLength() const
 {
     return length;
 }
+
+double BeamElement3D::getMass() const
+{
+    return material->getDensity() * section->getArea() * length;
+}
+
+double BeamElement3D::getVolume() const
+{
+    return section->getArea() * length;
+}
+
 Section *BeamElement3D::getSection() const
 {
     return section;

@@ -427,6 +427,11 @@ int main(int argc, char *argv[])
     VectorXd e8displacementVector = e8solver.solve(e8forceVector);
     std::cout << "Result: " << endl << e8displacementVector.format(HeavyFmt) << endl;
 
+    MatrixXd mass = m8->getGlobalMassMatrix();
+    std::cout << "global mass: \n" << mass << "\n";
+    MatrixXd lmass = m8->getLumpedMassMatrix();
+    std::cout << "lumped mass: \n" << lmass << "\n";
+
     //NÃO USAR POISSON 0.5
 }
 #endif

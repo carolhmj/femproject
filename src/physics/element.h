@@ -41,6 +41,10 @@ public:
     unsigned int getNumNodes() const;
 
     Node *getNode(unsigned numNode);
+
+    virtual double getMass() const = 0;
+    virtual double getVolume() const = 0;
+
 protected:
     vector<Node*> nodes;
     Material *material;
