@@ -29,7 +29,9 @@ public:
     MatrixXd getLumpedMassMatrix();
     //Calcula o vetor de forças
     VectorXd getGlobalForceVector();
+
 #if USE_INTERFACE
+    //Drawing functions
     void draw(QOpenGLShaderProgram *program);
     void drawLines(QOpenGLShaderProgram *program);
 #endif
@@ -41,10 +43,6 @@ public:
     void transformElementLoadsToNodeLoads();
     unsigned int getTotalDOFNumber();
     unsigned int getTotalFreeDOFNumber();
-
-    //Drawing functions
-    void draw(QOpenGLShaderProgram *program);
-    void drawLines(QOpenGLShaderProgram *program);
 private:
     vector<Node*> nodes;
     vector<Element*> elements;
