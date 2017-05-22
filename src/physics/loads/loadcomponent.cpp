@@ -45,7 +45,7 @@ void LoadComponent::setValueByType(double value, LoadType type)
 string LoadComponent::printInfo()
 {
     std::stringstream ss;
-    for (int i = 0; i < values.size(); i++) {
+    for (unsigned int i = 0; i < values.size(); i++) {
         ss << "value [" << values[i] << "] type [" << static_cast<int>(types[i]) << "]" << endl;
     }
     return ss.str();

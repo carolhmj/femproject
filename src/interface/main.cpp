@@ -386,7 +386,7 @@ int main(int argc, char *argv[])
     //I = 0.036m^-4, A = 0.12m^2
     Section *e8s = new Section(0, 0.0036, 0, 0.12);
     //Material: Concreto http://www.concrete.org.uk/fingertips-nuggets.asp?cmd=display&id=525
-    Material *e8m = new Material(10E9, 0, 0, 0);
+    Material *e8m = new Material(10E9, 0, 0, 10);
 
     BeamElement3D *e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(0,1,0),  e8s, e8m);
     BeamElement3D *e8b2 = new BeamElement3D(e8n2, e8n3, Vector3d(0,1,0),  e8s, e8m);
@@ -418,12 +418,19 @@ int main(int argc, char *argv[])
     VectorXd e8forceVector = m8->getGlobalForceVector();
     std::cout << "Global force  vector: " << endl << e8forceVector << endl;
 
+    MatrixXd e8MassMatrix = m8->getGlobalMassMatrix();
+    std::cout << "Global mass matrix: " << endl << e8MassMatrix << endl;
 
     IOFormat HeavyFmt(FullPrecision, 0, ", ", "\n", "|", "|", "[", "]");
     std::cout.precision(8);
     FullPivHouseholderQR<MatrixXd> e8solver(e8globalMatrix);
     VectorXd e8displacementVector = e8solver.solve(e8forceVector);
     std::cout << "Result: " << endl << e8displacementVector.format(HeavyFmt) << endl;
+
+    MatrixXd mass = m8->getGlobalMassMatrix();
+    std::cout << "global mass: \n" << mass << "\n";
+    MatrixXd lmass = m8->getLumpedMassMatrix();
+    std::cout << "lumped mass: \n" << lmass << "\n";
 
     //NÃO USAR POISSON 0.5
 }

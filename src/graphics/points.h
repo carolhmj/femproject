@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #ifndef POINTS_H
 #define POINTS_H
 
@@ -33,3 +34,4 @@ private:
 };
 
 #endif // POINTS_H
+#endif //USE_INTERFACE

@@ -30,6 +30,8 @@ public:
     string printInfo() override;
     unsigned int getTotalDOFNumber() override;
     unsigned int getTotalDOFNumber(RestrictionTypes restriction) override;
+    bool isRotationalDOF(unsigned int i);
+    bool isTranslationalDOF(unsigned int i);
 
 private:
     //Valores do grau de liberdade

@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #include "points.h"
 #include <iostream>
 
@@ -57,4 +58,4 @@ void Points::drawPoints(QOpenGLShaderProgram *program)
     }
     program->release();
 }
-
+#endif //USE_INTERFACE

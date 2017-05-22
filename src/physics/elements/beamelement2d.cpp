@@ -77,6 +77,21 @@ MatrixXd BeamElement2D::getLocalStiffnessMatrix()
     return transformToGlobalMatrix * K  * transformToGlobalMatrix.transpose();
 }
 
+MatrixXd BeamElement2D::getLocalMassMatrix()
+{
+
+}
+
+double BeamElement2D::getMass() const
+{
+
+}
+
+double BeamElement2D::getVolume() const
+{
+
+}
+#if USE_INTERFACE
 void BeamElement2D::draw(QOpenGLShaderProgram *program)
 {
     Vector3d pos;
@@ -92,3 +107,4 @@ void BeamElement2D::drawLines(QOpenGLShaderProgram *program)
 {
 
 }
+#endif

@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #ifndef MESH_H
 #define MESH_H
 
@@ -41,3 +42,4 @@ private:
 };
 
 #endif // MESH_H
+#endif //USE_INTERFACE

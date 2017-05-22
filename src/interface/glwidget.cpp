@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #include "glwidget.h"
 #include <QDebug>
 #include <cmath>
@@ -66,6 +67,7 @@ void GLWidget::initializeGL(){
         bool linkResult = m_program->link();
         if (!linkResult) {
             qDebug() << "[Could not link shaders]\n" << m_program->log();
+            return;
         }
         bool bindResult = m_program->bind();
         if (!bindResult) {
@@ -317,3 +319,4 @@ void GLWidget::wheelEvent(QWheelEvent *event)
     event->accept();
     this->repaint();
 }
+#endif USE_INTERFACE

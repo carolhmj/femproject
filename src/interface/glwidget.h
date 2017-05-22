@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
@@ -109,3 +110,4 @@ private:
 };
 
 #endif // GLWIDGET_H
+#endif //USE_INTERFACE

@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -20,3 +21,4 @@ private:
 };
 
 #endif // MAINWINDOW_H
+#endif //USE_INTERFACE

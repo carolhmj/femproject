@@ -113,5 +113,15 @@ unsigned int VectorDOF::getTotalDOFNumber(RestrictionTypes restriction)
     return count;
 }
 
+bool VectorDOF::isRotationalDOF(unsigned int i)
+{
+    return types[i] == VectorDOFType::ROTATION;
+}
+
+bool VectorDOF::isTranslationalDOF(unsigned int i)
+{
+    return types[i] == VectorDOFType::TRANSLATION;
+}
+
 
 

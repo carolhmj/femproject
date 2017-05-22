@@ -146,6 +146,34 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     return T*K*T.transpose();
 }
 
+//Fonte da massa rotacional: http://kis.tu.kielce.pl/mo/COLORADO_FEM/colorado/IFEM.Ch31.pdf
+MatrixXd BeamElement3D::getLocalMassMatrix()
+{
+    /* Constrói a matriz de massa através do método de lumped mass
+     *
+     */
+
+    //Encontra a massa total do elemento = densidade * área * comprimento
+    double totalMass = material->getDensity() * section->getArea() * length;
+
+    //Cada nó vai ter 1/2 da massa total, e cada grau de liberdade vai ter esse valor de massa??? (perguntar)
+    double halfMass = totalMass / 2.0;
+
+    MatrixXd M = MatrixXd::Zero(12,12);
+    for (int i = 0; i < 12; i++) {
+        //Massa translacional
+        if (i < 3 || (i >=6 && i <= 8) ) {
+            M(i,i) = halfMass;
+        } else {
+            M(i,i) = totalMass * length * length * 2/50;
+        }
+    }
+
+    //Não precisa de transformação pro sistema de coordenadas global, então retorna como está
+    return M;
+}
+
+#if USE_INTERFACE
 void BeamElement3D::draw(QOpenGLShaderProgram *program)
 {
     /* Pra desenhar o elemento, primeiro vamos desenhar as seções
@@ -300,10 +328,22 @@ void BeamElement3D::drawLines(QOpenGLShaderProgram *program)
     elementMesh->initializeMesh();
     elementMesh->drawMesh(program);
 }
+#endif
 double BeamElement3D::getLength() const
 {
     return length;
 }
+
+double BeamElement3D::getMass() const
+{
+    return material->getDensity() * section->getArea() * length;
+}
+
+double BeamElement3D::getVolume() const
+{
+    return section->getArea() * length;
+}
+
 Section *BeamElement3D::getSection() const
 {
     return section;

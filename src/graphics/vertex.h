@@ -1,3 +1,4 @@
+#if USE_INTERFACE
 #ifndef VERTEX_H
 #define VERTEX_H
 
@@ -17,3 +18,4 @@ struct Vertex {
 };
 
 #endif // VERTEX_H
+#endif // USE_INTERFACE
