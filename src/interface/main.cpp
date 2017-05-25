@@ -358,25 +358,25 @@ int main(int argc, char *argv[])
 
 //    Exemplo 8 (Exemplo 2 com elementos 3D, MODIFICADO): http://media.cheggcdn.com/media%2F24b%2F24bda2dd-e3be-4fcd-81ae-668ea7deb4fd%2Fimage
     //A resolução será feita com um modelo com 4 nós e 3 elementos
-    std::vector<VectorDOFType> e8n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n1types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n1equations = {-1,-1,-1,-1,-1,0};
     VectorDOF *e8n1v = new VectorDOF(e8n1types, e8n1restrictions, e8n1equations);
     Node *e8n1 = new Node(Vector3d(0.0,0.0,0.0), e8n1v);
 
-    std::vector<VectorDOFType> e8n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n2types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n2equations = {1,2,-1,-1,-1,3};
     VectorDOF *e8n2v = new VectorDOF(e8n2types, e8n2restrictions, e8n2equations);
     Node *e8n2 = new Node(Vector3d(4.0,0.0,0.0), e8n2v);
 
-    std::vector<VectorDOFType> e8n3types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n3types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n3restrictions = {RestrictionTypes::FREE, RestrictionTypes::FIXED,  RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n3equations = {4,-1,-1,-1,-1,5};
     VectorDOF *e8n3v = new VectorDOF(e8n3types, e8n3restrictions, e8n3equations);
     Node *e8n3 = new Node(Vector3d(10.0,0.0,0.0), e8n3v);
 
-    std::vector<VectorDOFType> e8n4types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n4types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n4restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n4equations = {6,7,-1,-1,-1,8};
     VectorDOF *e8n4v = new VectorDOF(e8n4types, e8n4restrictions, e8n4equations);

@@ -57,32 +57,32 @@ string VectorDOF::printInfo()
     output << "------- VECTOR DOF -------" << endl;
     for (unsigned int i = 0; i < types.size(); i++) {
         output << "\t Value: " << values[i];
-//        switch (types[i]) {
-//            case VectorDOFType::FX:
-//                output << "TRANSLATION X";
-//            break;
-//            case VectorDOFType::FY:
-//                output << "TRANSLATION Y";
-//            break;
-//            case VectorDOFType::FZ:
-//                output << "TRANSLATION Z";
-//            break;
-//            case VectorDOFType::MX:
-//                output << "MOMENT X";
-//            break;
-//            case VectorDOFType::MY:
-//                output << "MOMENT Y";
-//            break;
-//            case VectorDOFType::MZ:
-//                output << "MOMENT Z";
-//            break;
-//        }
-
-        if (types[i] == VectorDOFType::TRANSLATION) {
-            output << " TRANSLATION ";
-        } else if (types[i] == VectorDOFType::ROTATION) {
-            output << " ROTATION ";
+        switch (types[i]) {
+            case VectorDOFType::FX:
+                output << "TRANSLATION X";
+            break;
+            case VectorDOFType::FY:
+                output << "TRANSLATION Y";
+            break;
+            case VectorDOFType::FZ:
+                output << "TRANSLATION Z";
+            break;
+            case VectorDOFType::MX:
+                output << "MOMENT X";
+            break;
+            case VectorDOFType::MY:
+                output << "MOMENT Y";
+            break;
+            case VectorDOFType::MZ:
+                output << "MOMENT Z";
+            break;
         }
+
+//        if (types[i] == VectorDOFType::TRANSLATION) {
+//            output << " TRANSLATION ";
+//        } else if (types[i] == VectorDOFType::ROTATION) {
+//            output << " ROTATION ";
+//        }
 
         if (restrictions[i] == RestrictionTypes::FIXED) {
             output << " FIXED ";
@@ -115,12 +115,14 @@ unsigned int VectorDOF::getTotalDOFNumber(RestrictionTypes restriction)
 
 bool VectorDOF::isRotationalDOF(unsigned int i)
 {
-    return types[i] == VectorDOFType::ROTATION;
+//    return types[i] == VectorDOFType::ROTATION;
+    return types[i] == VectorDOFType::MX || types[i] == VectorDOFType::MY || types[i] == VectorDOFType::MZ;
 }
 
 bool VectorDOF::isTranslationalDOF(unsigned int i)
 {
-    return types[i] == VectorDOFType::TRANSLATION;
+//    return types[i] == VectorDOFType::TRANSLATION;
+    return types[i] == VectorDOFType::FX || types[i] == VectorDOFType::FY || types[i] == VectorDOFType::FZ;
 }
 
 
