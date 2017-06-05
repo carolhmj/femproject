@@ -76,7 +76,8 @@ SOURCES += src/interface/main.cpp\
     src/interface/treewidget.cpp \
     src/interface/treewidgetroot.cpp \
     src/interface/treewidgetitem.cpp \
-    src/interface/elementtreewidgetitem.cpp
+    src/interface/elementtreewidgetitem.cpp \
+    src/physics/dofs/dynamicvectordof.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -109,7 +110,8 @@ HEADERS  += src/interface/mainwindow.h \
     src/interface/treewidget.h \
     src/interface/treewidgetroot.h \
     src/interface/treewidgetitem.h \
-    src/interface/elementtreewidgetitem.h
+    src/interface/elementtreewidgetitem.h \
+    src/physics/dofs/dynamicvectordof.h
 
 FORMS    += mainwindow.ui
 

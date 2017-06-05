@@ -135,34 +135,6 @@ MatrixXd Model::getLumpedMassMatrix()
         }
     }
 
-    //Agora que G tem a soma de massas e V tem a soma dos volumes dos elementos que dão num certo nó, vamos descobrir a esfera equivalente
-//    for (Element*& element : elements) {
-//        for (unsigned i = 0; i < element->getNumNodes(); i++) {
-//            Node* node = element->getNode(i);
-//            VectorDOF* dofvector = static_cast<VectorDOF*>(node->getDOFByType(DOFType::VECTOR));
-//            for (unsigned j = 0; j < dofvector->getTotalDOFNumber(); j++) {
-//                if (dofvector->getRestrictions()[j] == RestrictionTypes::FREE) {
-//                    if (dofvector->isRotationalDOF(j)) {
-//                        unsigned pos = dofvector->getEquationNumber(j);
-//                        std::cout << "pos: " << pos << "\n";
-//                        double sphereVolume = V(pos, 0) / V(pos, 1);
-//                        std::cout << "sphere volume: " << sphereVolume << "\n";
-//                        //Esse volume tem que ser igual ao volume da esfera de raio r
-//                        double sphereRadius = std::pow((4*M_PI)/(3*sphereVolume), 1.0/3.0);
-//                        std::cout << "sphere radius: " << sphereRadius << "\n";
-//                        std::cout << "mass: " << G(pos, pos) << "\n";
-//                        //Depois de encontrar o raio, calculamos o momento de inércia da esfera:
-//                        //https://en.wikipedia.org/wiki/List_of_moments_of_inertia
-//                        double sphereInertia = 2*G(pos, pos)*sphereRadius*sphereRadius / 5.0;
-//                        std::cout << "sphere inertia: " << sphereInertia << "\n";
-//                        //A inércia da esfera que é a massa
-//                        G(pos, pos) = sphereInertia;
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     for (int j = 0; j < V.rows(); j++) {
         unsigned pos = j;
         if (V(pos, 1) > 0) {
