@@ -55,9 +55,9 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
           i = 4*E*IZ/L,
           j = 2*E*IZ/L;
 
-    std::cout << "E: " << E << " IZ " << IZ << " L3 " << L3 << endl;
-    std::cout << "12EIZ/L3: " << b << endl;
-    std::cout << "6EIZ/L2: " << c << endl;
+//    std::cout << "E: " << E << " IZ " << IZ << " L3 " << L3 << endl;
+//    std::cout << "12EIZ/L3: " << b << endl;
+//    std::cout << "6EIZ/L2: " << c << endl;
 
     MatrixXd block1 = MatrixXd::Zero(6,6), block2 = MatrixXd::Zero(6,6), block3, block4;
     //EA/L
@@ -103,7 +103,7 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     //-6EIZ/L2
     block2(5,1) = -c;
 
-    std::cout << "block 2 before assign: " <<  endl << block2 << endl;
+//    std::cout << "block 2 before assign: " <<  endl << block2 << endl;
 
     //Mesmo que o bloco 2, só que a diagonal contrária é invertida
     block3 = block2;
@@ -112,7 +112,7 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     block3(2,4) = -block3(2,4);
     block3(4,2) = -block3(4,2);
 
-    std::cout << "block 2 before assign: " <<  endl << block2 << endl;
+//    std::cout << "block 2 before assign: " <<  endl << block2 << endl;
 
     //Mesmo que o bloco 1, só que a diagonal contrária é invertida
     block4 = block1;
@@ -127,10 +127,10 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     K.block<6,6>(6,0) = block3;
     K.block<6,6>(6,6) = block4;
 
-    std::cout << "K: " << endl << K << endl;
+//    std::cout << "K: " << endl << K << endl;
 
     MatrixXd transformMatrix = coordinate->transformTo();
-    std::cout << "transformMatrix: " << endl << transformMatrix << endl;
+//    std::cout << "transformMatrix: " << endl << transformMatrix << endl;
 
     MatrixXd T = MatrixXd::Zero(12,12);
     T.block<3,3>(0,0) = transformMatrix;
@@ -138,9 +138,9 @@ MatrixXd BeamElement3D::getLocalStiffnessMatrix()
     T.block<3,3>(6,6) = transformMatrix;
     T.block<3,3>(9,9) = transformMatrix;
 
-    std::cout << "T: " << endl << T << endl;
-    std::cout << "T': " << endl << T.transpose() << endl;
-    std::cout << "T*K*T': " << endl << T*K*T.transpose() << endl;
+//    std::cout << "T: " << endl << T << endl;
+//    std::cout << "T': " << endl << T.transpose() << endl;
+//    std::cout << "T*K*T': " << endl << T*K*T.transpose() << endl;
 
 
     return T*K*T.transpose();

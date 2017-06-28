@@ -56,7 +56,7 @@ string VectorDOF::printInfo()
     std::stringstream output;
     output << "------- VECTOR DOF -------" << endl;
     for (unsigned int i = 0; i < types.size(); i++) {
-        output << "\t Value: " << values[i];
+        output << "\t Value: " << values[i] << " ";
         switch (types[i]) {
             case VectorDOFType::FX:
                 output << "TRANSLATION X";

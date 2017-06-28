@@ -358,6 +358,10 @@ int main(int argc, char *argv[])
 
 //    Exemplo 8 (Exemplo 2 com elementos 3D, MODIFICADO): http://media.cheggcdn.com/media%2F24b%2F24bda2dd-e3be-4fcd-81ae-668ea7deb4fd%2Fimage
     //A resolução será feita com um modelo com 4 nós e 3 elementos
+
+
+
+
     std::vector<VectorDOFType> e8n1types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n1equations = {-1,-1,-1,-1,-1,0};
@@ -383,9 +387,7 @@ int main(int argc, char *argv[])
     Node *e8n4 = new Node(Vector3d(13.0,0.0,0.0), e8n4v);
     vector<Node*> e8nvector = {e8n1, e8n2, e8n3, e8n4};
 
-    //I = 0.036m^-4, A = 0.12m^2
     Section *e8s = new Section(0, 0.0036, 0, 0.12);
-    //Material: Concreto http://www.concrete.org.uk/fingertips-nuggets.asp?cmd=display&id=525
     Material *e8m = new Material(10E9, 0, 0, 10);
 
     BeamElement3D *e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(0,1,0),  e8s, e8m);
@@ -394,17 +396,8 @@ int main(int argc, char *argv[])
     vector<Element*> e8bvector = {e8b1, e8b2, e8b3};
 
     //Loads
-    //Força no nó 2 é de 5000N
-//    VectorXd e8n2lvalues(6);
-//    e8n2lvalues << 0,-5000,0,0,0,0;
-//    VectorDOFLoad *e8n2load = new VectorDOFLoad(e8n2v, e8n2lvalues);
     NodeLoad *e8n2load = new NodeLoad(0.0,-5000.0,0.0,0.0,0.0,0.0, e8n2);
-    //Força no nó 4 é de 3000N
-//    VectorXd e8n4lvalues(6);
-//    e8n4lvalues << 0,-3000,0,0,0,0;
-//    VectorDOFLoad *e8n4load = new VectorDOFLoad(e8n4v, e8n4lvalues);
-    NodeLoad* e8n4load = new NodeLoad(0.0,-3000.0,0.0,0.0,0.0,0.0, e8n4);
-//    vector<Load*> e8lvector = {e8n2load, e8n4load};
+    NodeLoad *e8n4load = new NodeLoad(0.0,-3000.0,0.0,0.0,0.0,0.0, e8n4);
 
     vector<NodeLoad*> e8lvector = {e8n2load, e8n4load};
     vector<ElementLoad*> e8levector;
@@ -421,17 +414,15 @@ int main(int argc, char *argv[])
     MatrixXd e8MassMatrix = m8->getGlobalMassMatrix();
     std::cout << "Global mass matrix: " << endl << e8MassMatrix << endl;
 
+    MatrixXd lmass = m8->getLumpedMassMatrix();
+    std::cout << "lumped mass: \n" << lmass << "\n";
+
     IOFormat HeavyFmt(FullPrecision, 0, ", ", "\n", "|", "|", "[", "]");
     std::cout.precision(8);
     FullPivHouseholderQR<MatrixXd> e8solver(e8globalMatrix);
     VectorXd e8displacementVector = e8solver.solve(e8forceVector);
     std::cout << "Result: " << endl << e8displacementVector.format(HeavyFmt) << endl;
 
-    MatrixXd mass = m8->getGlobalMassMatrix();
-    std::cout << "global mass: \n" << mass << "\n";
-    MatrixXd lmass = m8->getLumpedMassMatrix();
-    std::cout << "lumped mass: \n" << lmass << "\n";
 
-    //NÃO USAR POISSON 0.5
 }
 #endif

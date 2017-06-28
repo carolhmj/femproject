@@ -79,54 +79,48 @@ void GLWidget::initializeGL(){
 
     meshTest->initializeMesh();
 
-    std::vector<VectorDOFType> e8n1types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n1types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n1restrictions = {RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n1equations = {-1,-1,-1,-1,-1,0};
     VectorDOF *e8n1v = new VectorDOF(e8n1types, e8n1restrictions, e8n1equations);
     Node *e8n1 = new Node(Vector3d(0.0,0.0,0.0), e8n1v);
 
-    std::vector<VectorDOFType> e8n2types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n2types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n2restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n2equations = {1,2,-1,-1,-1,3};
     VectorDOF *e8n2v = new VectorDOF(e8n2types, e8n2restrictions, e8n2equations);
-    Node *e8n2 = new Node(Vector3d(0.0,2.0,0.0), e8n2v);
+    Node *e8n2 = new Node(Vector3d(4.0,0.0,0.0), e8n2v);
 
-    std::vector<VectorDOFType> e8n3types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n3types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n3restrictions = {RestrictionTypes::FREE, RestrictionTypes::FIXED,  RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n3equations = {4,-1,-1,-1,-1,5};
     VectorDOF *e8n3v = new VectorDOF(e8n3types, e8n3restrictions, e8n3equations);
-    Node *e8n3 = new Node(Vector3d(2.0,2.0,0.0), e8n3v);
+    Node *e8n3 = new Node(Vector3d(10.0,0.0,0.0), e8n3v);
 
-    std::vector<VectorDOFType> e8n4types = {VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::TRANSLATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION, VectorDOFType::ROTATION};
+    std::vector<VectorDOFType> e8n4types = {VectorDOFType::FX, VectorDOFType::FY, VectorDOFType::FZ, VectorDOFType::MX, VectorDOFType::MY, VectorDOFType::MZ};
     std::vector<RestrictionTypes> e8n4restrictions = {RestrictionTypes::FREE, RestrictionTypes::FREE, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FIXED, RestrictionTypes::FREE};
     std::vector<int> e8n4equations = {6,7,-1,-1,-1,8};
     VectorDOF *e8n4v = new VectorDOF(e8n4types, e8n4restrictions, e8n4equations);
-    Node *e8n4 = new Node(Vector3d(2.0,0.0,0.0), e8n4v);
+    Node *e8n4 = new Node(Vector3d(13.0,0.0,0.0), e8n4v);
     vector<Node*> e8nvector = {e8n1, e8n2, e8n3, e8n4};
 
-    //I = 0.036m^-4, A = 0.12m^2
-    //Material: Concreto http://www.concrete.org.uk/fingertips-nuggets.asp?cmd=display&id=525
-    Section *e8s1 = new Section(0, 0.0036, 0, 0.12, meshTest);
-    Section *e8s2 = new Section(0, 0.0036, 0, 0.12, meshTest);
-    Section *e8s3 = new Section(0, 0.0036, 0, 0.12, meshTest);
-    Material *e8m = new Material(10E9, 0, 0, 0);
+    Section *e8s = new Section(0, 0.0036, 0, 0.12);
+    Material *e8m = new Material(10E9, 0, 0, 10);
 
-    e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(-1,0,0),  e8s1, e8m);
-    e8b2 = new BeamElement3D(e8n2, e8n3, Vector3d(0,1,0),  e8s2, e8m);
-    e8b3 = new BeamElement3D(e8n3, e8n4, Vector3d(1,0,0),  e8s3, e8m);
+    BeamElement3D *e8b1 = new BeamElement3D(e8n1, e8n2, Vector3d(0,1,0),  e8s, e8m);
+    BeamElement3D *e8b2 = new BeamElement3D(e8n2, e8n3, Vector3d(0,1,0),  e8s, e8m);
+    BeamElement3D *e8b3 = new BeamElement3D(e8n3, e8n4, Vector3d(0,1,0),  e8s, e8m);
     vector<Element*> e8bvector = {e8b1, e8b2, e8b3};
 
     //Loads
-    //Força no nó 2 é de 5000N
     NodeLoad *e8n2load = new NodeLoad(0.0,-5000.0,0.0,0.0,0.0,0.0, e8n2);
-    //Força no nó 4 é de 3000N
-    NodeLoad* e8n4load = new NodeLoad(0.0,-3000.0,0.0,0.0,0.0,0.0, e8n4);
+    NodeLoad *e8n4load = new NodeLoad(0.0,-3000.0,0.0,0.0,0.0,0.0, e8n4);
 
     vector<NodeLoad*> e8lvector = {e8n2load, e8n4load};
     vector<ElementLoad*> e8levector;
 
     m8 = new Model("Simple Beam 3D Test 2", e8nvector, e8bvector, e8lvector, e8levector);
-    meshTest->initializeMesh();
+    std::cout << m8->printInfo();
 }
 
 void GLWidget::resizeGL(int w, int h){
@@ -138,9 +132,7 @@ void GLWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Generate Model, View and Projection matrices and send them to our shader
-//    Matrix4f projection = perspective(camera.fov*180/M_PI, (float)this->width()/ (float)this->height(), 0.1f, 100.0f);
     Matrix4f projection = ortho(-this->width()/50, this->width()/50, -this->height()/50, this->height()/50, 0.1f, 100.0f);
-//    Matrix4f projection = Matrix4f::Identity();
     Matrix4f view = lookAt(camera.eye, camera.at, camera.up);
     Matrix4f model = Matrix4f::Identity();
 
@@ -163,8 +155,7 @@ void GLWidget::paintGL(){
     m_program->release();
 
     // Render using our shader
-    m8->drawLines(m_program);
-//    meshTest->drawMesh(m_program);
+    if (m8) m8->drawLines(m_program);
 }
 
 Matrix4f GLWidget::lookAt(const Vector3f& position, const Vector3f& target, const Vector3f& up)

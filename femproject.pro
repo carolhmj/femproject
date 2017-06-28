@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = femproject
 TEMPLATE = app
 
-DEFINES += DEBUG=1 USE_INTERFACE=0
+DEFINES += DEBUG=1 USE_INTERFACE=1
 
 QMAKE_CXXFLAGS_DEBUG -= -01
 QMAKE_CXXFLAGS_DEBUG -= -02
@@ -76,9 +76,9 @@ SOURCES += src/interface/main.cpp\
     src/interface/treewidget.cpp \
     src/interface/treewidgetroot.cpp \
     src/interface/treewidgetitem.cpp \
-    src/interface/elementtreewidgetitem.cpp \
-    src/physics/dofs/dynamicvectordof.cpp \
-    src/physics/loads/dynamicloadcomponent.cpp
+    src/interface/elementtreewidgetitem.cpp #\
+    #src/physics/dofs/dynamicvectordof.cpp \
+    #src/physics/loads/dynamicloadcomponent.cpp
 
 HEADERS  += src/interface/mainwindow.h \
     src/physics/dofs/dof.h \
@@ -111,11 +111,11 @@ HEADERS  += src/interface/mainwindow.h \
     src/interface/treewidget.h \
     src/interface/treewidgetroot.h \
     src/interface/treewidgetitem.h \
-    src/interface/elementtreewidgetitem.h \
-    src/physics/dofs/dynamicvectordof.h \
-    src/physics/loads/dynamicloadcomponent.h
+    src/interface/elementtreewidgetitem.h #\
+    #src/physics/dofs/dynamicvectordof.h \
+    #src/physics/loads/dynamicloadcomponent.h
 
-FORMS    += mainwindow.ui
+FORMS    += src/interface/mainwindow.ui
 
 DISTFILES += \
     src/interface/shaders/vertexshader.vert \
